@@ -8,6 +8,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <script>
         // Configure Tailwind with your custom color theme
@@ -206,6 +208,22 @@
                                 </div>
                             </div>
                             
+                            <!-- Graph Section -->
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                                    <h4 class="text-lg font-bold text-gray-800 mb-4">Weekly Attendance</h4>
+                                    <div class="h-64 w-full">
+                                        <canvas id="studentAttendanceChart"></canvas>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                                    <h4 class="text-lg font-bold text-gray-800 mb-4">Academic Performance Trend</h4>
+                                    <div class="h-64 w-full">
+                                        <canvas id="studentPerformanceChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                                 <div>
                                     <h4 class="text-xl font-bold text-gray-800 mb-4 flex items-center"><i class="fa-solid fa-clock text-skyApp mr-2"></i> Upcoming Classes</h4>
@@ -552,6 +570,22 @@
                                         <div class="bg-purple-100 text-purple-500 p-3 rounded-xl"><i class="fa-solid fa-users text-xl"></i></div>
                                     </div>
                                     <button class="mt-4 text-sm font-bold text-gray-600 hover:text-skyApp text-left"><i class="fa-solid fa-calendar-plus mr-1"></i> Add to Calendar</button>
+                                </div>
+                            </div>
+
+                            <!-- Graph Section -->
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                                    <h4 class="text-lg font-bold text-gray-800 mb-4">Attendance Comparison</h4>
+                                    <div class="h-64 w-full">
+                                        <canvas id="parentAttendanceChart"></canvas>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center">
+                                    <h4 class="text-lg font-bold text-gray-800 mb-4 self-start">Fee Breakdown</h4>
+                                    <div class="h-64 w-full flex justify-center">
+                                        <canvas id="parentFeeChart"></canvas>
+                                    </div>
                                 </div>
                             </div>
 
@@ -910,6 +944,22 @@
                                 </div>
                             </div>
 
+                            <!-- Graph Section -->
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                                    <h4 class="text-lg font-bold text-gray-800 mb-4">Class Average Performance</h4>
+                                    <div class="h-64 w-full">
+                                        <canvas id="teacherPerformanceChart"></canvas>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center">
+                                    <h4 class="text-lg font-bold text-gray-800 mb-4 self-start">Assignments Status</h4>
+                                    <div class="h-64 w-full flex justify-center">
+                                        <canvas id="teacherAssignmentChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                                 <div>
                                     <h4 class="text-xl font-bold text-gray-800 mb-4">Quick Actions</h4>
@@ -964,7 +1014,7 @@
                         <div class="fade-in max-w-6xl mx-auto w-full pb-20 md:pb-0">
                             <h2 class="text-3xl font-bold text-gray-800 mb-6">My Assigned Classes</h2>
                             
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 <!-- Class Card -->
                                 <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition">
                                     <div class="bg-gradient-to-r from-skyApp to-blue-400 p-6 text-white">
@@ -1031,7 +1081,7 @@
                                 </div>
                             </div>
 
-                            <div class="grid grid-cols-1 lg:grid-cols-1 gap-6">
+                            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                                 <div class="bg-white p-6 rounded-2xl shadow-sm border-l-8 border-yellow-400 flex flex-col justify-between hover:shadow-md transition">
                                     <div>
                                         <div class="flex justify-between items-start mb-4">
@@ -1159,7 +1209,7 @@
                             <h2 class="text-3xl font-bold text-gray-800 mb-6">Admin Dashboard</h2>
                             
                             <!-- Stats Grid -->
-                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 mb-8">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                                 <div class="bg-white p-6 rounded-2xl shadow-sm border-l-4 border-skyApp hover:shadow-md transition">
                                     <p class="text-gray-500 font-semibold mb-2 uppercase tracking-wide text-xs">Total Students</p>
                                     <div class="flex items-end justify-between">
@@ -1181,6 +1231,22 @@
                                 <div class="bg-white p-6 rounded-2xl shadow-sm border-l-4 border-red-400 hover:shadow-md transition">
                                     <p class="text-gray-500 font-semibold mb-2 uppercase tracking-wide text-xs">Pending Fees</p>
                                     <h3 class="text-3xl font-extrabold text-gray-800 mt-1">$12.5k</h3>
+                                </div>
+                            </div>
+
+                            <!-- Graph Section -->
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                                    <h4 class="text-lg font-bold text-gray-800 mb-4">Revenue vs Expenses (6 Months)</h4>
+                                    <div class="h-64 w-full">
+                                        <canvas id="adminFinanceChart"></canvas>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center">
+                                    <h4 class="text-lg font-bold text-gray-800 mb-4 self-start">Student Enrollment by Grade</h4>
+                                    <div class="h-64 w-full flex justify-center">
+                                        <canvas id="adminEnrollmentChart"></canvas>
+                                    </div>
                                 </div>
                             </div>
 
@@ -1630,8 +1696,16 @@
             // Get the HTML string from the active role's pages object
             const pageHTML = appData[currentRole].pages[tabId];
             
+            clearCharts();
+
             if (pageHTML) {
                 contentArea.innerHTML = pageHTML;
+                
+                // Initialize charts if on the home tab
+                if (tabId === 'home') {
+                    // Small timeout ensures the DOM is fully updated and painted before targeting the canvas ID
+                    setTimeout(() => initDashboardCharts(currentRole), 50);
+                }
             } else {
                 // Failsafe fallback
                 const title = tabId.charAt(0).toUpperCase() + tabId.slice(1);
@@ -1648,6 +1722,156 @@
             
             // Scroll to top of content area on tab switch
             contentArea.scrollTop = 0;
+        }
+
+        // --- Chart.js Graph Initialization Logic ---
+        let activeCharts = {};
+
+        function clearCharts() {
+            for (let key in activeCharts) {
+                if (activeCharts[key]) {
+                    activeCharts[key].destroy();
+                }
+            }
+            activeCharts = {};
+        }
+
+        function initDashboardCharts(role) {
+            Chart.defaults.color = '#9ca3af';
+            Chart.defaults.font.family = 'ui-sans-serif, system-ui, sans-serif';
+
+            if (role === 'student') {
+                const attCtx = document.getElementById('studentAttendanceChart');
+                if (attCtx) {
+                    activeCharts['studentAttendance'] = new Chart(attCtx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+                            datasets: [{
+                                label: 'Attendance %',
+                                data: [100, 100, 0, 100, 100],
+                                backgroundColor: '#87CEEB',
+                                borderRadius: 6
+                            }]
+                        },
+                        options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, max: 100 } }, plugins: { legend: { display: false } } }
+                    });
+                }
+                const perfCtx = document.getElementById('studentPerformanceChart');
+                if (perfCtx) {
+                    activeCharts['studentPerformance'] = new Chart(perfCtx, {
+                        type: 'line',
+                        data: {
+                            labels: ['Term 1', 'Term 2', 'Term 3'],
+                            datasets: [{
+                                label: 'CGPA',
+                                data: [3.4, 3.6, 3.8],
+                                borderColor: '#a855f7',
+                                backgroundColor: 'rgba(168, 85, 247, 0.1)',
+                                fill: true,
+                                tension: 0.4,
+                                borderWidth: 3
+                            }]
+                        },
+                        options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: false, min: 2.0, max: 4.0 } }, plugins: { legend: { display: false } } }
+                    });
+                }
+            } else if (role === 'parent') {
+                const attCtx = document.getElementById('parentAttendanceChart');
+                if (attCtx) {
+                    activeCharts['parentAttendance'] = new Chart(attCtx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+                            datasets: [
+                                { label: 'Alex', data: [100, 100, 0, 100, 100], backgroundColor: '#87CEEB', borderRadius: 4 },
+                                { label: 'Emma', data: [100, 100, 100, 100, 100], backgroundColor: '#f9a8d4', borderRadius: 4 }
+                            ]
+                        },
+                        options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, max: 100 } } }
+                    });
+                }
+                const feeCtx = document.getElementById('parentFeeChart');
+                if (feeCtx) {
+                    activeCharts['parentFee'] = new Chart(feeCtx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Tuition', 'Transport', 'Activities'],
+                            datasets: [{
+                                data: [65, 20, 15],
+                                backgroundColor: ['#ef4444', '#f59e0b', '#3b82f6'],
+                                borderWidth: 0,
+                                hoverOffset: 4
+                            }]
+                        },
+                        options: { responsive: true, maintainAspectRatio: false, cutout: '70%', plugins: { legend: { position: 'right' } } }
+                    });
+                }
+            } else if (role === 'teacher') {
+                const perfCtx = document.getElementById('teacherPerformanceChart');
+                if (perfCtx) {
+                    activeCharts['teacherPerformance'] = new Chart(perfCtx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Grade 10A', 'Grade 10B', 'Grade 11C'],
+                            datasets: [{
+                                label: 'Average Score %',
+                                data: [85, 76, 92],
+                                backgroundColor: ['#87CEEB', '#818cf8', '#a855f7'],
+                                borderRadius: 6
+                            }]
+                        },
+                        options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, max: 100 } }, plugins: { legend: { display: false } } }
+                    });
+                }
+                const assignCtx = document.getElementById('teacherAssignmentChart');
+                if (assignCtx) {
+                    activeCharts['teacherAssignment'] = new Chart(assignCtx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Graded', 'Pending', 'Overdue'],
+                            datasets: [{
+                                data: [45, 12, 3],
+                                backgroundColor: ['#10b981', '#f59e0b', '#ef4444'],
+                                borderWidth: 0,
+                                hoverOffset: 4
+                            }]
+                        },
+                        options: { responsive: true, maintainAspectRatio: false, cutout: '70%', plugins: { legend: { position: 'right' } } }
+                    });
+                }
+            } else if (role === 'admin') {
+                const finCtx = document.getElementById('adminFinanceChart');
+                if (finCtx) {
+                    activeCharts['adminFinance'] = new Chart(finCtx, {
+                        type: 'line',
+                        data: {
+                            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                            datasets: [
+                                { label: 'Income', data: [42000, 43500, 41000, 48000, 46000, 45200], borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.1)', fill: true, tension: 0.3 },
+                                { label: 'Expense', data: [11000, 11500, 10500, 13000, 12000, 12100], borderColor: '#ef4444', backgroundColor: 'transparent', borderDash: [5, 5], tension: 0.3 }
+                            ]
+                        },
+                        options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
+                    });
+                }
+                const enrCtx = document.getElementById('adminEnrollmentChart');
+                if (enrCtx) {
+                    activeCharts['adminEnrollment'] = new Chart(enrCtx, {
+                        type: 'pie',
+                        data: {
+                            labels: ['Elementary', 'Middle School', 'High School'],
+                            datasets: [{
+                                data: [450, 380, 415],
+                                backgroundColor: ['#3b82f6', '#8b5cf6', '#ec4899'],
+                                borderWidth: 0,
+                                hoverOffset: 4
+                            }]
+                        },
+                        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } } }
+                    });
+                }
+            }
         }
 
     </script>
