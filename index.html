@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>EduManage - Lavender Theme</title>
-    <!-- Using Phosphor Icons for the thin, clean line icons similar to the reference -->
+    <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <!-- Chart.js for Dashboard Graphs -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -30,11 +30,23 @@
         }
 
         body {
-            background-color: #d1d5db; /* Gray background for desktop preview */
+            background-color: #d1d5db; 
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+        }
+
+        /* --- NATIVE FLUTTER OVERRIDES --- */
+        /* These styles activate automatically when the Flutter app is running */
+        body.native-mode #web-nav {
+            display: none !important;
+        }
+        body.native-mode .main-content {
+            padding-bottom: 0px !important;
+        }
+        body.native-mode .toast {
+            bottom: 20px !important;
         }
 
         /* Mobile App Container */
@@ -203,7 +215,6 @@
             transform: scale(0.95);
         }
 
-        /* Specific icon colors to match the vibe */
         .ic-red { color: #e74c3c; }
         .ic-green { color: #2ecc71; }
         .ic-blue { color: #3498db; }
@@ -295,7 +306,7 @@
             z-index: 2;
         }
 
-        /* --- QUICK FEATURES (My bKash style) --- */
+        /* --- QUICK FEATURES --- */
         .section-header {
             padding: 0 16px 12px;
             font-size: 14px;
@@ -361,7 +372,7 @@
             font-weight: 500;
         }
 
-        /* --- SIDE MENU (Menu overlay from 3rd screenshot) --- */
+        /* --- SIDE MENU --- */
         .menu-overlay {
             position: absolute;
             top: 0;
@@ -653,7 +664,7 @@
         .info-label { font-size: 12px; color: var(--text-light); flex: 1; }
         .info-value { font-size: 14px; font-weight: 500; color: var(--text-main); text-align: right; max-width: 60%; }
 
-        /* --- BKASH THEMED LIST ITEMS --- */
+        /* --- LIST ITEMS --- */
         .bkash-list-item {
             display: flex; align-items: center; background: var(--white);
             padding: 16px; margin-bottom: 12px; border-radius: 12px;
@@ -695,15 +706,9 @@
             display: flex; justify-content: space-between; align-items: center;
             box-shadow: 0 2px 8px rgba(0,0,0,0.02);
         }
-        .class-info h4 { font-size: 15px; color: var(--text-main); margin-bottom: 4px; }
-        .class-time { font-size: 12px; color: var(--text-light); display: flex; align-items: center; gap: 4px;}
-        .teacher-badge {
-            background: #f0f4f8; color: #3498db; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 500;
-        }
 
-        /* --- ATTENDANCE VIEW (NEW BKASH THEME) --- */
+        /* --- ATTENDANCE VIEW --- */
         .att-container { padding: 16px; }
-        
         .month-navigator {
             display: flex; justify-content: space-between; align-items: center;
             background: var(--white); border-radius: 30px; padding: 8px 16px;
@@ -765,21 +770,6 @@
         .total-due-card h3 { font-size: 14px; color: var(--text-main); margin-bottom: 8px; font-weight: 500; }
         .total-due-card .amount { font-size: 28px; font-weight: 700; color: var(--brand-color); }
 
-        .invoice-card {
-            border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; margin-bottom: 16px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.02); position: relative; padding-bottom: 24px;
-        }
-        .inv-month { font-size: 14px; font-weight: 500; color: var(--brand-color); text-align: center; margin-bottom: 12px; }
-        .inv-row { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 8px; }
-        .inv-val { font-weight: 500; color: var(--text-main); }
-        .inv-due-val { color: #e74c3c; font-weight: 700; }
-        .view-detail-btn {
-            position: absolute; bottom: -14px; left: 50%; transform: translateX(-50%);
-            background: var(--brand-color); color: white; border-radius: 20px; padding: 6px 20px;
-            font-size: 12px; font-weight: 500; cursor: pointer; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .view-detail-btn.paid { background: #2ecc71; }
-
         /* --- RESULTS VIEW --- */
         .result-container { padding: 16px; }
         .grade-summary {
@@ -791,16 +781,6 @@
         }
         .grade-stats { font-size: 14px; color: var(--text-main); line-height: 1.6; }
 
-        .subject-card {
-            background: var(--white); border-radius: 12px; padding: 0; margin-bottom: 16px;
-            border: 1px solid var(--border-color); overflow: hidden; display: flex;
-        }
-        .sub-accent { width: 6px; background: #6eb5ff; }
-        .sub-content { padding: 16px; flex: 1; }
-        .sub-name { font-size: 16px; font-weight: 500; color: var(--text-main); margin-bottom: 12px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;}
-        .sub-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 12px; color: var(--text-light); }
-        .sub-val { font-weight: 500; color: var(--text-main); }
-        
         /* --- DASHBOARD ANALYTICS VIEW --- */
         .dash-summary-grid {
             display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px;
@@ -819,6 +799,14 @@
             border: 1px solid var(--border-color); box-shadow: 0 2px 4px rgba(0,0,0,0.02); 
             margin-bottom: 20px;
         }
+        
+        /* NEW: QR & INBOX PLACEHOLDERS */
+        .empty-state {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 60vh; text-align: center; color: var(--text-light);
+        }
+        .empty-state i { font-size: 64px; color: var(--brand-color); opacity: 0.5; margin-bottom: 16px; }
+        .empty-state h3 { font-size: 18px; color: var(--text-main); margin-bottom: 8px; }
     </style>
 </head>
 <body>
@@ -1085,10 +1073,29 @@
                 </div>
             </div>
 
+            <!-- NEW VIEW 8: QR SCANNER PLACEHOLDER -->
+            <div id="qrView" class="view">
+                <div class="empty-state">
+                    <i class="ph ph-qr-code"></i>
+                    <h3>QR Scanner Ready</h3>
+                    <p style="font-size: 12px;">This module will activate the native camera shortly.</p>
+                </div>
+            </div>
+
+            <!-- NEW VIEW 9: INBOX PLACEHOLDER -->
+            <div id="inboxView" class="view">
+                <div class="empty-state">
+                    <i class="ph ph-envelope-open"></i>
+                    <h3>Inbox Empty</h3>
+                    <p style="font-size: 12px;">You have no new messages at the moment.</p>
+                </div>
+            </div>
+
         </main>
 
         <!-- BOTTOM NAVIGATION -->
-        <nav class="bottom-nav">
+        <!-- Added id="web-nav" so Flutter can target and hide it -->
+        <nav id="web-nav" class="bottom-nav">
             <div class="nav-item active" id="navHome" onclick="closeView(); updateNav('navHome')">
                 <i class="ph-fill ph-house"></i>
                 <span>Home</span>
@@ -1097,11 +1104,11 @@
                 <i class="ph ph-chalkboard-teacher"></i>
                 <span>My Class</span>
             </div>
-            <div class="nav-item" id="navQr" onclick="showToast('QR Scanner Opened'); updateNav('navQr')">
+            <div class="nav-item" id="navQr" onclick="openView('qrView', 'Scan QR'); updateNav('navQr')">
                 <i class="ph ph-qr-code"></i>
                 <span>Scan QR</span>
             </div>
-            <div class="nav-item" id="navInbox" onclick="showToast('Inbox Opened'); updateNav('navInbox')">
+            <div class="nav-item" id="navInbox" onclick="openView('inboxView', 'Messages'); updateNav('navInbox')">
                 <i class="ph ph-envelope-simple"></i>
                 <span>Inbox</span>
             </div>
@@ -1172,17 +1179,25 @@
 
     <!-- JAVASCRIPT -->
     <script>
+        // ----------------------------------------------------
+        // FLUTTER BRIDGE NATIVE FUNCTIONS
+        // ----------------------------------------------------
+        function enableNativeMode() {
+            // Adds the 'native-mode' class to body. 
+            // CSS handles hiding the web-nav and adjusting the padding automatically.
+            document.body.classList.add('native-mode');
+            console.log("Native mode enabled by Flutter. Web UI adapted.");
+        }
+
+
         // --- ROLE MANAGEMENT & DATA ---
         let currentRole = 'student';
-        let dashChartInst = null; // Global instance for Dashboard Chart
+        let dashChartInst = null; 
 
         const rolesData = {
             student: {
-                name: 'Jamil Mahmud',
-                roleLabel: 'Student',
-                avatarSeed: 'Jamil',
-                balanceIcon: 'ph-student',
-                balanceAmount: '৳ 12,500.00',
+                name: 'Jamil Mahmud', roleLabel: 'Student', avatarSeed: 'Jamil',
+                balanceIcon: 'ph-student', balanceAmount: '৳ 12,500.00',
                 grid: [
                     { action: 'openView("routineView", "Class Routine")', icon: 'ph-clock', color: 'ic-orange', label: 'Schedule' },
                     { action: 'openView("attendanceView", "Attendance")', icon: 'ph-calendar-check', color: 'ic-green', label: 'Attendance' },
@@ -1200,11 +1215,8 @@
                 ]
             },
             teacher: {
-                name: 'Prof. Anisul Islam',
-                roleLabel: 'Teacher',
-                avatarSeed: 'Anisul',
-                balanceIcon: 'ph-wallet',
-                balanceAmount: '৳ 45,000.00',
+                name: 'Prof. Anisul Islam', roleLabel: 'Teacher', avatarSeed: 'Anisul',
+                balanceIcon: 'ph-wallet', balanceAmount: '৳ 45,000.00',
                 grid: [
                     { action: 'openView("routineView", "My Schedule")', icon: 'ph-clock', color: 'ic-orange', label: 'Schedule' },
                     { action: 'openView("attendanceView", "Take Attendance")', icon: 'ph-calendar-plus', color: 'ic-green', label: 'Take Attend' },
@@ -1347,7 +1359,6 @@
             }
         };
 
-        // Reusable function to build the bKash-styled list
         const buildBkashList = (items) => items.map(item => `
             <div class="bkash-list-item" onclick="showToast('${item.title} Details')">
                 <div class="bkash-list-icon" style="background: ${item.iconBg}; color: ${item.iconColor}; font-weight: bold; font-size: ${item.icon.length <= 2 ? '18px' : '24px'};">
@@ -1369,7 +1380,6 @@
             document.getElementById('mainContainer').classList.remove('login-mode');
             renderRole();
             
-            // Hide all views and show dashboard
             document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
             document.getElementById('dashboardView').classList.add('active');
             updateNav('navHome');
@@ -1380,7 +1390,7 @@
         function switchRole() {
             currentRole = currentRole === 'student' ? 'teacher' : 'student';
             renderRole();
-            closeView(); // Reset to dashboard when switching roles
+            closeView(); 
             showToast(`Switched to ${rolesData[currentRole].roleLabel} View`);
         }
 
@@ -1388,7 +1398,7 @@
             const data = rolesData[currentRole];
             const viewData = dummyViewData[currentRole];
             
-            // Update Header Information
+            // Header
             const avatarUrl = `https://api.dicebear.com/7.x/avataaars/svg?seed=${data.avatarSeed}&backgroundColor=8E7CC3`;
             document.getElementById('userName').innerText = data.name;
             document.getElementById('userRole').innerText = data.roleLabel;
@@ -1396,7 +1406,7 @@
             document.getElementById('balanceIcon').className = `ph-fill ${data.balanceIcon}`;
             document.getElementById('currentRoleBadge').innerText = data.roleLabel;
             
-            // Update Inner Profile Data
+            // Profile
             document.getElementById('innerProfileName').innerText = data.name;
             document.getElementById('innerProfileAvatar').src = avatarUrl;
             document.getElementById('innerProfileId').innerText = `ID: ${viewData.profile.id}`;
@@ -1410,25 +1420,22 @@
             document.getElementById('profileAddress').innerText = viewData.profile.address;
             document.getElementById('profilePhone').innerText = viewData.profile.phone;
 
-            // Inject bKash style lists for standard sub-views
+            // Lists
             document.getElementById('routineListContainer').innerHTML = buildBkashList(viewData.routine);
             document.getElementById('financeHistoryContainer').innerHTML = buildBkashList(viewData.finance.history);
             document.getElementById('resSubjectsContainer').innerHTML = buildBkashList(viewData.results.subjects);
 
-            // Re-render Calendar specific to role
             renderAttendance();
 
-            // Update Finance Titles
             document.getElementById('financeTitle').innerText = viewData.finance.title;
             document.getElementById('financeAmount').innerText = viewData.finance.amount;
 
-            // Update Results Titles
             document.getElementById('resGrade').innerText = viewData.results.grade;
             document.getElementById('resTotal').innerText = viewData.results.total;
             document.getElementById('resGpa').innerText = viewData.results.gpa;
             document.getElementById('resPosition').innerText = viewData.results.position;
 
-            // Re-render Dynamic Grid Menu
+            // Grid Menu
             const gridHTML = data.grid.map(item => `
                 <div class="grid-item" onclick='${item.action}'>
                     <div class="icon-circle ${item.color}"><i class="ph ${item.icon}"></i></div>
@@ -1437,7 +1444,7 @@
             `).join('');
             document.getElementById('mainGrid').innerHTML = gridHTML;
 
-            // Re-render Dynamic Quick Features
+            // Quick Features
             const quickHTML = data.quick.map(item => `
                 <div class="qf-card" onclick='${item.action}'>
                     <i class="ph ${item.icon}" style="color: ${item.color};"></i>
@@ -1447,11 +1454,9 @@
             document.getElementById('quickFeatures').innerHTML = quickHTML;
         }
 
-        // --- DASHBOARD ANALYTICS SYSTEM LOGIC ---
         function renderAnalyticsDashboard() {
             const dashData = dummyViewData[currentRole].dash;
             
-            // 1. Render Summary Grid Stats
             const statsHTML = dashData.stats.map(stat => `
                 <div class="dash-stat-card">
                     <i class="ph ${stat.icon}" style="color: ${stat.color};"></i>
@@ -1461,63 +1466,59 @@
             `).join('');
             document.getElementById('dashSummaryGrid').innerHTML = statsHTML;
 
-            // 2. Render Chart
             document.getElementById('dashChartTitle').innerText = dashData.chartTitle;
             const ctx = document.getElementById('mainDashboardChart').getContext('2d');
             
-            if (dashChartInst) {
-                dashChartInst.destroy();
-            }
+            if (dashChartInst) { dashChartInst.destroy(); }
             dashChartInst = new Chart(ctx, dashData.chartConfig);
 
-            // 3. Render Activity List using bKash builder
             document.getElementById('dashListTitle').innerText = dashData.listTitle;
             document.getElementById('dashActivityList').innerHTML = buildBkashList(dashData.activities);
         }
 
         // --- VIEW NAVIGATION LOGIC ---
         function openView(viewId, title) {
+            // MAPPING FLUTTER IDS TO YOUR HTML IDS
+            // Ensures _controller.runJavaScript("openView('view-home');") works seamlessly
+            const flutterRoutingMap = {
+                'view-home': 'dashboardView',
+                'view-routine': 'routineView',
+                'view-qr': 'qrView',
+                'view-inbox': 'inboxView'
+            };
+            const targetViewId = flutterRoutingMap[viewId] || viewId;
+
             // Hide all views
             document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
             
             // Show target view
-            document.getElementById(viewId).classList.add('active');
+            const targetEl = document.getElementById(targetViewId);
+            if(targetEl) {
+                targetEl.classList.add('active');
+            } else {
+                document.getElementById('dashboardView').classList.add('active'); // fallback
+            }
             
             // Update Header
             document.getElementById('appHeader').classList.add('inner-mode');
             document.getElementById('innerViewTitle').innerText = title;
 
-            // Trigger specific view renders
-            if(viewId === 'attendanceView') {
+            if(targetViewId === 'attendanceView') {
                 renderAttendance();
-            } else if (viewId === 'analyticsDashboardView') {
-                // Initialize/Update chart slightly after DOM unhides canvas
+            } else if (targetViewId === 'analyticsDashboardView') {
                 setTimeout(renderAnalyticsDashboard, 10);
             }
 
-            // Clear active state of bottom nav when navigating deep via grid
             updateNav(null);
-            
-            // Scroll to top
             document.querySelector('.main-content').scrollTop = 0;
             
-            // Close side menu if open
-            if (sideMenu.classList.contains('open')) {
-                toggleMenu();
-            }
+            if (sideMenu.classList.contains('open')) { toggleMenu(); }
         }
 
         function closeView() {
-            // Hide all views
             document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
-            
-            // Show main default dashboard
             document.getElementById('dashboardView').classList.add('active');
-            
-            // Reset Header
             document.getElementById('appHeader').classList.remove('inner-mode');
-
-            // Reset Nav to home
             updateNav('navHome');
         }
 
@@ -1526,31 +1527,31 @@
             if(activeId) {
                 document.getElementById(activeId).classList.add('active');
             }
+
+            // --- TWO WAY SYNC FOR FLUTTER NATIVE NAV ---
+            // If the user clicks a web nav button, tell Flutter to highlight the matching native icon
+            if (window.FlutterBridge) {
+                window.FlutterBridge.postMessage(JSON.stringify({
+                    type: 'nav_change',
+                    id: activeId
+                }));
+            }
         }
 
         function logout() {
             document.getElementById('mainContainer').classList.add('login-mode');
-            
-            // Hide all views
             document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
-            
-            // Show the login view
             document.getElementById('loginView').classList.add('active');
-            
-            // Reset Header
             document.getElementById('appHeader').classList.remove('inner-mode');
 
-            if (sideMenu.classList.contains('open')) {
-                toggleMenu();
-            }
+            if (sideMenu.classList.contains('open')) { toggleMenu(); }
             showToast('Logged out successfully');
         }
 
         // --- ATTENDANCE SYSTEM LOGIC ---
-        let attViewDate = new Date(); // Start with current month/year
+        let attViewDate = new Date(); 
         const attDataCache = {};
 
-        // Generate consistent dummy data based on Role, Year, and Month
         function getAttendanceData(role, year, month) {
             const key = `${role}-${year}-${month}`;
             if (attDataCache[key]) return attDataCache[key];
@@ -1567,9 +1568,7 @@
                 const date = new Date(year, month, i);
                 const dayOfWeek = date.getDay();
                 
-                // Exclude Fridays (5) and Saturdays (6)
                 if (dayOfWeek !== 5 && dayOfWeek !== 6 && i <= maxDay) {
-                    // Generate pseudo-random status based on date
                     const rand = Math.sin(year + month + i + (role==='student'?1:2)) * 10000;
                     const normalized = rand - Math.floor(rand);
                     
@@ -1577,7 +1576,7 @@
                     if (role === 'student') {
                         if (normalized < 0.1) status = 'absent';
                         else if (normalized < 0.15) status = 'leave';
-                    } else { // Teachers rarely absent
+                    } else { 
                         if (normalized < 0.05) status = 'leave';
                     }
 
@@ -1606,7 +1605,6 @@
             const records = dataObj.records;
             const stats = dataObj.stats;
 
-            // 1. Render Grid
             const firstDay = new Date(year, month, 1).getDay();
             const daysInMonth = new Date(year, month + 1, 0).getDate();
             
@@ -1630,12 +1628,10 @@
             }
             document.getElementById('calGridContainer').innerHTML = gridHTML;
 
-            // 2. Render Stats
             document.getElementById('attTotal').innerText = stats.total;
             document.getElementById('attPresent').innerText = stats.present;
             document.getElementById('attAbsent').innerText = stats.absent;
 
-            // 3. Render bKash styled Recent List (Reverse order for recent first)
             const listItems = [];
             for (let i = daysInMonth; i >= 1; i--) {
                 if(records[i]) {
@@ -1654,7 +1650,6 @@
                         subStatus: subStatus
                     });
 
-                    // Limit list to last 5 entries for clean UI
                     if(listItems.length >= 5) break; 
                 }
             }
@@ -1670,8 +1665,6 @@
         }
 
         // --- INTERACTIVE LOGIC ---
-
-        // Balance reveal logic (mimicking bKash)
         const balanceBtn = document.getElementById('balanceBtn');
         const balanceText = document.getElementById('balanceText');
         let balanceRevealed = false;
@@ -1684,7 +1677,6 @@
             balanceText.style.opacity = '0';
             
             setTimeout(() => {
-                // Dynamically fetch active user's balance
                 balanceText.innerText = rolesData[currentRole].balanceAmount;
                 balanceText.style.opacity = '1';
                 balanceBtn.style.paddingLeft = '12px';
@@ -1699,10 +1691,9 @@
                     balanceBtn.style.paddingLeft = '6px';
                     balanceRevealed = false;
                 }, 150);
-            }, 3000); // Hide after 3 seconds
+            }, 3000);
         }
 
-        // Side Menu Logic
         const sideMenu = document.getElementById('sideMenu');
         const menuOverlay = document.getElementById('menuOverlay');
 
@@ -1717,7 +1708,6 @@
             }
         }
 
-        // Toast Notification System
         const toastEl = document.getElementById('toastMsg');
         let toastTimeout;
 
@@ -1730,7 +1720,6 @@
                 toastEl.classList.remove('show');
             }, 2000);
 
-            // If menu is open, close it on link click
             if (sideMenu.classList.contains('open') && message !== 'Options' && !message.includes('Details')) {
                 toggleMenu();
             }
