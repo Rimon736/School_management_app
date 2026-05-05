@@ -1385,6 +1385,11 @@
             updateNav('navHome');
             
             showToast(`Logged in as ${rolesData[role].roleLabel}`);
+
+            // NEW: Tell Flutter to SHOW the native bottom nav
+            if (window.FlutterBridge) {
+                window.FlutterBridge.postMessage(JSON.stringify({ type: 'auth_change', status: 'logged_in' }));
+            }
         }
 
         function switchRole() {
@@ -1546,6 +1551,11 @@
 
             if (sideMenu.classList.contains('open')) { toggleMenu(); }
             showToast('Logged out successfully');
+
+            // NEW: Tell Flutter to HIDE the native bottom nav
+            if (window.FlutterBridge) {
+                window.FlutterBridge.postMessage(JSON.stringify({ type: 'auth_change', status: 'logged_out' }));
+            }
         }
 
         // --- ATTENDANCE SYSTEM LOGIC ---
