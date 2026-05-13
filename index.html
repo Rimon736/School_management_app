@@ -1751,24 +1751,33 @@
 
             showToast("Authenticating...");
 
-            // 1. Tell Supabase to sign the user in
-            const { data, error } = await supabaseClient.auth.signInWithPassword({
+            // 1. Log in via Supabase Auth
+            const { data: authData, error: authError } = await supabaseClient.auth.signInWithPassword({
                 email: email,
                 password: password,
             });
 
-            // 2. Check the result
-            if (error) {
-                // Wrong password or user doesn't exist
-                showToast(error.message);
-            } else {
-                // Success! 
-                console.log("Logged in User ID:", data.user.id);
-                
-                // For now, let's load the dummy student data so the UI still works
-                // (In the next step, we will pull real data from the database instead)
-                loginAs('student'); 
+            if (authError) {
+                showToast(authError.message);
+                return;
             }
+
+            // 2. Fetch the user's role from our new Profiles table
+            const { data: profileData, error: profileError } = await supabaseClient
+                .from('profiles')
+                .select('role')
+                .eq('id', authData.user.id)
+                .single();
+
+            if (profileError) {
+                console.error("Profile fetch error:", profileError);
+                showToast("Error loading profile");
+                return;
+            }
+
+            // 3. Load the correct UI based on the database!
+            console.log("Logged in successfully. Role:", profileData.role);
+            loginAs(profileData.role); 
         }
 
     </script>
