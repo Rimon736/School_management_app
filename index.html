@@ -1388,12 +1388,12 @@
             }
         }
 
-        // function switchRole() {
-        //     currentRole = currentRole === 'student' ? 'teacher' : 'student';
-        //     renderRole();
-        //     closeView(); 
-        //     showToast(`Switched to ${rolesData[currentRole].roleLabel} View`);
-        // }
+        function switchRole() {
+            currentRole = currentRole === 'student' ? 'teacher' : 'student';
+            renderRole();
+            closeView(); 
+            showToast(`Switched to ${rolesData[currentRole].roleLabel} View`);
+        }
 
         function renderRole() {
             const data = rolesData[currentRole];
