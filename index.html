@@ -1130,10 +1130,10 @@
             </div>
 
             <ul class="sm-list">
-                <li class="sm-item" onclick="switchRole()" style="background-color: #f4f0fa; font-weight: 500;">
+                <!-- <li class="sm-item" onclick="switchRole()" style="background-color: #f4f0fa; font-weight: 500;">
                     <i class="ph ph-arrows-left-right" style="color: var(--brand-color);"></i> Switch Role
                     <span class="sm-badge" id="currentRoleBadge">Student</span>
-                </li>
+                </li> -->
                 <li class="sm-item" onclick="openView('analyticsDashboardView', 'Dashboard Analytics')">
                     <i class="ph ph-house"></i> Dashboard
                 </li>
@@ -1388,12 +1388,12 @@
             }
         }
 
-        function switchRole() {
-            currentRole = currentRole === 'student' ? 'teacher' : 'student';
-            renderRole();
-            closeView(); 
-            showToast(`Switched to ${rolesData[currentRole].roleLabel} View`);
-        }
+        // function switchRole() {
+        //     currentRole = currentRole === 'student' ? 'teacher' : 'student';
+        //     renderRole();
+        //     closeView(); 
+        //     showToast(`Switched to ${rolesData[currentRole].roleLabel} View`);
+        // }
 
         function renderRole() {
             const data = rolesData[currentRole];
