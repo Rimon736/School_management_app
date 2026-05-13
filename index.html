@@ -1739,10 +1739,10 @@
         // --- SUPABASE INITIALIZATION ---
         const supabaseUrl = 'https://xszzuzkbhgzriibfunvl.supabase.co';
         const supabaseKey = 'sb_publishable_dFykLS7AhF_V9QxvUEhXJQ_htqiv0Tr';
-        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
         // Quick test to make sure it's connected!
-        console.log("Supabase Client Initialized:", supabase);
+        console.log("Supabase Client Initialized:", supabaseClient);
 
     </script>
 </body>
