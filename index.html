@@ -856,19 +856,14 @@
                     <h2>EduManage</h2>
                 </div>
                 <h3>Welcome Back!</h3>
-                <p>Please select your role to continue</p>
+                <p>Please log in to your account</p>
 
-                <div class="role-cards">
-                    <div class="role-card" onclick="loginAs('student')">
-                        <i class="ph-fill ph-student"></i>
-                        <h4>Student</h4>
-                        <p>Access classes, routines, and results</p>
-                    </div>
-                    <div class="role-card" onclick="loginAs('teacher')">
-                        <i class="ph-fill ph-chalkboard-teacher"></i>
-                        <h4>Teacher</h4>
-                        <p>Manage classes, attendance, and marks</p>
-                    </div>
+                <div style="width: 100%; max-width: 300px; display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;">
+                    <input type="email" id="emailInput" placeholder="Email Address" style="padding: 12px 16px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 14px; width: 100%;">
+                    <input type="password" id="passwordInput" placeholder="Password" style="padding: 12px 16px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 14px; width: 100%;">
+                    <button onclick="handleLogin()" style="background: var(--brand-color); color: white; border: none; padding: 14px; border-radius: 8px; font-weight: bold; font-size: 14px; cursor: pointer; margin-top: 8px; box-shadow: 0 4px 10px rgba(142,124,195,0.3);">
+                        Sign In
+                    </button>
                 </div>
             </div>
             
@@ -1743,6 +1738,38 @@
 
         // Quick test to make sure it's connected!
         console.log("Supabase Client Initialized:", supabaseClient);
+
+        // --- REAL SUPABASE AUTHENTICATION ---
+        async function handleLogin() {
+            const email = document.getElementById('emailInput').value;
+            const password = document.getElementById('passwordInput').value;
+
+            if (!email || !password) {
+                showToast("Please enter email and password");
+                return;
+            }
+
+            showToast("Authenticating...");
+
+            // 1. Tell Supabase to sign the user in
+            const { data, error } = await supabaseClient.auth.signInWithPassword({
+                email: email,
+                password: password,
+            });
+
+            // 2. Check the result
+            if (error) {
+                // Wrong password or user doesn't exist
+                showToast(error.message);
+            } else {
+                // Success! 
+                console.log("Logged in User ID:", data.user.id);
+                
+                // For now, let's load the dummy student data so the UI still works
+                // (In the next step, we will pull real data from the database instead)
+                loginAs('student'); 
+            }
+        }
 
     </script>
 </body>
