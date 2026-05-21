@@ -27,3 +27,4 @@ export function initApp() {
   console.log('EduManage app initialized');
   // App loads in login mode by default
 }
+

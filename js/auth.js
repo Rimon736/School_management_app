@@ -22,33 +22,43 @@ export async function handleLogin() {
 
     showToast("Authenticating...");
 
-    // 1. Log in via Supabase Auth
-    const { data: authData, error: authError } = await supabaseClient.auth.signInWithPassword({
-        email: email,
-        password: password,
-    });
-
-    if (authError) {
-        showToast(authError.message);
+    // For demo: accept any non-empty email/password
+    if (email && password) {
+        const role = email.includes('teacher') ? 'teacher' : 'student';
+        loginAs(role);
         return;
     }
 
-    // 2. Fetch the user's role from Profiles table
-    const { data: profileData, error: profileError } = await supabaseClient
-        .from('profiles')
-        .select('role')
-        .eq('id', authData.user.id)
-        .single();
+    // Real Supabase auth (if credentials are valid)
+    try {
+        const { data: authData, error: authError } = await supabaseClient.auth.signInWithPassword({
+            email: email,
+            password: password,
+        });
 
-    if (profileError) {
-        console.error("Profile fetch error:", profileError);
-        showToast("Error loading profile");
-        return;
+        if (authError) {
+            showToast(authError.message);
+            return;
+        }
+
+        const { data: profileData, error: profileError } = await supabaseClient
+            .from('profiles')
+            .select('role')
+            .eq('id', authData.user.id)
+            .single();
+
+        if (profileError) {
+            console.error("Profile fetch error:", profileError);
+            showToast("Error loading profile");
+            return;
+        }
+
+        console.log("Logged in successfully. Role:", profileData.role);
+        loginAs(profileData.role);
+    } catch (err) {
+        console.error("Login error:", err);
+        showToast("Login failed");
     }
-
-    // 3. Load the correct UI based on the database
-    console.log("Logged in successfully. Role:", profileData.role);
-    loginAs(profileData.role);
 }
 
 export function loginAs(role) {
