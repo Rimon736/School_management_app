@@ -62,17 +62,25 @@ export async function handleLogin() {
 }
 
 export function loginAs(role) {
+    console.log('loginAs called with role:', role);
     currentRole = role;
+
+    console.log('Removing login-mode class');
     document.getElementById('mainContainer').classList.remove('login-mode');
+
+    console.log('Calling renderRole');
     renderRole(currentRole);
 
+    console.log('Deactivating all views');
     document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+
+    console.log('Activating dashboardView');
     document.getElementById('dashboardView').classList.add('active');
+
     updateNav('navHome');
 
     showToast(`Logged in as ${rolesData[role].roleLabel}`);
 
-    // Tell Flutter to SHOW the native bottom nav
     if (window.FlutterBridge) {
         window.FlutterBridge.postMessage(JSON.stringify({ type: 'auth_change', status: 'logged_in' }));
     }
