@@ -1,30 +1,48 @@
-// Entry point - imports all modules and exposes functions for inline handlers
-import { supabaseClient } from './api.js';
-import { handleLogin, loginAs, switchRole, logout, getCurrentRole } from './auth.js';
+import { handleLogin, loginAs, switchRole, logout } from './auth.js';
 import { openView, closeView, updateNav } from './router.js';
 import { showToast, toggleMenu, toggleBalance, enableNativeMode } from './ui.js';
-import { renderRole } from './controllers/dashboard.js';
-import { changeAttMonth, renderAttendance, renderAnalyticsDashboard } from './controllers/attendance.js';
-import { rolesData, dummyViewData, buildBkashList } from './data.js';
+import { changeAttMonth } from './controllers/attendance.js';
 
-// Expose functions globally for inline onclick handlers
-window.openView = openView;
-window.closeView = closeView;
-window.showToast = showToast;
-window.toggleMenu = toggleMenu;
-window.toggleBalance = toggleBalance;
-window.loginAs = loginAs;
-window.switchRole = switchRole;
-window.logout = logout;
-window.handleLogin = handleLogin;
-window.changeAttMonth = changeAttMonth;
-window.enableNativeMode = enableNativeMode;
-window.renderRole = renderRole;
-window.renderAttendance = renderAttendance;
-window.renderAnalyticsDashboard = renderAnalyticsDashboard;
+// We wait for the DOM to fully load before attaching listeners
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('EduManage DOM loaded, attaching listeners...');
+
+    // 1. Attach Login Listener
+    const loginBtn = document.getElementById('loginBtn');
+    if (loginBtn) {
+        loginBtn.addEventListener('click', () => {
+            handleLogin();
+        });
+    }
+
+    // 2. Attach Header Listeners
+    const avatar = document.getElementById('userAvatar');
+    if (avatar) avatar.parentElement.addEventListener('click', toggleMenu);
+
+    const balancePill = document.getElementById('balanceBtn');
+    if (balancePill) balancePill.addEventListener('click', toggleBalance);
+
+    // Attach listener for the logo bird to toggle menu
+    const logoBird = document.querySelector('.logo-bird');
+    if(logoBird) logoBird.addEventListener('click', toggleMenu);
+
+
+    // 3. Attach Navigation Listeners
+    document.getElementById('navHome').addEventListener('click', () => { closeView(); updateNav('navHome'); });
+    document.getElementById('navClass').addEventListener('click', () => { openView('routineView', 'Class Routine'); updateNav('navClass'); });
+    document.getElementById('navQr').addEventListener('click', () => { openView('qrView', 'Scan QR'); updateNav('navQr'); });
+    document.getElementById('navInbox').addEventListener('click', () => { openView('inboxView', 'Messages'); updateNav('navInbox'); });
+
+    // 4. Expose ONLY necessary functions for dynamic content (like generated lists)
+    // It's better to avoid this, but it's okay for dynamically injected HTML strings for now.
+    window.openView = openView;
+    window.closeView = closeView;
+    window.showToast = showToast;
+    window.changeAttMonth = changeAttMonth;
+    window.switchRole = switchRole;
+    window.logout = logout;
+});
 
 export function initApp() {
   console.log('EduManage app initialized');
-  // App loads in login mode by default
 }
-
