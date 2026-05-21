@@ -1,0 +1,237 @@
+/* --- SIDE MENU --- */
+.menu-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 100;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.menu-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.side-menu {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 85%;
+  height: 100%;
+  background-color: var(--white);
+  z-index: 101;
+  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.side-menu.open {
+  left: 0;
+}
+
+.sm-header {
+  padding: 24px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.sm-logo {
+  color: var(--brand-color);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.sm-lang {
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  display: flex;
+  overflow: hidden;
+  font-size: 12px;
+}
+
+.sm-lang span {
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.sm-lang span.active {
+  color: var(--brand-color);
+  font-weight: 500;
+  background: #f4f0fa;
+}
+
+.sm-banner {
+  margin: 20px;
+  border: 1px solid var(--brand-color);
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-main);
+}
+
+.sm-banner i {
+  color: var(--brand-color);
+  font-size: 24px;
+}
+
+.sm-banner-text div:first-child {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.sm-banner-text div:last-child {
+  font-size: 11px;
+  color: var(--text-light);
+  margin-top: 2px;
+}
+
+.sm-list {
+  list-style: none;
+  padding: 0 0 20px;
+}
+
+.sm-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  font-size: 14px;
+  color: var(--text-main);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.sm-item:active {
+  background-color: #f9f9f9;
+}
+
+.sm-item i {
+  font-size: 20px;
+  color: var(--text-main);
+  opacity: 0.7;
+  width: 24px;
+  text-align: center;
+}
+
+.sm-badge {
+  margin-left: auto;
+  color: var(--brand-color);
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.sm-footer {
+  margin-top: auto;
+  padding: 20px;
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-light);
+}
+
+/* Toast Message */
+.toast {
+  position: absolute;
+  bottom: 90px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: rgba(50, 50, 50, 0.95);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 30px;
+  font-size: 13px;
+  pointer-events: none;
+  opacity: 0;
+  transition: all 0.3s;
+  z-index: 1000;
+  white-space: nowrap;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* --- LIST ITEMS (SHARED) --- */
+.bkash-list-item {
+  display: flex;
+  align-items: center;
+  background: var(--white);
+  padding: 16px;
+  margin-bottom: 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+  transition: background 0.2s;
+  cursor: pointer;
+}
+
+.bkash-list-item:active {
+  background: #f9f9f9;
+  transform: scale(0.98);
+}
+
+.bkash-list-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.bkash-list-content {
+  flex: 1;
+}
+
+.bkash-list-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+
+.bkash-list-subtitle {
+  font-size: 12px;
+  color: var(--text-light);
+}
+
+.bkash-list-right {
+  text-align: right;
+}
+
+.bkash-list-value {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.bkash-list-subvalue {
+  font-size: 11px;
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+.bkash-list-subvalue.due {
+  color: #e74c3c;
+}
+
+.bkash-list-subvalue.paid {
+  color: #2ecc71;
+}
+
+.bkash-list-subvalue.neutral {
+  color: var(--brand-color);
+}

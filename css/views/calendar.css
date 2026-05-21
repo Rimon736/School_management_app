@@ -1,0 +1,359 @@
+/* --- PROFILE VIEW --- */
+.profile-header-bg {
+  background: linear-gradient(180deg, rgba(142,124,195,0.1) 0%, rgba(255,255,255,0) 100%);
+  padding: 30px 20px 20px;
+  text-align: center;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.profile-pic-large {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 4px solid var(--white);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  margin: 0 auto 16px;
+  background-color: #e6e0f8;
+  overflow: hidden;
+}
+
+.profile-pic-large img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-name {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+
+.profile-id {
+  font-size: 14px;
+  color: var(--text-light);
+}
+
+.info-list {
+  padding: 16px;
+  list-style: none;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.info-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(142,124,195,0.05);
+  color: var(--brand-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  margin-right: 16px;
+}
+
+.info-label {
+  font-size: 12px;
+  color: var(--text-light);
+  flex: 1;
+}
+
+.info-value {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-main);
+  text-align: right;
+  max-width: 60%;
+}
+
+/* --- ROUTINE VIEW --- */
+.routine-container {
+  padding: 16px;
+}
+
+.day-selector {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+}
+
+.day-selector::-webkit-scrollbar {
+  display: none;
+}
+
+.day-pill {
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  background: var(--white);
+  border: 1px solid var(--border-color);
+  color: var(--text-light);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.day-pill.active {
+  background: var(--brand-color);
+  color: var(--white);
+  border-color: var(--brand-color);
+}
+
+.class-card {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  border: 1px solid var(--border-color);
+  border-left: 4px solid var(--brand-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+}
+
+/* --- ATTENDANCE VIEW --- */
+.att-container {
+  padding: 16px;
+}
+
+.month-navigator {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--white);
+  border-radius: 30px;
+  padding: 8px 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  border: 1px solid var(--border-color);
+}
+
+.nav-arrow {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--brand-color);
+  background: rgba(142,124,195,0.05);
+  transition: all 0.2s;
+}
+
+.nav-arrow:active {
+  background: var(--brand-color);
+  color: var(--white);
+}
+
+.current-month {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.bkash-calendar-card {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 20px 16px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+  margin-bottom: 20px;
+}
+
+.legend {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 16px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-main);
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.dot.present {
+  background: #2ecc71;
+  box-shadow: 0 0 0 2px rgba(46,204,113,0.2);
+}
+
+.dot.absent {
+  background: #e74c3c;
+  box-shadow: 0 0 0 2px rgba(231,76,60,0.2);
+}
+
+.dot.leave {
+  background: #f39c12;
+  box-shadow: 0 0 0 2px rgba(243,156,18,0.2);
+}
+
+.bkash-calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px 4px;
+}
+
+.bkash-cal-header {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-light);
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.bkash-cal-date {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 36px;
+  width: 36px;
+  border-radius: 50%;
+  font-size: 14px;
+  color: var(--text-main);
+  font-weight: 500;
+  margin: 0 auto;
+  transition: transform 0.2s;
+  cursor: pointer;
+}
+
+.bkash-cal-date:active {
+  transform: scale(0.9);
+}
+
+.bkash-cal-date.empty {
+  background: transparent;
+  cursor: default;
+}
+
+.bkash-cal-date.present {
+  background: rgba(46, 204, 113, 0.1);
+  color: #27ae60;
+  border: 1px solid rgba(46,204,113,0.3);
+}
+
+.bkash-cal-date.absent {
+  background: rgba(231, 76, 60, 0.1);
+  color: #c0392b;
+  border: 1px solid rgba(231,76,60,0.3);
+}
+
+.bkash-cal-date.leave {
+  background: rgba(243, 156, 18, 0.1);
+  color: #d35400;
+  border: 1px solid rgba(243,156,18,0.3);
+}
+
+.bkash-cal-date.none {
+  color: var(--text-light);
+}
+
+.att-stats {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.stat-box {
+  flex: 1;
+  background: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 16px 8px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+}
+
+.stat-val {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: 11px;
+  color: var(--text-light);
+  font-weight: 500;
+}
+
+/* --- FEES VIEW --- */
+.fees-container {
+  padding: 16px;
+}
+
+.total-due-card {
+  background: #f4f0fa;
+  border: 1px dashed var(--brand-color);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.total-due-card h3 {
+  font-size: 14px;
+  color: var(--text-main);
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.total-due-card .amount {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--brand-color);
+}
+
+/* --- RESULTS VIEW --- */
+.result-container {
+  padding: 16px;
+}
+
+.grade-summary {
+  border: 1px solid #2ecc71;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.grade-circle {
+  width: 80px;
+  height: 80px;
+  border: 3px solid #2ecc71;
+  border-radius: 50%;
+  margin: 0 auto 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  font-weight: 700;
+  color: #2ecc71;
+}
+
+.grade-stats {
+  font-size: 14px;
+  color: var(--text-main);
+  line-height: 1.6;
+}

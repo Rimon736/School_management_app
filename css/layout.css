@@ -1,0 +1,215 @@
+/* Mobile App Container */
+.app-container {
+  width: 100%;
+  max-width: 400px;
+  height: 100vh;
+  max-height: 850px;
+  background-color: var(--white);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+@media (min-height: 850px) {
+  .app-container {
+    border-radius: 24px;
+    height: 90vh;
+  }
+}
+
+/* --- HEADER --- */
+.header {
+  background-color: var(--brand-color);
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--white);
+  z-index: 10;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  background-color: #e6e0f8;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  cursor: pointer;
+  border: 2px solid rgba(255,255,255,0.3);
+  overflow: hidden;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.user-name {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.user-role {
+  font-size: 11px;
+  opacity: 0.8;
+  margin-bottom: 2px;
+}
+
+.balance-pill {
+  background-color: var(--white);
+  color: var(--brand-color);
+  padding: 4px 12px 4px 6px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  width: fit-content;
+  transition: all 0.3s ease;
+  min-width: 130px;
+}
+
+.balance-pill i {
+  font-size: 16px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-icon {
+  width: 32px;
+  height: 32px;
+  background-color: var(--white);
+  color: var(--brand-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.header-icon.logo-bird i {
+  color: var(--brand-color);
+}
+
+/* --- NATIVE FLUTTER OVERRIDES --- */
+body.native-mode #web-nav {
+  display: none !important;
+}
+
+body.native-mode .main-content {
+  padding-bottom: 0px !important;
+}
+
+body.native-mode .toast {
+  bottom: 20px !important;
+}
+
+/* --- MAIN CONTENT SCROLL --- */
+.main-content {
+  flex: 1;
+  overflow-y: auto;
+  background-color: var(--white);
+  padding-bottom: 20px;
+}
+
+.main-content::-webkit-scrollbar {
+  display: none;
+}
+
+/* --- BOTTOM NAVIGATION --- */
+.bottom-nav {
+  background-color: var(--brand-color);
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 24px 20px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  font-size: 11px;
+  transition: color 0.2s;
+}
+
+.nav-item i {
+  font-size: 24px;
+}
+
+.nav-item.active {
+  color: var(--white);
+  font-weight: 500;
+}
+
+/* Inner Header State */
+.header-default {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-inner {
+  display: none;
+  width: 100%;
+  align-items: center;
+  gap: 16px;
+}
+
+.header.inner-mode .header-default {
+  display: none;
+}
+
+.header.inner-mode .header-inner {
+  display: flex;
+}
+
+.back-btn {
+  font-size: 24px;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.view-title {
+  font-size: 18px;
+  font-weight: 500;
+  flex: 1;
+}
+
+/* View Manager */
+.view {
+  display: none;
+  animation: fadeIn 0.3s ease;
+}
+
+.view.active {
+  display: block;
+}

@@ -1,0 +1,93 @@
+// Authentication and role management
+import { supabaseClient } from './api.js';
+import { showToast, toggleMenu } from './ui.js';
+import { renderRole } from './controllers/dashboard.js';
+import { rolesData } from './data.js';
+import { updateNav, closeView } from './router.js';
+
+let currentRole = 'student';
+
+export function getCurrentRole() {
+    return currentRole;
+}
+
+export async function handleLogin() {
+    const email = document.getElementById('emailInput').value;
+    const password = document.getElementById('passwordInput').value;
+
+    if (!email || !password) {
+        showToast("Please enter email and password");
+        return;
+    }
+
+    showToast("Authenticating...");
+
+    // 1. Log in via Supabase Auth
+    const { data: authData, error: authError } = await supabaseClient.auth.signInWithPassword({
+        email: email,
+        password: password,
+    });
+
+    if (authError) {
+        showToast(authError.message);
+        return;
+    }
+
+    // 2. Fetch the user's role from Profiles table
+    const { data: profileData, error: profileError } = await supabaseClient
+        .from('profiles')
+        .select('role')
+        .eq('id', authData.user.id)
+        .single();
+
+    if (profileError) {
+        console.error("Profile fetch error:", profileError);
+        showToast("Error loading profile");
+        return;
+    }
+
+    // 3. Load the correct UI based on the database
+    console.log("Logged in successfully. Role:", profileData.role);
+    loginAs(profileData.role);
+}
+
+export function loginAs(role) {
+    currentRole = role;
+    document.getElementById('mainContainer').classList.remove('login-mode');
+    renderRole(currentRole);
+
+    document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+    document.getElementById('dashboardView').classList.add('active');
+    updateNav('navHome');
+
+    showToast(`Logged in as ${rolesData[role].roleLabel}`);
+
+    // Tell Flutter to SHOW the native bottom nav
+    if (window.FlutterBridge) {
+        window.FlutterBridge.postMessage(JSON.stringify({ type: 'auth_change', status: 'logged_in' }));
+    }
+}
+
+export function switchRole() {
+    currentRole = currentRole === 'student' ? 'teacher' : 'student';
+    renderRole(currentRole);
+    closeView();
+    showToast(`Switched to ${rolesData[currentRole].roleLabel} View`);
+}
+
+export function logout() {
+    document.getElementById('mainContainer').classList.add('login-mode');
+    document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+    document.getElementById('loginView').classList.add('active');
+    document.getElementById('appHeader').classList.remove('inner-mode');
+
+    if (document.getElementById('sideMenu').classList.contains('open')) {
+        toggleMenu();
+    }
+    showToast('Logged out successfully');
+
+    // Tell Flutter to HIDE the native bottom nav
+    if (window.FlutterBridge) {
+        window.FlutterBridge.postMessage(JSON.stringify({ type: 'auth_change', status: 'logged_out' }));
+    }
+}
