@@ -29,19 +29,41 @@ export function renderRole(currentRole) {
     document.getElementById('profilePhone').innerText = viewData.profile.phone;
 
     // Lists
-    document.getElementById('routineListContainer').innerHTML = buildBkashList(viewData.routine);
+    document.getElementById('classRoutineContainer').innerHTML = buildBkashList(viewData.classRoutine);
+    document.getElementById('examRoutineContainer').innerHTML = buildBkashList(viewData.examRoutine);
     document.getElementById('financeHistoryContainer').innerHTML = buildBkashList(viewData.finance.history);
-    document.getElementById('resSubjectsContainer').innerHTML = buildBkashList(viewData.results.subjects);
+
+    const termResultsHTML = viewData.results.terms.map(term => `
+        <div class="term-result-card">
+            <div class="term-result-header">
+                <div>
+                    <div class="term-result-term">${term.term}</div>
+                    <div class="term-result-note">${term.note}</div>
+                </div>
+                <div class="term-result-grade">${term.grade}</div>
+            </div>
+            <div class="term-result-grid">
+                <div>
+                    <span>Total</span>
+                    <strong>${term.total}</strong>
+                </div>
+                <div>
+                    <span>GPA</span>
+                    <strong>${term.gpa}</strong>
+                </div>
+                <div>
+                    <span>Position</span>
+                    <strong>${term.position}</strong>
+                </div>
+            </div>
+        </div>
+    `).join('');
+    document.getElementById('termResultsContainer').innerHTML = termResultsHTML;
 
     renderAttendance();
 
     document.getElementById('financeTitle').innerText = viewData.finance.title;
     document.getElementById('financeAmount').innerText = viewData.finance.amount;
-
-    document.getElementById('resGrade').innerText = viewData.results.grade;
-    document.getElementById('resTotal').innerText = viewData.results.total;
-    document.getElementById('resGpa').innerText = viewData.results.gpa;
-    document.getElementById('resPosition').innerText = viewData.results.position;
 
     // Grid Menu
     const gridHTML = data.grid.map(item => `

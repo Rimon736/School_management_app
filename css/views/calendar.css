@@ -79,6 +79,81 @@
   padding: 16px;
 }
 
+.routine-section-note {
+  font-size: 12px;
+  color: var(--text-light);
+  margin-bottom: 12px;
+}
+
+.bkash-list-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+}
+
+.bkash-list-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.bkash-list-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.bkash-list-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+
+.bkash-list-subtitle {
+  font-size: 12px;
+  color: var(--text-light);
+  line-height: 1.4;
+}
+
+.bkash-list-right {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.bkash-list-value {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.bkash-list-subvalue {
+  font-size: 11px;
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+.bkash-list-subvalue.paid {
+  color: #2ecc71;
+}
+
+.bkash-list-subvalue.due {
+  color: #e74c3c;
+}
+
+.bkash-list-subvalue.neutral {
+  color: var(--text-light);
+}
+
 .day-selector {
   display: flex;
   gap: 10px;
@@ -325,35 +400,102 @@
   color: var(--brand-color);
 }
 
+.pay-now-btn {
+  margin-top: 14px;
+  width: 100%;
+  border: none;
+  border-radius: 14px;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, #ffb703 0%, #fb8500 100%);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 10px 18px rgba(251, 133, 0, 0.28);
+  cursor: pointer;
+}
+
+.pay-now-btn:active {
+  transform: translateY(1px);
+}
+
 /* --- RESULTS VIEW --- */
 .result-container {
   padding: 16px;
 }
 
-.grade-summary {
-  border: 1px solid #2ecc71;
-  border-radius: 12px;
-  padding: 20px;
-  text-align: center;
-  margin-bottom: 20px;
+.term-result-card {
+  background: var(--white);
+  border: 1px solid var(--border-color);
+  border-left: 4px solid var(--brand-color);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
 }
 
-.grade-circle {
-  width: 80px;
-  height: 80px;
-  border: 3px solid #2ecc71;
+.term-result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.term-result-term {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.term-result-note {
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--text-light);
+  line-height: 1.4;
+}
+
+.term-result-grade {
+  min-width: 54px;
+  height: 54px;
   border-radius: 50%;
-  margin: 0 auto 12px;
+  background: rgba(142,124,195,0.1);
+  color: var(--brand-color);
+  border: 2px solid rgba(142,124,195,0.18);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 32px;
-  font-weight: 700;
-  color: #2ecc71;
+  font-size: 20px;
+  font-weight: 800;
 }
 
-.grade-stats {
-  font-size: 14px;
+.term-result-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.term-result-grid div {
+  background: #faf9fe;
+  border: 1px solid #efebf8;
+  border-radius: 12px;
+  padding: 10px 8px;
+  text-align: center;
+}
+
+.term-result-grid span {
+  display: block;
+  font-size: 10px;
+  color: var(--text-light);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.term-result-grid strong {
+  font-size: 13px;
   color: var(--text-main);
-  line-height: 1.6;
 }

@@ -35,7 +35,7 @@
                         <i class="ph ph-magnifying-glass"></i>
                     </div>
                     <div class="header-icon logo-bird" onclick="toggleMenu()">
-                        <i class="ph-fill ph-graduation-cap"></i>
+                        <i class="ph-fill ph-dots-three-vertical"></i>
                     </div>
                 </div>
             </div>
@@ -61,9 +61,6 @@
             </div>
             <div id="dashboardView" class="view">
                 <div class="grid-menu" id="mainGrid"></div>
-                <div class="see-more-container">
-                    <div class="see-more-btn" onclick="showToast('Loading more features...')">See More <i class="ph ph-caret-down"></i></div>
-                </div>
                 <div class="banner-container">
                     <div class="promo-banner" onclick="showToast('Semester Fee Offer Clicked')">
                         <div class="promo-text">
@@ -96,11 +93,16 @@
             </div>
             <div id="routineView" class="view">
                 <div class="routine-container">
-                    <div class="day-selector">
-                        <div class="day-pill active">Saturday</div><div class="day-pill">Sunday</div><div class="day-pill">Monday</div><div class="day-pill">Tuesday</div><div class="day-pill">Wednesday</div><div class="day-pill">Thursday</div>
+                    <div class="routine-section">
+                        <div class="section-header routine-title" style="padding-left: 0; margin-bottom: 6px;">Class Routine</div>
+                        <div class="routine-section-note">Weekly school classes for the regular academic day.</div>
+                        <div id="classRoutineContainer"></div>
                     </div>
-                    <h3 style="text-align: center; margin: 8px 0 16px; font-weight: 500; border-bottom: 1px solid #eee; padding-bottom: 8px;">Schedule</h3>
-                    <div id="routineListContainer"></div>
+                    <div class="routine-section">
+                        <div class="section-header routine-title" style="padding-left: 0; margin: 20px 0 6px;">Exam Routine</div>
+                        <div class="routine-section-note">Upcoming term exam timetable for the school.</div>
+                        <div id="examRoutineContainer"></div>
+                    </div>
                 </div>
             </div>
             <div id="attendanceView" class="view">
@@ -132,17 +134,14 @@
                     <div class="total-due-card">
                         <h3 id="financeTitle">Total Fees Due</h3>
                         <div class="amount" id="financeAmount">Tk. 2,500</div>
+                        <button class="pay-now-btn" onclick="showToast('Opening payment gateway')"><i class="ph ph-credit-card"></i> Pay Now</button>
                     </div>
                     <div id="financeHistoryContainer"></div>
                 </div>
             </div>
             <div id="resultView" class="view">
                 <div class="result-container">
-                    <div class="grade-summary">
-                        <div class="grade-circle" id="resGrade">A-</div>
-                        <div class="grade-stats"><strong>Total:</strong> <span id="resTotal">197 / 200</span><br><strong>GPA:</strong> <span id="resGpa">3.83</span><br><strong>Position:</strong> <span id="resPosition">5th</span></div>
-                    </div>
-                    <div id="resSubjectsContainer"></div>
+                    <div id="termResultsContainer"></div>
                 </div>
             </div>
             <div id="analyticsDashboardView" class="view">

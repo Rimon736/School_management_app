@@ -4,7 +4,7 @@ export const rolesData = {
         name: 'Jamil Mahmud', roleLabel: 'Student', avatarSeed: 'Jamil',
         balanceIcon: 'ph-student', balanceAmount: '৳ 12,500.00',
         grid: [
-            { action: 'openView("routineView", "Class Routine")', icon: 'ph-clock', color: 'ic-orange', label: 'Schedule' },
+            { action: 'openView("routineView", "Class Routine")', icon: 'ph-clock', color: 'ic-orange', label: 'Class Routine' },
             { action: 'openView("attendanceView", "Attendance")', icon: 'ph-calendar-check', color: 'ic-green', label: 'Attendance' },
             { action: 'openView("resultView", "Academic Results")', icon: 'ph-chart-bar', color: 'ic-blue', label: 'Results' },
             { action: 'openView("feesView", "Fee Payment")', icon: 'ph-credit-card', color: 'ic-purple', label: 'Fee Payment' },
@@ -44,15 +44,23 @@ export const rolesData = {
 export const dummyViewData = {
     student: {
         profile: {
-            id: '2024-EDU-1122', classRole: 'Computer Science (BSc)', rollLabel: 'Student Roll', roll: '14',
+            id: '2024-SCH-1122', classRole: 'Class 8, Section A', rollLabel: 'Class Roll', roll: '14',
             field1Label: "Father's Name", field1Val: "Abdul Mahmud",
             field2Label: "Mother's Name", field2Val: "Salma Begum",
             address: 'Mirpur 10, Dhaka', phone: '01712-345678'
         },
-        routine: [
-            { title: 'Data Structures', subtitle: '8:00 AM - 9:30 AM', icon: 'ph-books', iconBg: 'rgba(142,124,195,0.1)', iconColor: 'var(--brand-color)', value: 'Room 302', subvalue: 'Prof. Ahmed', subStatus: 'neutral' },
-            { title: 'Discrete Math', subtitle: '9:30 AM - 11:00 AM', icon: 'ph-function', iconBg: 'rgba(52, 152, 219, 0.1)', iconColor: '#3498db', value: 'Room 105', subvalue: 'Dr. Rahman', subStatus: 'neutral' },
-            { title: 'Lunch Break', subtitle: '1:00 PM - 2:00 PM', icon: 'ph-coffee', iconBg: '#f0f0f0', iconColor: '#777', value: '-', subvalue: 'Break', subStatus: '' }
+        classRoutine: [
+            { title: 'Assembly & Dua', subtitle: '8:15 AM - 8:35 AM', icon: 'ph-church', iconBg: 'rgba(46, 204, 113, 0.10)', iconColor: '#2ecc71', value: 'School Ground', subvalue: 'All Students', subStatus: 'neutral' },
+            { title: 'Bangla', subtitle: '8:40 AM - 9:20 AM', icon: 'ph-book-open-text', iconBg: 'rgba(142,124,195,0.1)', iconColor: 'var(--brand-color)', value: 'Room 8A', subvalue: 'Ms. Shila', subStatus: 'neutral' },
+            { title: 'Mathematics', subtitle: '9:25 AM - 10:05 AM', icon: 'ph-number-square-one', iconBg: 'rgba(52, 152, 219, 0.10)', iconColor: '#3498db', value: 'Room 8A', subvalue: 'Mr. Karim', subStatus: 'neutral' },
+            { title: 'English', subtitle: '10:20 AM - 11:00 AM', icon: 'ph-spell-check', iconBg: 'rgba(243, 156, 18, 0.10)', iconColor: '#f39c12', value: 'Room 8B', subvalue: 'Ms. Nipa', subStatus: 'neutral' },
+            { title: 'Science', subtitle: '11:05 AM - 11:45 AM', icon: 'ph-flask', iconBg: 'rgba(231, 76, 60, 0.10)', iconColor: '#e74c3c', value: 'Lab Room', subvalue: 'Mr. Hasan', subStatus: 'neutral' }
+        ],
+        examRoutine: [
+            { title: '1st Term - Bangla', subtitle: 'Sunday, 10:00 AM - 12:00 PM', icon: 'ph-clipboard-text', iconBg: 'rgba(142,124,195,0.1)', iconColor: 'var(--brand-color)', value: 'Exam Hall 1', subvalue: '100 Marks', subStatus: 'neutral' },
+            { title: '1st Term - Mathematics', subtitle: 'Tuesday, 10:00 AM - 12:00 PM', icon: 'ph-calculator', iconBg: 'rgba(52, 152, 219, 0.10)', iconColor: '#3498db', value: 'Exam Hall 1', subvalue: '100 Marks', subStatus: 'neutral' },
+            { title: 'Mid Term - English', subtitle: 'Thursday, 10:00 AM - 12:00 PM', icon: 'ph-pencil-line', iconBg: 'rgba(243, 156, 18, 0.10)', iconColor: '#f39c12', value: 'Exam Hall 2', subvalue: '50 Marks', subStatus: 'neutral' },
+            { title: 'Final Term - Science', subtitle: 'Saturday, 10:00 AM - 12:00 PM', icon: 'ph-atom', iconBg: 'rgba(46, 204, 113, 0.10)', iconColor: '#2ecc71', value: 'Exam Hall 2', subvalue: '100 Marks', subStatus: 'neutral' }
         ],
         attendance: { total: '21', present: '19', absent: '1' },
         finance: {
@@ -63,10 +71,10 @@ export const dummyViewData = {
             ]
         },
         results: {
-            grade: 'A-', total: '197 / 200', gpa: '3.83', position: '5th',
-            subjects: [
-                { title: 'Data Structures', subtitle: 'Count Mark: 80 | Total: 80', icon: 'A+', iconBg: 'rgba(46, 204, 113, 0.1)', iconColor: '#2ecc71', value: 'GPA: 4.0', subvalue: 'Excellent', subStatus: 'paid' },
-                { title: 'Discrete Math', subtitle: 'Count Mark: 55 | Total: 55', icon: 'B', iconBg: 'rgba(243, 156, 18, 0.1)', iconColor: '#f39c12', value: 'GPA: 3.0', subvalue: 'Good', subStatus: 'neutral' }
+            terms: [
+                { term: '1st Term', grade: 'A-', total: '438 / 500', gpa: '3.72', position: 'Class 5th', note: 'Strong performance in core subjects.' },
+                { term: 'Mid Term', grade: 'A', total: '451 / 500', gpa: '3.88', position: 'Class 3rd', note: 'Improved marks in Bangla and Science.' },
+                { term: 'Final Term', grade: 'A+', total: '472 / 500', gpa: '4.00', position: 'Class 1st', note: 'Excellent final term result.' }
             ]
         },
         dash: {
@@ -106,14 +114,19 @@ export const dummyViewData = {
     },
     teacher: {
         profile: {
-            id: 'EMP-2015-045', classRole: 'Senior Lecturer', rollLabel: 'Department', roll: 'CSE Dept.',
+            id: 'SCH-TEACH-045', classRole: 'Class Teacher, Grade 8', rollLabel: 'Department', roll: 'General Section',
             field1Label: "Joining Date", field1Val: "12 Jan 2015",
             field2Label: "Qualification", field2Val: "MSc in CS",
             address: 'Dhanmondi, Dhaka', phone: '01819-123456'
         },
-        routine: [
-            { title: 'Data Structures (A)', subtitle: '8:00 AM - 9:30 AM', icon: 'ph-users-three', iconBg: 'rgba(142,124,195,0.1)', iconColor: 'var(--brand-color)', value: 'Room 302', subvalue: '45 Students', subStatus: 'neutral' },
-            { title: 'Algorithms (C)', subtitle: '10:00 AM - 11:30 AM', icon: 'ph-users-three', iconBg: 'rgba(46, 204, 113, 0.1)', iconColor: '#2ecc71', value: 'Room 305', subvalue: '38 Students', subStatus: 'neutral' }
+        classRoutine: [
+            { title: 'Class 8 - Bangla', subtitle: '8:30 AM - 9:10 AM', icon: 'ph-chalkboard-teacher', iconBg: 'rgba(142,124,195,0.1)', iconColor: 'var(--brand-color)', value: 'Room 8A', subvalue: '38 Students', subStatus: 'neutral' },
+            { title: 'Class 8 - Mathematics', subtitle: '9:15 AM - 9:55 AM', icon: 'ph-chalkboard', iconBg: 'rgba(46, 204, 113, 0.1)', iconColor: '#2ecc71', value: 'Room 8A', subvalue: '38 Students', subStatus: 'neutral' },
+            { title: 'Class 8 - English', subtitle: '10:10 AM - 10:50 AM', icon: 'ph-book-open-text', iconBg: 'rgba(243, 156, 18, 0.10)', iconColor: '#f39c12', value: 'Room 8B', subvalue: '38 Students', subStatus: 'neutral' }
+        ],
+        examRoutine: [
+            { title: 'Bangla Paper Review', subtitle: 'Sunday, 1:00 PM - 3:00 PM', icon: 'ph-pencil-simple', iconBg: 'rgba(231, 76, 60, 0.10)', iconColor: '#e74c3c', value: 'Exam Hall 1', subvalue: 'Class 8', subStatus: 'neutral' },
+            { title: 'Math Exam Duty', subtitle: 'Tuesday, 10:00 AM - 12:00 PM', icon: 'ph-clipboard-text', iconBg: 'rgba(52, 152, 219, 0.10)', iconColor: '#3498db', value: 'Exam Hall 1', subvalue: 'Invigilator', subStatus: 'neutral' }
         ],
         attendance: { total: '21', present: '21', absent: '0' },
         finance: {
@@ -124,10 +137,10 @@ export const dummyViewData = {
             ]
         },
         results: {
-            grade: 'B+', total: 'Pass: 95%', gpa: '3.42', position: 'Class: CS-A',
-            subjects: [
-                { title: 'Highest Score', subtitle: 'Data Structures', icon: '98', iconBg: 'rgba(46, 204, 113, 0.1)', iconColor: '#2ecc71', value: 'Grade: A+', subvalue: 'Outstanding', subStatus: 'paid' },
-                { title: 'Average Score', subtitle: 'Data Structures', icon: '72', iconBg: 'rgba(243, 156, 18, 0.1)', iconColor: '#f39c12', value: 'Grade: A-', subvalue: 'Good', subStatus: 'neutral' }
+            terms: [
+                { term: '1st Term', grade: 'A', total: 'Class Avg 86%', gpa: '3.82', position: 'Section A', note: 'Homework submission was consistent.' },
+                { term: 'Mid Term', grade: 'A-', total: 'Class Avg 84%', gpa: '3.70', position: 'Section A', note: 'Good classroom participation.' },
+                { term: 'Final Term', grade: 'A+', total: 'Class Avg 91%', gpa: '4.00', position: 'Section A', note: 'Excellent final assessment outcome.' }
             ]
         },
         dash: {
