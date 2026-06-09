@@ -1,6 +1,18 @@
 /* --- LOGIN SCREEN STYLES --- */
+.app-container:not(.login-mode) #loginView {
+  display: none !important;
+}
+
 .login-mode .header,
 .login-mode .bottom-nav {
+  display: none !important;
+}
+
+.login-mode #loginView {
+  display: flex;
+}
+
+.login-mode .view:not(#loginView) {
   display: none !important;
 }
 
