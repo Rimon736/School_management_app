@@ -1,6 +1,7 @@
 import { handleLogin, loginAs, switchRole, logout } from './auth.js';
 import { openView, closeView, updateNav } from './router.js';
 import { showToast, toggleMenu, toggleBalance, enableNativeMode } from './ui.js';
+import { getCurrentRole } from './auth.js';
 import { changeAttMonth } from './controllers/attendance.js';
 
 // We wait for the DOM to fully load before attaching listeners
@@ -20,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (avatar) avatar.parentElement.addEventListener('click', toggleMenu);
 
     const balancePill = document.getElementById('balanceBtn');
-    if (balancePill) balancePill.addEventListener('click', toggleBalance);
+    if (balancePill) balancePill.addEventListener('click', () => toggleBalance(getCurrentRole()));
 
     // Attach listener for the logo bird to toggle menu
     const logoBird = document.querySelector('.logo-bird');
@@ -41,6 +42,10 @@ document.addEventListener('DOMContentLoaded', () => {
     window.changeAttMonth = changeAttMonth;
     window.switchRole = switchRole;
     window.logout = logout;
+    window.handleLogin = handleLogin;
+    window.toggleMenu = toggleMenu;
+    window.toggleBalance = () => toggleBalance(getCurrentRole());
+    window.updateNav = updateNav;
 });
 
 export function initApp() {
