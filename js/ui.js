@@ -1,17 +1,14 @@
 // Shared UI functions
 import { rolesData } from './data.js';
 
-const balanceBtn = document.getElementById('balanceBtn');
-const balanceText = document.getElementById('balanceText');
-const sideMenu = document.getElementById('sideMenu');
-const menuOverlay = document.getElementById('menuOverlay');
-const toastEl = document.getElementById('toastMsg');
-
 let balanceRevealed = false;
 let balanceTimeout;
 let toastTimeout;
 
 export function showToast(message) {
+    const toastEl = document.getElementById('toastMsg');
+    if (!toastEl) return;
+
     toastEl.innerText = message;
     toastEl.classList.add('show');
 
@@ -20,12 +17,17 @@ export function showToast(message) {
         toastEl.classList.remove('show');
     }, 2000);
 
-    if (sideMenu.classList.contains('open') && message !== 'Options' && !message.includes('Details')) {
+    const sideMenu = document.getElementById('sideMenu');
+    if (sideMenu && sideMenu.classList.contains('open') && message !== 'Options' && !message.includes('Details')) {
         toggleMenu();
     }
 }
 
 export function toggleMenu() {
+    const sideMenu = document.getElementById('sideMenu');
+    const menuOverlay = document.getElementById('menuOverlay');
+    if (!sideMenu || !menuOverlay) return;
+
     const isOpen = sideMenu.classList.contains('open');
     if (isOpen) {
         sideMenu.classList.remove('open');
@@ -36,8 +38,16 @@ export function toggleMenu() {
     }
 }
 
-export function toggleBalance(currentRole) {
+export function toggleBalance() {
     if (balanceRevealed) return;
+
+    const balanceBtn = document.getElementById('balanceBtn');
+    const balanceText = document.getElementById('balanceText');
+    const roleBadge = document.getElementById('currentRoleBadge');
+    if (!balanceBtn || !balanceText) return;
+
+    // Safely infer role from DOM badge or default to student
+    const currentRole = (roleBadge && roleBadge.innerText.toLowerCase() === 'teacher') ? 'teacher' : 'student';
 
     balanceRevealed = true;
     balanceText.style.opacity = '0';

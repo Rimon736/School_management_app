@@ -12,8 +12,11 @@ export function getCurrentRole() {
 }
 
 export async function handleLogin() {
-    const email = document.getElementById('emailInput').value;
-    const password = document.getElementById('passwordInput').value;
+    const emailEl = document.getElementById('emailInput');
+    const passwordEl = document.getElementById('passwordInput');
+    
+    const email = emailEl ? emailEl.value : '';
+    const password = passwordEl ? passwordEl.value : '';
 
     if (!email || !password) {
         showToast("Please enter email and password");
@@ -63,10 +66,19 @@ export async function handleLogin() {
 
 export function loginAs(role) {
     console.log('loginAs called with role:', role);
-    currentRole = role;
+    
+    // Normalize role and fallback to student if invalid
+    let cleanRole = role ? role.toLowerCase() : 'student';
+    if (!rolesData[cleanRole]) {
+        cleanRole = 'student';
+    }
+    currentRole = cleanRole;
 
     console.log('Removing login-mode class');
-    document.getElementById('mainContainer').classList.remove('login-mode');
+    const mainContainer = document.getElementById('mainContainer');
+    if (mainContainer) {
+        mainContainer.classList.remove('login-mode');
+    }
 
     console.log('Calling renderRole');
     renderRole(currentRole);
@@ -75,11 +87,14 @@ export function loginAs(role) {
     document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
 
     console.log('Activating dashboardView');
-    document.getElementById('dashboardView').classList.add('active');
+    const dashboardView = document.getElementById('dashboardView');
+    if (dashboardView) {
+        dashboardView.classList.add('active');
+    }
 
     updateNav('navHome');
 
-    showToast(`Logged in as ${rolesData[role].roleLabel}`);
+    showToast(`Logged in as ${rolesData[currentRole].roleLabel}`);
 
     if (window.FlutterBridge) {
         window.FlutterBridge.postMessage(JSON.stringify({ type: 'auth_change', status: 'logged_in' }));
@@ -94,12 +109,25 @@ export function switchRole() {
 }
 
 export function logout() {
-    document.getElementById('mainContainer').classList.add('login-mode');
+    const mainContainer = document.getElementById('mainContainer');
+    if (mainContainer) {
+        mainContainer.classList.add('login-mode');
+    }
+    
     document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
-    document.getElementById('loginView').classList.add('active');
-    document.getElementById('appHeader').classList.remove('inner-mode');
+    
+    const loginView = document.getElementById('loginView');
+    if (loginView) {
+        loginView.classList.add('active');
+    }
+    
+    const appHeader = document.getElementById('appHeader');
+    if (appHeader) {
+        appHeader.classList.remove('inner-mode');
+    }
 
-    if (document.getElementById('sideMenu').classList.contains('open')) {
+    const sideMenu = document.getElementById('sideMenu');
+    if (sideMenu && sideMenu.classList.contains('open')) {
         toggleMenu();
     }
     showToast('Logged out successfully');

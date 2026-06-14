@@ -17,41 +17,66 @@ export function openView(viewId, title) {
 
     // Show target view
     const targetEl = document.getElementById(targetViewId);
-    if(targetEl) {
+    if (targetEl) {
         targetEl.classList.add('active');
     } else {
-        document.getElementById('dashboardView').classList.add('active');
+        const dashboard = document.getElementById('dashboardView');
+        if (dashboard) dashboard.classList.add('active');
     }
 
     // Update Header
-    document.getElementById('appHeader').classList.add('inner-mode');
-    document.getElementById('innerViewTitle').innerText = title;
+    const appHeader = document.getElementById('appHeader');
+    if (appHeader) {
+        appHeader.classList.add('inner-mode');
+    }
+    
+    const innerViewTitle = document.getElementById('innerViewTitle');
+    if (innerViewTitle) {
+        innerViewTitle.innerText = title;
+    }
 
-    if(targetViewId === 'attendanceView') {
+    if (targetViewId === 'attendanceView') {
         renderAttendance();
     } else if (targetViewId === 'analyticsDashboardView') {
         setTimeout(renderAnalyticsDashboard, 10);
     }
 
     updateNav(null);
-    document.querySelector('.main-content').scrollTop = 0;
+    
+    const mainContent = document.querySelector('.main-content');
+    if (mainContent) {
+        mainContent.scrollTop = 0;
+    }
 
-    if (document.getElementById('sideMenu').classList.contains('open')) {
+    const sideMenu = document.getElementById('sideMenu');
+    if (sideMenu && sideMenu.classList.contains('open')) {
         toggleMenu();
     }
 }
 
 export function closeView() {
     document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
-    document.getElementById('dashboardView').classList.add('active');
-    document.getElementById('appHeader').classList.remove('inner-mode');
+    
+    const dashboard = document.getElementById('dashboardView');
+    if (dashboard) {
+        dashboard.classList.add('active');
+    }
+    
+    const appHeader = document.getElementById('appHeader');
+    if (appHeader) {
+        appHeader.classList.remove('inner-mode');
+    }
+    
     updateNav('navHome');
 }
 
 export function updateNav(activeId) {
     document.querySelectorAll('.bottom-nav .nav-item').forEach(el => el.classList.remove('active'));
-    if(activeId) {
-        document.getElementById(activeId).classList.add('active');
+    if (activeId) {
+        const activeNav = document.getElementById(activeId);
+        if (activeNav) {
+            activeNav.classList.add('active');
+        }
     }
 
     // TWO WAY SYNC FOR FLUTTER NATIVE NAV

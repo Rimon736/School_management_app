@@ -18,7 +18,7 @@
         <header class="header" id="appHeader">
             <div class="header-default">
                 <div class="header-left">
-                    <div class="avatar" onclick="toggleMenu()">
+                    <div class="avatar" onclick="openView('profileView', 'Profile')">
                         <img id="userAvatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Jamil&backgroundColor=8E7CC3" alt="Profile">
                     </div>
                     <div class="user-info">
@@ -89,19 +89,32 @@
                     <li class="info-item"><div class="info-icon"><i class="ph-fill ph-user-circle"></i></div><div class="info-label" id="profileField2Label">Mother's Name</div><div class="info-value" id="profileField2">Salma Begum</div></li>
                     <li class="info-item"><div class="info-icon"><i class="ph-fill ph-map-pin"></i></div><div class="info-label">Address</div><div class="info-value" id="profileAddress">Mirpur 10, Dhaka</div></li>
                     <li class="info-item"><div class="info-icon"><i class="ph-fill ph-phone"></i></div><div class="info-label">Mobile No</div><div class="info-value" id="profilePhone">01712-345678</div></li>
+                    <li class="info-item"><div class="info-icon"><i class="ph-fill ph-flag"></i></div><div class="info-label">Nationality</div><div class="info-value" id="profileNationality">Bangladeshi</div></li>
+                    <li class="info-item"><div class="info-icon"><i class="ph-fill ph-calendar"></i></div><div class="info-label">Date of Birth</div><div class="info-value" id="profileDOB">15 April 2011</div></li>
                 </ul>
+            </div>
+            <div id="classroomView" class="view">
+                <div class="classroom-tabs">
+                    <button class="classroom-tab active" onclick="switchClassroomTab('online')">Online Classes</button>
+                    <button class="classroom-tab" onclick="switchClassroomTab('recorded')">Recorded Classes</button>
+                </div>
+                <div id="onlineClassesList" class="classroom-panel active"></div>
+                <div id="recordedClassesList" class="classroom-panel"></div>
             </div>
             <div id="routineView" class="view">
                 <div class="routine-container">
+                    <div class="routine-nav">
+                        <button class="routine-day-btn" onclick="selectRoutineDay('Saturday')">Sat</button>
+                        <button class="routine-day-btn" onclick="selectRoutineDay('Sunday')">Sun</button>
+                        <button class="routine-day-btn" onclick="selectRoutineDay('Monday')">Mon</button>
+                        <button class="routine-day-btn" onclick="selectRoutineDay('Tuesday')">Tue</button>
+                        <button class="routine-day-btn" onclick="selectRoutineDay('Wednesday')">Wed</button>
+                        <button class="routine-day-btn" onclick="selectRoutineDay('Thursday')">Thu</button>
+                    </div>
                     <div class="routine-section">
                         <div class="section-header routine-title" style="padding-left: 0; margin-bottom: 6px;">Class Routine</div>
                         <div class="routine-section-note">Weekly school classes for the regular academic day.</div>
                         <div id="classRoutineContainer"></div>
-                    </div>
-                    <div class="routine-section">
-                        <div class="section-header routine-title" style="padding-left: 0; margin: 20px 0 6px;">Exam Routine</div>
-                        <div class="routine-section-note">Upcoming term exam timetable for the school.</div>
-                        <div id="examRoutineContainer"></div>
                     </div>
                 </div>
             </div>
@@ -129,6 +142,25 @@
                     <div id="attListContainer"></div>
                 </div>
             </div>
+            <div id="acadCalendarView" class="view">
+                <div class="acad-cal-container">
+                    <div class="month-navigator">
+                        <div class="nav-arrow" onclick="changeAcadMonth(-1)"><i class="ph ph-caret-left"></i></div>
+                        <div class="current-month" id="acadCalMonthDisplay">November 2024</div>
+                        <div class="nav-arrow" onclick="changeAcadMonth(1)"><i class="ph ph-caret-right"></i></div>
+                    </div>
+                    <div class="bkash-calendar-card">
+                        <div class="legend">
+                            <div class="legend-item"><div class="dot class-day"></div> Class Day</div>
+                            <div class="legend-item"><div class="dot exam-day"></div> Exam</div>
+                            <div class="legend-item"><div class="dot holiday"></div> Holiday</div>
+                        </div>
+                        <div class="bkash-calendar-grid" id="acadCalGridContainer"></div>
+                    </div>
+                    <div class="section-header" style="padding-left: 0;">Academic Events</div>
+                    <div id="acadEventsList"></div>
+                </div>
+            </div>
             <div id="feesView" class="view">
                 <div class="fees-container">
                     <div class="total-due-card">
@@ -142,6 +174,20 @@
             <div id="resultView" class="view">
                 <div class="result-container">
                     <div id="termResultsContainer"></div>
+                </div>
+            </div>
+            <div id="teachersView" class="view">
+                <div class="teachers-container">
+                    <div class="section-header routine-title" style="padding-left: 0; margin-bottom: 6px;">Faculty Directory</div>
+                    <div class="routine-section-note">School teachers and administrators list. Tap the phone icon to copy their contact.</div>
+                    <div id="teachersListContainer" class="teachers-list-grid"></div>
+                </div>
+            </div>
+            <div id="examRoutineView" class="view">
+                <div class="routine-container">
+                    <div class="section-header routine-title" style="padding-left: 0; margin-bottom: 6px;">Exam Routine</div>
+                    <div class="routine-section-note">Upcoming term exam timetable for the school.</div>
+                    <div id="examRoutineContainer"></div>
                 </div>
             </div>
             <div id="analyticsDashboardView" class="view">
@@ -164,7 +210,7 @@
         </main>
         <nav id="web-nav" class="bottom-nav">
             <div class="nav-item active" id="navHome" onclick="closeView(); updateNav('navHome')"><i class="ph-fill ph-house"></i><span>Home</span></div>
-            <div class="nav-item" id="navClass" onclick="openView('routineView', 'Class Routine'); updateNav('navClass')"><i class="ph ph-chalkboard-teacher"></i><span>My Class</span></div>
+            <div class="nav-item" id="navClass" onclick="openView('classroomView', 'My Classroom'); updateNav('navClass')"><i class="ph ph-chalkboard-teacher"></i><span>My Class</span></div>
             <div class="nav-item" id="navQr" onclick="openView('qrView', 'Scan QR'); updateNav('navQr')"><i class="ph ph-qr-code"></i><span>Scan QR</span></div>
             <div class="nav-item" id="navInbox" onclick="openView('inboxView', 'Messages'); updateNav('navInbox')"><i class="ph ph-envelope-simple"></i><span>Inbox</span></div>
         </nav>
@@ -181,25 +227,14 @@
                     <div>Active virtual Assistant</div>
                 </div>
             </div>
-            <ul class="sm-list">
+            <ul class="sm-list" id="sideMenuListContainer">
                 <li class="sm-item" onclick="switchRole()" style="background-color: #f4f0fa; font-weight: 500;"><i class="ph ph-arrows-left-right" style="color: var(--brand-color);"></i> Switch Role<span class="sm-badge" id="currentRoleBadge">Student</span></li>
-                <li class="sm-item" onclick="openView('analyticsDashboardView', 'Dashboard Analytics')"><i class="ph ph-house"></i> Dashboard</li>
-                <li class="sm-item" onclick="showToast('Statements')"><i class="ph ph-receipt"></i> Statements</li>
-                <li class="sm-item" onclick="showToast('Limits')"><i class="ph ph-warning"></i> Limits</li>
-                <li class="sm-item" onclick="showToast('Customer Service')"><i class="ph ph-headset"></i> Customer Service</li>
-                <li class="sm-item" onclick="showToast('Campus Map')"><i class="ph ph-map-pin"></i> Campus Map</li>
-                <li class="sm-item" onclick="showToast('Information Update')"><i class="ph ph-info"></i> Information Update</li>
-                <li class="sm-item" onclick="showToast('Discover EduManage')"><i class="ph ph-compass"></i> Discover EduManage<span class="sm-badge">New!</span></li>
-                <li class="sm-item" onclick="showToast('Settings')"><i class="ph ph-gear"></i> Settings</li>
                 <li class="sm-item" onclick="logout()"><i class="ph ph-sign-out"></i> Log out</li>
             </ul>
             <div class="sm-footer">Version 7.0.0</div>
         </div>
         <div class="toast" id="toastMsg">Action Clicked</div>
     </div>
-    <script type="module">
-        import { initApp } from './js/main.js';
-        initApp();
-    </script>
+
 </body>
 </html>

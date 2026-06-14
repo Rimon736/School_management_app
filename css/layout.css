@@ -130,8 +130,16 @@
   cursor: pointer;
 }
 
+.header-icon.logo-bird {
+  background-color: var(--brand-color) !important;
+  color: var(--white) !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
 .header-icon.logo-bird i {
-  color: var(--brand-color);
+  color: var(--white) !important;
 }
 
 /* --- NATIVE FLUTTER OVERRIDES --- */

@@ -499,3 +499,306 @@
   font-size: 13px;
   color: var(--text-main);
 }
+
+/* --- CLASSROOM VIEW --- */
+.classroom-tabs {
+  display: flex;
+  background: #f1ecf7;
+  border-radius: 12px;
+  padding: 4px;
+  margin: 16px;
+  border: 1px solid var(--border-color);
+}
+
+.classroom-tab {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 10px;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.classroom-tab.active {
+  background: var(--brand-color);
+  color: var(--white);
+  box-shadow: 0 2px 6px rgba(142, 124, 195, 0.2);
+}
+
+.classroom-panel {
+  display: none;
+  padding: 0 16px 16px;
+}
+
+.classroom-panel.active {
+  display: block;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.classroom-card {
+  background: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.classroom-card-details h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+
+.classroom-card-details p {
+  font-size: 12px;
+  color: var(--text-light);
+}
+
+.classroom-join-btn {
+  background: var(--brand-color);
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+  box-shadow: 0 4px 8px rgba(142, 124, 195, 0.2);
+}
+
+.classroom-join-btn:active {
+  transform: scale(0.95);
+}
+
+/* --- ROUTINE VIEW NAVIGATION --- */
+.routine-nav {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 4px 0 12px;
+  margin-bottom: 12px;
+}
+
+.routine-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.routine-day-btn {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  background: var(--white);
+  border: 1px solid var(--border-color);
+  color: var(--text-light);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.routine-day-btn.active {
+  background: var(--brand-color);
+  color: var(--white);
+  border-color: var(--brand-color);
+  box-shadow: 0 3px 8px rgba(142,124,195,0.25);
+}
+
+.empty-state-routine {
+  text-align: center;
+  padding: 30px 20px;
+  color: var(--text-light);
+  font-size: 13px;
+  background: var(--white);
+  border-radius: 12px;
+  border: 1px dashed var(--border-color);
+}
+
+/* --- ACADEMIC CALENDAR VIEW --- */
+.acad-cal-container {
+  padding: 16px;
+}
+
+.bkash-cal-date.class-day {
+  background: rgba(142, 124, 195, 0.08);
+  color: var(--brand-dark);
+  border: 1px solid rgba(142, 124, 195, 0.2);
+}
+
+.bkash-cal-date.exam-day {
+  background: rgba(231, 76, 60, 0.08);
+  color: #c0392b;
+  border: 1px solid rgba(231, 76, 60, 0.2);
+}
+
+.bkash-cal-date.holiday {
+  background: rgba(243, 156, 18, 0.08);
+  color: #d35400;
+  border: 1px solid rgba(243, 156, 18, 0.2);
+}
+
+.legend-item .dot.class-day {
+  background: var(--brand-color);
+  box-shadow: 0 0 0 2px rgba(142, 124, 195, 0.2);
+}
+
+.legend-item .dot.exam-day {
+  background: #e74c3c;
+  box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.2);
+}
+
+.legend-item .dot.holiday {
+  background: #f39c12;
+  box-shadow: 0 0 0 2px rgba(243, 156, 18, 0.2);
+}
+
+/* --- TEACHERS VIEW --- */
+.teachers-container {
+  padding: 16px;
+}
+
+.teachers-list-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.teacher-card {
+  display: flex;
+  align-items: center;
+  background: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+  transition: background 0.2s, transform 0.2s;
+}
+
+.teacher-card:active {
+  background: #f9f9f9;
+  transform: scale(0.98);
+}
+
+.teacher-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 12px;
+  background: #e6e0f8;
+  border: 2px solid rgba(142, 124, 195, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.teacher-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.teacher-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.teacher-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 2px;
+}
+
+.teacher-designation {
+  font-size: 12px;
+  color: var(--text-light);
+}
+
+.teacher-phone-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(142, 124, 195, 0.08);
+  color: var(--brand-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  border: 1px solid rgba(142, 124, 195, 0.15);
+}
+
+.teacher-phone-btn:active {
+  background: var(--brand-color);
+  color: var(--white);
+}
+
+/* --- RESULTS VIEW EXTENSIONS --- */
+.term-result-card {
+  cursor: pointer;
+}
+
+.term-result-toggle-hint {
+  text-align: center;
+  font-size: 11px;
+  color: var(--brand-color);
+  margin-top: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  border-top: 1px solid var(--border-color);
+  padding-top: 8px;
+}
+
+.term-result-details {
+  margin-top: 14px;
+  border-top: 1px solid var(--border-color);
+  padding-top: 14px;
+  animation: fadeIn 0.25s ease-out;
+}
+
+.term-result-details h4 {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 8px;
+}
+
+.breakdown-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  text-align: left;
+}
+
+.breakdown-table th, .breakdown-table td {
+  padding: 8px 6px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.breakdown-table th {
+  font-weight: 600;
+  color: var(--text-light);
+  border-bottom: 2px solid var(--border-color);
+}
+
+.breakdown-table tr:last-child td {
+  border-bottom: none;
+}
