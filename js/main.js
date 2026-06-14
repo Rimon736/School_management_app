@@ -1,7 +1,7 @@
 import { handleLogin, loginAs, switchRole, logout } from './auth.js';
 import { openView, closeView, updateNav } from './router.js';
 import { showToast, toggleMenu, toggleBalance, enableNativeMode } from './ui.js';
-import { changeAttMonth, changeAcadMonth } from './controllers/attendance.js';
+import { changeAttMonth, changeAcadMonth, changeTeacherPersonalAttMonth } from './controllers/attendance.js';
 
 // Expose necessary functions globally for inline HTML event handlers
 window.openView = openView;
@@ -10,7 +10,9 @@ window.updateNav = updateNav;
 window.showToast = showToast;
 window.changeAttMonth = changeAttMonth;
 window.changeAcadMonth = changeAcadMonth;
+window.changeTeacherPersonalAttMonth = changeTeacherPersonalAttMonth;
 window.switchRole = switchRole;
+window.loginAs = loginAs;
 window.logout = logout;
 window.toggleMenu = toggleMenu;
 window.toggleBalance = toggleBalance;

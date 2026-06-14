@@ -1,5 +1,5 @@
 // View router and navigation
-import { renderAttendance, renderAnalyticsDashboard } from './controllers/attendance.js';
+import { renderAttendance, renderAnalyticsDashboard, renderTeacherPersonalAttendance } from './controllers/attendance.js';
 import { toggleMenu } from './ui.js';
 
 export function openView(viewId, title) {
@@ -37,6 +37,8 @@ export function openView(viewId, title) {
 
     if (targetViewId === 'attendanceView') {
         renderAttendance();
+    } else if (targetViewId === 'teacherPersonalAttendanceView') {
+        renderTeacherPersonalAttendance();
     } else if (targetViewId === 'analyticsDashboardView') {
         setTimeout(renderAnalyticsDashboard, 10);
     }

@@ -286,3 +286,92 @@ export function changeAcadMonth(delta) {
     acadViewDate.setMonth(acadViewDate.getMonth() + delta);
     renderAcademicCalendar();
 }
+
+let teacherAttViewDate = new Date();
+
+export function renderTeacherPersonalAttendance() {
+    const year = teacherAttViewDate.getFullYear();
+    const month = teacherAttViewDate.getMonth();
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+    const calMonthDisplay = document.getElementById('teacherPersonalCalMonthDisplay');
+    if (calMonthDisplay) {
+        calMonthDisplay.innerText = `${monthNames[month]} ${year}`;
+    }
+
+    const dataObj = getAttendanceData('teacher', year, month);
+    if (!dataObj) return;
+
+    const records = dataObj.records;
+    const stats = dataObj.stats;
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    let gridHTML = `
+        <div class="bkash-cal-header">Su</div><div class="bkash-cal-header">Mo</div>
+        <div class="bkash-cal-header">Tu</div><div class="bkash-cal-header">We</div>
+        <div class="bkash-cal-header">Th</div><div class="bkash-cal-header">Fr</div>
+        <div class="bkash-cal-header">Sa</div>
+    `;
+
+    for (let i = 0; i < firstDay; i++) {
+        gridHTML += `<div class="bkash-cal-date empty"></div>`;
+    }
+
+    for (let i = 1; i <= daysInMonth; i++) {
+        const status = records[i] || 'none';
+        let classList = "bkash-cal-date " + status;
+        let onclick = status !== 'none' ? `onclick="window.showToast('Date: ${i} ${monthNames[month]} - ${status.charAt(0).toUpperCase() + status.slice(1)}');"` : '';
+
+        gridHTML += `<div class="${classList}" ${onclick}><span>${i}</span></div>`;
+    }
+    
+    const calGridContainer = document.getElementById('teacherPersonalCalGridContainer');
+    if (calGridContainer) {
+        calGridContainer.innerHTML = gridHTML;
+    }
+
+    const attTotal = document.getElementById('teacherPersonalAttTotal');
+    if (attTotal) attTotal.innerText = stats.total;
+
+    const attPresent = document.getElementById('teacherPersonalAttPresent');
+    if (attPresent) attPresent.innerText = stats.present;
+
+    const attAbsent = document.getElementById('teacherPersonalAttAbsent');
+    if (attAbsent) attAbsent.innerText = stats.absent;
+
+    const listItems = [];
+    for (let i = daysInMonth; i >= 1; i--) {
+        if(records[i]) {
+            const status = records[i];
+            let icon = 'ph-check-circle', iconBg = 'rgba(46, 204, 113, 0.1)', iconColor = '#2ecc71', subStatus = 'paid';
+
+            if (status === 'absent') { icon = 'ph-x-circle'; iconBg = 'rgba(231, 76, 60, 0.1)'; iconColor = '#e74c3c'; subStatus = 'due'; }
+            else if (status === 'leave') { icon = 'ph-minus-circle'; iconBg = 'rgba(243, 156, 18, 0.1)'; iconColor = '#f39c12'; subStatus = 'neutral'; }
+
+            listItems.push({
+                title: `${i} ${monthNames[month]} ${year}`,
+                subtitle: 'Personal Attendance Record',
+                icon: icon, iconBg: iconBg, iconColor: iconColor,
+                value: status.charAt(0).toUpperCase() + status.slice(1),
+                subvalue: status === 'present' ? 'Recorded' : 'Noted',
+                subStatus: subStatus
+            });
+
+            if(listItems.length >= 5) break;
+        }
+    }
+
+    const attListContainer = document.getElementById('teacherPersonalAttListContainer');
+    if (attListContainer) {
+        attListContainer.innerHTML = listItems.length > 0
+            ? buildBkashList(listItems)
+            : `<div style="text-align:center; padding: 20px; color: var(--text-light); font-size: 13px;">No records for this month</div>`;
+    }
+}
+
+export function changeTeacherPersonalAttMonth(delta) {
+    teacherAttViewDate.setMonth(teacherAttViewDate.getMonth() + delta);
+    renderTeacherPersonalAttendance();
+}

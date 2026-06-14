@@ -802,3 +802,42 @@
 .breakdown-table tr:last-child td {
   border-bottom: none;
 }
+
+/* --- TEACHER ACTIONS STYLING --- */
+#teacherStudentAttendanceView select, 
+#teacherStudentListView select,
+#teacherStudentAttendanceView input[type="date"] {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+  outline: none;
+  background-color: var(--white);
+  color: var(--text-main);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#teacherStudentAttendanceView select:focus, 
+#teacherStudentListView select:focus,
+#teacherStudentAttendanceView input[type="date"]:focus {
+  border-color: var(--brand-color);
+  box-shadow: 0 0 0 3px rgba(142, 124, 195, 0.15);
+}
+
+/* Stepper number input spin removal */
+#teacherMarkEntryView input[type="number"]::-webkit-outer-spin-button,
+#teacherMarkEntryView input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+#teacherMarkEntryView input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Smooth transition for active attendance toggles */
+.routine-day-btn {
+  transition: all 0.2s ease;
+}
+.routine-day-btn:active {
+  transform: scale(0.95);
+}

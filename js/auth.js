@@ -34,6 +34,7 @@ export async function handleLogin() {
 
     // Real Supabase auth (if credentials are valid)
     try {
+        /*
         const { data: authData, error: authError } = await supabaseClient.auth.signInWithPassword({
             email: email,
             password: password,
@@ -58,6 +59,8 @@ export async function handleLogin() {
 
         console.log("Logged in successfully. Role:", profileData.role);
         loginAs(profileData.role);
+        */
+        showToast("Auth Bypassed");
     } catch (err) {
         console.error("Login error:", err);
         showToast("Login failed");

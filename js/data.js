@@ -23,14 +23,14 @@ export const rolesData = {
         name: 'Prof. Anisul Islam', roleLabel: 'Teacher', avatarSeed: 'Anisul',
         balanceIcon: 'ph-wallet', balanceAmount: '৳ 45,000.00',
         grid: [
-            { action: 'openView("classroomView", "My Classroom")', icon: 'ph-chalkboard-teacher', color: 'ic-purple', label: 'Classroom' },
-            { action: 'openView("routineView", "My Schedule")', icon: 'ph-clock', color: 'ic-orange', label: 'Schedule' },
-            { action: 'openView("attendanceView", "Take Attendance")', icon: 'ph-calendar-plus', color: 'ic-green', label: 'Take Attend' },
-            { action: 'openView("resultView", "Enter Marks")', icon: 'ph-clipboard-text', color: 'ic-red', label: 'Enter Marks' },
-            { action: 'showToast("Student List Opened")', icon: 'ph-list-numbers', color: 'ic-purple', label: 'Student List' },
-            { action: 'openView("profileView", "Teacher Profile")', icon: 'ph-user', color: 'ic-teal', label: 'Profile' },
-            { action: 'showToast("My Classes")', icon: 'ph-users-three', color: 'ic-blue', label: 'My Classes' },
-            { action: 'showToast("Leave Request")', icon: 'ph-paper-plane-tilt', color: 'ic-blue', label: 'Leave Req' }
+            { action: 'openView("teacherProfileView", "Teacher Profile")', icon: 'ph-user', color: 'ic-teal', label: 'Profile' },
+            { action: 'openView("teacherOnlineClassView", "Online Classes")', icon: 'ph-video-camera', color: 'ic-purple', label: 'Online Class' },
+            { action: 'openView("teacherMarkEntryView", "Mark Entry")', icon: 'ph-clipboard-text', color: 'ic-red', label: 'Mark Entry' },
+            { action: 'openView("teacherStudentAttendanceView", "Student Attendance")', icon: 'ph-calendar-plus', color: 'ic-green', label: 'Take Attend' },
+            { action: 'openView("teacherStudentListView", "Student List")', icon: 'ph-list-numbers', color: 'ic-blue', label: 'Student List' },
+            { action: 'openView("teacherRoutineView", "Teacher Routine")', icon: 'ph-clock', color: 'ic-orange', label: 'Routine' },
+            { action: 'openView("teacherPersonalAttendanceView", "Personal Attendance")', icon: 'ph-calendar-check', color: 'ic-teal', label: 'My Attendance' },
+            { action: 'openView("acadCalendarView", "Academic Calendar")', icon: 'ph-calendar', color: 'ic-orange', label: 'Academic Cal' }
         ],
         quick: [
             { action: 'showToast("Staff Meeting Agenda")', icon: 'ph-users', color: '#f39c12', label: 'Staff Meet' },
@@ -190,7 +190,17 @@ export const dummyViewData = {
             field1Label: "Joining Date", field1Val: "12 Jan 2015",
             field2Label: "Qualification", field2Val: "MSc in CS",
             address: 'Dhanmondi, Dhaka', phone: '01819-123456',
-            nationality: 'Bangladeshi', dob: '04 Oct 1985'
+            nationality: 'Bangladeshi', dob: '04 Oct 1985',
+            name: "Prof. Anisul Islam",
+            designation: "Principal & Tech Head",
+            dept: "General Section",
+            level: "Class Teacher, Grade 8",
+            email: "anisul.islam@edumanage.com",
+            officePhone: "+880-2-998877",
+            bloodGroup: "O+ (Positive)",
+            joiningDate: "12 Jan 2015",
+            nid: "1985263598741",
+            avatarSeed: "Anisul"
         },
         classroom: {
             online: [
@@ -218,6 +228,34 @@ export const dummyViewData = {
             ],
             Thursday: [
                 { title: 'CS Staff Meeting', subtitle: '1:00 PM - 2:00 PM', icon: 'ph-users', iconBg: 'rgba(52, 152, 219, 0.10)', iconColor: '#3498db', value: 'Staff Room', subvalue: 'All Faculty', subStatus: 'neutral' }
+            ]
+        },
+        teacherRoutine: {
+            Saturday: [
+                { title: 'Class 8 - Bangla 1st Paper', subtitle: '8:40 AM - 9:20 AM', icon: 'ph-chalkboard-teacher', iconBg: 'rgba(142,124,195,0.1)', iconColor: 'var(--brand-color)', value: 'Room 8A', subvalue: 'Regular Class', subStatus: 'neutral' },
+                { title: 'Class 10 - Bangla Literature', subtitle: '10:10 AM - 10:50 AM', icon: 'ph-chalkboard-teacher', iconBg: 'rgba(142,124,195,0.1)', iconColor: 'var(--brand-color)', value: 'Room 10B', subvalue: 'Regular Class', subStatus: 'neutral' }
+            ],
+            Sunday: [
+                { title: 'Class 7 - Bangla Grammar', subtitle: '9:15 AM - 9:55 AM', icon: 'ph-chalkboard', iconBg: 'rgba(46, 204, 113, 0.1)', iconColor: '#2ecc71', value: 'Room 7B', subvalue: 'Regular Class', subStatus: 'neutral' },
+                { title: 'Exam Guard Duty', subtitle: '11:00 AM - 1:00 PM', icon: 'ph-shield-check', iconBg: 'rgba(231,76,60,0.1)', iconColor: '#e74c3c', value: 'Exam Hall 2', subvalue: 'Guard Duty', subStatus: 'due' }
+            ],
+            Monday: [
+                { title: 'Class 8 - Bangla 2nd Paper', subtitle: '9:15 AM - 9:55 AM', icon: 'ph-chalkboard-teacher', iconBg: 'rgba(142,124,195,0.1)', iconColor: 'var(--brand-color)', value: 'Room 8A', subvalue: 'Regular Class', subStatus: 'neutral' },
+                { title: 'Class 9 - Bangla Composition', subtitle: '11:30 AM - 12:10 PM', icon: 'ph-chalkboard-teacher', iconBg: 'rgba(142,124,195,0.1)', iconColor: 'var(--brand-color)', value: 'Room 9A', subvalue: 'Regular Class', subStatus: 'neutral' }
+            ],
+            Tuesday: [
+                { title: 'Class 6 - Bangla Literature', subtitle: '10:10 AM - 10:50 AM', icon: 'ph-book-open-text', iconBg: 'rgba(243, 156, 18, 0.10)', iconColor: '#f39c12', value: 'Room 6A', subvalue: 'Regular Class', subStatus: 'neutral' },
+                { title: 'Academic Council Meeting', subtitle: '1:00 PM - 2:00 PM', icon: 'ph-users-three', iconBg: 'rgba(52, 152, 219, 0.10)', iconColor: '#3498db', value: 'Conference Room', subvalue: 'Staff Meeting', subStatus: 'neutral' }
+            ],
+            Wednesday: [
+                { title: 'Class 8 - Bangla Grammar', subtitle: '10:10 AM - 10:50 AM', icon: 'ph-chalkboard-teacher', iconBg: 'rgba(142,124,195,0.1)', iconColor: 'var(--brand-color)', value: 'Room 8A', subvalue: 'Regular Class', subStatus: 'neutral' },
+                { title: 'Exam Guard Duty', subtitle: '11:00 AM - 1:00 PM', icon: 'ph-shield-check', iconBg: 'rgba(231,76,60,0.1)', iconColor: '#e74c3c', value: 'Exam Hall 1', subvalue: 'Guard Duty', subStatus: 'due' }
+            ],
+            Thursday: [
+                { title: 'General Staff Meeting', subtitle: '1:00 PM - 2:00 PM', icon: 'ph-users', iconBg: 'rgba(52, 152, 219, 0.10)', iconColor: '#3498db', value: 'Staff Room', subvalue: 'All Faculty', subStatus: 'neutral' }
+            ],
+            Friday: [
+                { title: 'Weekend (Friday)', subtitle: 'Full Day', icon: 'ph-sparkles', iconBg: 'rgba(46, 204, 113, 0.1)', iconColor: '#2ecc71', value: 'Holiday', subvalue: 'Weekend', subStatus: 'paid' }
             ]
         },
         examRoutine: [
