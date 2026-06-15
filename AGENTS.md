@@ -1,77 +1,61 @@
 # EduManage - Project Context & Rules
 
 ## 1. Project Overview & Architecture
-EduManage is a mobile-first educational management system built strictly with **Vanilla HTML, CSS, and JavaScript**. 
-- It functions as a Single Page Application (SPA) using DOM manipulation to switch views (adding/removing `.active` classes).
-- It is designed to run in a browser and as a WebView inside a native Flutter app. 
-- **BANNED FRAMEWORKS:** Do not use React, Vue, Tailwind, or backend frameworks. Stick strictly to vanilla web technologies.
+EduManage is a mobile-first educational management system architected using a **Custom Raw PHP MVC (Model-View-Controller) Pattern**.
+- **BANNED FRAMEWORKS:** Absolutely NO Laravel, CodeIgniter, React, Vue, HTMX, or Tailwind. Stick strictly to raw PHP (OOP), HTML, CSS, and Vanilla JS.
+- **Routing:** All traffic routes through `index.php` using parameters: `?controller={name}&action={method}`. 
+- **Separation of Concerns:** - **Controllers:** Handle logic, fetch data from Models, and load Views.
+  - **Models:** Handle all data structures and business rules (return dummy arrays for now).
+  - **Views:** Strictly HTML/UI presentation. No complex PHP logic here.
 
-## 2. Design System & Theme
-- **Theme:** Lavender (`#8E7CC3`) as primary, `#674EA7` for dark contrasts. Backgrounds are `#f7f7f7` and `#ffffff`.
+## 2. Strict Directory Structure
+Do not deviate from this MVC file structure:
+- `assets/css/style.css` (Centralized styling)
+- `assets/js/main.js` (Centralized JS, including Flutter Bridge hooks)
+- `core/Controller.php` (Base controller class handling view rendering and layout injection)
+- `controllers/AuthController.php`, `StudentController.php`, `TeacherController.php`
+- `models/AuthModel.php`, `StudentModel.php`, `TeacherModel.php`
+- `views/layouts/header.php`, `footer.php`, `sidebar.php`
+- `views/auth/login.php`
+- `views/student/{feature}.php` (8 feature view files)
+- `views/teacher/{feature}.php` (8 feature view files)
+- `index.php` (The Front Controller/Router)
+
+## 3. Design System & Theme
+- **Theme:** Lavender (`#8E7CC3`) as the primary brand color, `#674EA7` for dark contrasts. Backgrounds are `#f7f7f7` and `#ffffff`.
 - **Typography:** Roboto font family.
 - **Icons:** Phosphor Icons (`.ph` for outline, `.ph-fill` for active states).
-- **UI/UX Feel:** Container max-width is 400px. Interactions must have native-like touch feedback (e.g., `transform: scale(0.98)`) and smooth transitions.
+- **UI/UX Feel:** Strict mobile app aesthetic. Max-width is 400px. Touch feedback (`transform: scale(0.98)`) and smooth transitions.
 
-## 3. Cultural Context (Strict)
-All placeholder data must reflect a **Bangladeshi School Context**:
+## 4. Cultural Context (Strict)
+All placeholder data (generated in the Models) must reflect a **Bangladeshi School Context**:
 - **Currency:** Tk. or BDT.
-- **Week/Routine:** The workweek is Saturday to Thursday. Friday is the weekend.
-- **Names:** Common Bangladeshi names (e.g., Prof. Anisul Islam, Dr. Shirin Akter).
-- **Locations & IDs:** Bangladeshi addresses, NID (National ID) format.
-- **Classes/Sections:** Class 6 to 10, Sections like Padma, Meghna, Jamuna, or A, B, C.
+- **Week/Routine:** Saturday to Thursday workweek. Friday is the weekend.
+- **Names:** Common Bangladeshi names (e.g., Prof. Anisul Islam, Salma Begum, Rafiqul).
+- **Locations & IDs:** Bangladeshi addresses, NID format.
+- **Classes/Grades:** Class 6 to 10, Sections (Padma, Meghna, Jamuna), SSC/JSC style grading (GPA out of 5.00). Term structure: 1st Term, Mid Term, Final Term.
 
-## 4. Required Teacher Features & Views (NEW)
-1. **Teacher Profile (`teacherProfileView`):** Banner with Image, Name, Designation. List details: Department Name, Section/Level, Email, Contact No, Office Phone, Blood Group, Joining Date, Address, DOB, and NID.
-2. **Online Class (`teacherOnlineClassView`):** A "Schedule Class" button (prompts for Date, Time, Link). Below it, a list of scheduled classes.
-3. **Mark Entry (`teacherMarkEntryView`):** Hierarchical flow:
-   - *Categories:* Class Test, Model Test, Term Exam.
-   - *Flow:* Select Category -> Select Term/Session -> View List of Tests (with "Add New" button) -> Select Level (Class) -> Select Section -> Select Subject (shows View/Edit buttons).
-   - *Edit Mode:* Shows Student Roll Numbers, Mark Input box with `+` and `-` stepper icons, and a Remarks input. Includes simulated "Auto-save" UI feedback.
-4. **Student Attendance (`teacherStudentAttendanceView`):** Select Date, Class, Section to reveal student list. Each student has Present/Absent/Late toggles and Remarks. Top buttons for "Present All" and "Absent All". Bottom "Save" button.
-5. **Student List (`teacherStudentListView`):** Flow: Select Class -> Select Section -> List of Students (Image, Name, ID, Phone). Include an "Edit" button for each student.
-6. **Teacher Routine (`teacherRoutineView`):** 7-day week (Sat to Fri) horizontal pills. Includes regular classes, staff meetings, and exam guard duties.
-7. **Personal Attendance (`teacherPersonalAttendanceView`):** Monthly calendar view of the teacher's own attendance, identical in function to the student version.
-8. **Academic Calendar (`acadCalendarView`):** Shared with students; interactive monthly view highlighting holidays, exams, and class days.
+## 5. Feature Requirements: Student Panel (Routed via StudentController)
+1. **Classroom:** Tabs for Online Classes (live links) and Recorded Classes.
+2. **Routine:** Weekday pill-navigation (Sat-Thu). Auto-selects the current real-world day.
+3. **Attendance:** Monthly calendar view. Color codes: Green (Present), Red (Absent), Yellow/Orange (Leave).
+4. **Results:** Summary cards for terms -> clicks through to subject-wise details.
+5. **Profile:** Image, ID, Class, Roll, Parents' info, Address, Mobile, Nationality, DOB.
+6. **Fees:** Top Total Due card with "PAY NOW" button -> Transaction history list.
+7. **Academic Calendar:** Interactive monthly calendar highlighting holidays/exams.
+8. **Teachers List:** Faculty directory. Tapping the phone icon copies the number to the clipboard and shows a toast.
 
-## 5. Authentication (Temporary Bypass)
-- **DO NOT DELETE** the Supabase initialization or the body of the `handleLogin()` function.
-- **DO Modify** the `#loginView` UI: Replace email/password inputs with two clear buttons: "Login as Student" and "Login as Teacher".
-- Update the click handlers to simply call `loginAs('student')` and `loginAs('teacher')` directly, bypassing the Supabase API call temporarily for development purposes. Keep the Supabase code commented out or unreachable within `handleLogin()`.# EduManage - Project Context & Rules
+## 6. Feature Requirements: Teacher Panel (Routed via TeacherController)
+1. **Profile:** Banner (Image/Name/Designation). Details: Dept, Section, Email, Contact, Office Phone, Blood Group, Joining Date, Address, DOB, NID.
+2. **Online Class:** "Schedule Class" button/form -> List of scheduled upcoming classes.
+3. **Mark Entry:** Hierarchical drill-down (Category -> Term -> Test List -> Class -> Section -> Subject). Edit mode shows student roll numbers, a mark input with `+` and `-` stepper icons, remarks input, and simulates "Auto-save" UI toasts.
+4. **Student Attendance:** Select Date/Class/Section. Shows student list with Present/Absent/Late toggles. Must include "Present All" and "Absent All" batch action buttons, and a "Save" button.
+5. **Student List:** Select Class -> Section -> Directory of students (Image, Name, ID, Phone) with Edit buttons.
+6. **Routine:** 7-day horizontal pills (Sat-Fri). Includes classes, meetings, and exam guard duties.
+7. **Personal Attendance:** Monthly calendar view of the teacher's own attendance.
+8. **Academic Calendar:** Shared component with students.
 
-## 1. Project Overview & Architecture
-EduManage is a mobile-first educational management system built strictly with **Vanilla HTML, CSS, and JavaScript**. 
-- It functions as a Single Page Application (SPA) using DOM manipulation to switch views (adding/removing `.active` classes).
-- It is designed to run in a browser and as a WebView inside a native Flutter app. 
-- **BANNED FRAMEWORKS:** Do not use React, Vue, Tailwind, or backend frameworks. Stick strictly to vanilla web technologies.
-
-## 2. Design System & Theme
-- **Theme:** Lavender (`#8E7CC3`) as primary, `#674EA7` for dark contrasts. Backgrounds are `#f7f7f7` and `#ffffff`.
-- **Typography:** Roboto font family.
-- **Icons:** Phosphor Icons (`.ph` for outline, `.ph-fill` for active states).
-- **UI/UX Feel:** Container max-width is 400px. Interactions must have native-like touch feedback (e.g., `transform: scale(0.98)`) and smooth transitions.
-
-## 3. Cultural Context (Strict)
-All placeholder data must reflect a **Bangladeshi School Context**:
-- **Currency:** Tk. or BDT.
-- **Week/Routine:** The workweek is Saturday to Thursday. Friday is the weekend.
-- **Names:** Common Bangladeshi names (e.g., Prof. Anisul Islam, Dr. Shirin Akter).
-- **Locations & IDs:** Bangladeshi addresses, NID (National ID) format.
-- **Classes/Sections:** Class 6 to 10, Sections like Padma, Meghna, Jamuna, or A, B, C.
-
-## 4. Required Teacher Features & Views (NEW)
-1. **Teacher Profile (`teacherProfileView`):** Banner with Image, Name, Designation. List details: Department Name, Section/Level, Email, Contact No, Office Phone, Blood Group, Joining Date, Address, DOB, and NID.
-2. **Online Class (`teacherOnlineClassView`):** A "Schedule Class" button (prompts for Date, Time, Link). Below it, a list of scheduled classes.
-3. **Mark Entry (`teacherMarkEntryView`):** Hierarchical flow:
-   - *Categories:* Class Test, Model Test, Term Exam.
-   - *Flow:* Select Category -> Select Term/Session -> View List of Tests (with "Add New" button) -> Select Level (Class) -> Select Section -> Select Subject (shows View/Edit buttons).
-   - *Edit Mode:* Shows Student Roll Numbers, Mark Input box with `+` and `-` stepper icons, and a Remarks input. Includes simulated "Auto-save" UI feedback.
-4. **Student Attendance (`teacherStudentAttendanceView`):** Select Date, Class, Section to reveal student list. Each student has Present/Absent/Late toggles and Remarks. Top buttons for "Present All" and "Absent All". Bottom "Save" button.
-5. **Student List (`teacherStudentListView`):** Flow: Select Class -> Select Section -> List of Students (Image, Name, ID, Phone). Include an "Edit" button for each student.
-6. **Teacher Routine (`teacherRoutineView`):** 7-day week (Sat to Fri) horizontal pills. Includes regular classes, staff meetings, and exam guard duties.
-7. **Personal Attendance (`teacherPersonalAttendanceView`):** Monthly calendar view of the teacher's own attendance, identical in function to the student version.
-8. **Academic Calendar (`acadCalendarView`):** Shared with students; interactive monthly view highlighting holidays, exams, and class days.
-
-## 5. Authentication (Temporary Bypass)
-- **DO NOT DELETE** the Supabase initialization or the body of the `handleLogin()` function.
-- **DO Modify** the `#loginView` UI: Replace email/password inputs with two clear buttons: "Login as Student" and "Login as Teacher".
-- Update the click handlers to simply call `loginAs('student')` and `loginAs('teacher')` directly, bypassing the Supabase API call temporarily for development purposes. Keep the Supabase code commented out or unreachable within `handleLogin()`.
+## 7. Authentication & Connectivity
+- **Auth Bypass:** `AuthController` -> `login` method loads `views/auth/login.php`. Replace email/password with two buttons: "Login as Student" and "Login as Teacher". These POST to the controller to set `$_SESSION['role']` and redirect.
+- **Supabase:** Keep the vanilla JS Supabase initialization code in `assets/js/main.js` but comment out the actual API call logic.
+- **Flutter Bridge:** Ensure `<body class="native-mode">` and `window.FlutterBridge.postMessage` JS hooks remain perfectly intact in the global assets so the native app wrapper does not break.

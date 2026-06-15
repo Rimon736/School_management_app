@@ -1,354 +1,35 @@
-// Dashboard controller
-import { rolesData, dummyViewData, buildBkashList } from '../data.js';
-import { renderAttendance } from './attendance.js';
+// Centralized JS for EduManage (Raw PHP MVC Integration)
+// Contains state models, UI utilities, calendars, and FlutterBridge hooks
 
-export function renderRole(currentRole) {
-    const data = rolesData[currentRole];
-    const viewData = dummyViewData[currentRole];
+// --- SUPABASE CLIENT INITIALIZATION (COMMENTED OUT FOR DEMO BYPASS) ---
+/*
+const supabaseUrl = 'https://your-supabase-project.supabase.co';
+const supabaseKey = 'your-anonymous-key';
+const supabase = supabaseJS.createClient(supabaseUrl, supabaseKey);
+*/
 
-    if (!data || !viewData) {
-        console.error(`Missing data for role: ${currentRole}`);
-        return;
+// --- ROLE CONFIGURATIONS & DATA ---
+const rolesData = {
+    student: {
+        balanceAmount: '৳ 12,500.00'
+    },
+    teacher: {
+        balanceAmount: '৳ 45,000.00'
     }
+};
 
-    // Helper functions to set element properties safely
-    const setTxt = (id, val) => {
-        const el = document.getElementById(id);
-        if (el) el.innerText = val;
-    };
-
-    const setSrc = (id, val) => {
-        const el = document.getElementById(id);
-        if (el) el.src = val;
-    };
-
-    const setHtml = (id, val) => {
-        const el = document.getElementById(id);
-        if (el) el.innerHTML = val;
-    };
-
-    // Header
-    const avatarUrl = `https://api.dicebear.com/7.x/avataaars/svg?seed=${data.avatarSeed}&backgroundColor=8E7CC3`;
-    setTxt('userName', data.name);
-    setTxt('userRole', data.roleLabel);
-    setSrc('userAvatar', avatarUrl);
-    
-    const balanceIcon = document.getElementById('balanceIcon');
-    if (balanceIcon) balanceIcon.className = `ph-fill ${data.balanceIcon}`;
-    setTxt('currentRoleBadge', data.roleLabel);
-
-    // Profile
-    setTxt('innerProfileName', data.name);
-    setSrc('innerProfileAvatar', avatarUrl);
-    if (viewData.profile) {
-        setTxt('innerProfileId', `ID: ${viewData.profile.id}`);
-        setTxt('profileClass', viewData.profile.classRole);
-        setTxt('profileRollLabel', viewData.profile.rollLabel);
-        setTxt('profileRoll', viewData.profile.roll);
-        setTxt('profileField1Label', viewData.profile.field1Label);
-        setTxt('profileField1', viewData.profile.field1Val);
-        setTxt('profileField2Label', viewData.profile.field2Label);
-        setTxt('profileField2', viewData.profile.field2Val);
-        setTxt('profileAddress', viewData.profile.address);
-        setTxt('profilePhone', viewData.profile.phone);
-        setTxt('profileNationality', viewData.profile.nationality);
-        setTxt('profileDOB', viewData.profile.dob);
-    }
-
-    // Teacher specific profile details
-    if (currentRole === 'teacher' && viewData.profile) {
-        setTxt('teacherProfileName', viewData.profile.name || data.name);
-        setTxt('teacherProfileDesignation', viewData.profile.designation || 'Principal & Tech Head');
-        setTxt('teacherProfileDept', viewData.profile.dept || 'General Section');
-        setTxt('teacherProfileLevel', viewData.profile.level || 'Class Teacher, Grade 8');
-        setTxt('teacherProfileEmail', viewData.profile.email || 'anisul.islam@edumanage.com');
-        setTxt('teacherProfileContact', viewData.profile.phone || '01819-123456');
-        setTxt('teacherProfileOffice', viewData.profile.officePhone || '+880-2-998877');
-        setTxt('teacherProfileBlood', viewData.profile.bloodGroup || 'O+ (Positive)');
-        setTxt('teacherProfileJoin', viewData.profile.joiningDate || '12 Jan 2015');
-        setTxt('teacherProfileAddress', viewData.profile.address || 'Dhanmondi, Dhaka');
-        setTxt('teacherProfileDOB', viewData.profile.dob || '04 Oct 1985');
-        setTxt('teacherProfileNID', viewData.profile.nid || '1985263598741');
-        const tAvatarUrl = `https://api.dicebear.com/7.x/avataaars/svg?seed=${viewData.profile.avatarSeed || data.avatarSeed}&backgroundColor=8E7CC3`;
-        setSrc('teacherProfileAvatar', tAvatarUrl);
-    }
-
-    // Classroom rendering
-    if (viewData.classroom) {
-        const onlineHTML = (viewData.classroom.online || []).map(c => `
-            <div class="classroom-card">
-                <div class="classroom-card-details">
-                    <h4>${c.title}</h4>
-                    <p><i class="ph ph-user"></i> ${c.subtitle} | <i class="ph ph-clock"></i> ${c.time}</p>
-                </div>
-                <button class="classroom-join-btn" onclick="window.showToast('Joining zoom...'); window.open('${c.link}', '_blank');">
-                    <i class="ph-fill ph-video-camera"></i> Join
-                </button>
-            </div>
-        `).join('') || `<div class="empty-state-routine">No live classes scheduled</div>`;
-        setHtml('onlineClassesList', onlineHTML);
-
-        const recordedHTML = (viewData.classroom.recorded || []).map(c => `
-            <div class="classroom-card" onclick="window.showToast('Playing recorded lecture...')">
-                <div class="classroom-card-details">
-                    <h4>${c.title}</h4>
-                    <p><i class="ph ph-tag"></i> ${c.topic} | <i class="ph ph-clock"></i> ${c.duration} | ${c.subtitle}</p>
-                </div>
-                <div class="teacher-phone-btn"><i class="ph-fill ph-play"></i></div>
-            </div>
-        `).join('') || `<div class="empty-state-routine">No recorded lectures uploaded</div>`;
-        setHtml('recordedClassesList', recordedHTML);
-    }
-
-    // Routine rendering (Auto-detect day)
-    if (viewData.classRoutine || viewData.teacherRoutine) {
-        const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        const todayIndex = new Date().getDay();
-        let defaultDay = dayNames[todayIndex];
-        if (defaultDay === 'Friday' && currentRole !== 'teacher') defaultDay = 'Saturday'; // Friday is weekend, default to Saturday
-        
-        if (currentRole === 'teacher') {
-            // Wait slightly for DOM or define directly
-            setTimeout(() => { selectTeacherRoutineDay(defaultDay); }, 10);
-        } else {
-            selectRoutineDay(defaultDay);
+const dummyViewData = {
+    teacher: {
+        classroom: {
+            online: [
+                { title: 'Bangla 1st Paper (Class 8)', subtitle: '38 Students Registered', icon: 'ph-video-camera', iconBg: 'rgba(142, 124, 195, 0.08)', iconColor: 'var(--brand-color)', link: 'https://meet.google.com/abc-defg-hij', time: '10:00 AM' }
+            ]
         }
     }
-    
-    if (viewData.examRoutine) {
-        const examEl = document.getElementById('examRoutineContainer');
-        if (examEl) examEl.innerHTML = buildBkashList(viewData.examRoutine);
-    }
-    
-    if (viewData.finance && viewData.finance.history) {
-        setHtml('financeHistoryContainer', buildBkashList(viewData.finance.history));
-    }
+};
 
-    // Results rendering with Collapsible subject breakdowns
-    if (viewData.results && viewData.results.terms) {
-        const termResultsHTML = viewData.results.terms.map((term, index) => {
-            const subjectsHTML = (term.subjects || []).map(s => `
-                <tr>
-                    <td>${s.name}</td>
-                    <td>${s.marks}</td>
-                    <td><strong>${s.grade}</strong></td>
-                    <td>${typeof s.gpa === 'number' ? s.gpa.toFixed(2) : s.gpa}</td>
-                </tr>
-            `).join('');
-
-            return `
-                <div class="term-result-card" onclick="toggleResultBreakdown(this)">
-                    <div class="term-result-header">
-                        <div>
-                            <div class="term-result-term">${term.term}</div>
-                            <div class="term-result-note">${term.note}</div>
-                        </div>
-                        <div class="term-result-grade">${term.grade}</div>
-                    </div>
-                    <div class="term-result-grid">
-                        <div>
-                            <span>Total</span>
-                            <strong>${term.total}</strong>
-                        </div>
-                        <div>
-                            <span>GPA</span>
-                            <strong>${term.gpa}</strong>
-                        </div>
-                        <div>
-                            <span>Position</span>
-                            <strong>${term.position}</strong>
-                        </div>
-                    </div>
-                    <div class="term-result-details" style="display: none;" onclick="event.stopPropagation()">
-                        <h4>Subject-wise breakdown</h4>
-                        <table class="breakdown-table">
-                            <thead>
-                                <tr>
-                                    <th>Subject</th>
-                                    <th>Marks</th>
-                                    <th>Grade</th>
-                                    <th>GPA</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${subjectsHTML}
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="term-result-toggle-hint">Tap to show subject details</div>
-                </div>
-            `;
-        }).join('');
-        setHtml('termResultsContainer', termResultsHTML);
-    }
-
-    // Teachers List rendering
-    if (viewData.teachers) {
-        const teachersHTML = viewData.teachers.map(t => `
-            <div class="teacher-card">
-                <div class="teacher-avatar">
-                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=${t.avatar}&backgroundColor=E6E0F8" alt="${t.name}">
-                </div>
-                <div class="teacher-info">
-                    <div class="teacher-name">${t.name}</div>
-                    <div class="teacher-designation">${t.designation}</div>
-                </div>
-                <div class="teacher-phone-btn" onclick="copyToClipboard('${t.phone}'); event.stopPropagation();">
-                    <i class="ph ph-phone"></i>
-                </div>
-            </div>
-        `).join('');
-        setHtml('teachersListContainer', teachersHTML);
-    }
-
-    renderAttendance();
-
-    // Render academic calendar as well if available
-    const acadCalGrid = document.getElementById('acadCalGridContainer');
-    if (acadCalGrid) {
-        import('./attendance.js').then(m => {
-            if (m.renderAcademicCalendar) m.renderAcademicCalendar();
-        });
-    }
-
-    if (viewData.finance) {
-        setTxt('financeTitle', viewData.finance.title);
-        setTxt('financeAmount', viewData.finance.amount);
-    }
-
-    // Grid Menu
-    if (data.grid) {
-        const gridHTML = data.grid.map(item => `
-            <div class="grid-item" onclick='${item.action}'>
-                <div class="icon-circle ${item.color}"><i class="ph ${item.icon}"></i></div>
-                <span>${item.label}</span>
-            </div>
-        `).join('');
-        setHtml('mainGrid', gridHTML);
-
-        // Populate side menu dynamically to match the grid menu actions
-        const sideMenuHTML = `
-            <li class="sm-item" onclick="switchRole()" style="background-color: #f4f0fa; font-weight: 500;">
-                <i class="ph ph-arrows-left-right" style="color: var(--brand-color);"></i> Switch Role
-                <span class="sm-badge" id="currentRoleBadge">${data.roleLabel}</span>
-            </li>
-            ${data.grid.map(item => `
-                <li class="sm-item" onclick='${item.action}'>
-                    <i class="ph ${item.icon}"></i> ${item.label}
-                </li>
-            `).join('')}
-            <li class="sm-item" onclick="logout()">
-                <i class="ph ph-sign-out"></i> Log out
-            </li>
-        `;
-        setHtml('sideMenuListContainer', sideMenuHTML);
-    }
-
-    // Quick Features
-    if (data.quick) {
-        const quickHTML = data.quick.map(item => `
-            <div class="qf-card" onclick='${item.action}'>
-                <i class="ph ${item.icon}" style="color: ${item.color};"></i>
-                <span>${item.label}</span>
-            </div>
-        `).join('');
-        setHtml('quickFeatures', quickHTML);
-    }
-
-    if (currentRole === 'teacher') {
-        renderScheduledClasses();
-        renderMarkEntry();
-    }
-}
-
-// Global functions for views interactions
-export function selectRoutineDay(dayName) {
-    const role = (document.getElementById('currentRoleBadge')?.innerText.toLowerCase() === 'teacher') ? 'teacher' : 'student';
-    const routineData = dummyViewData[role].classRoutine;
-    
-    // Highlight day pill
-    document.querySelectorAll('.routine-day-btn').forEach(btn => {
-        if (btn.innerText.trim().toLowerCase() === dayName.substring(0, 3).toLowerCase()) {
-            btn.classList.add('active');
-        } else {
-            btn.classList.remove('active');
-        }
-    });
-
-    const container = document.getElementById('classRoutineContainer');
-    if (!container) return;
-
-    const items = routineData ? routineData[dayName] : null;
-    if (!items || items.length === 0) {
-        container.innerHTML = `<div class="empty-state-routine">No classes scheduled for ${dayName}</div>`;
-    } else {
-        container.innerHTML = buildBkashList(items);
-    }
-}
-
-export function switchClassroomTab(tabName) {
-    document.querySelectorAll('.classroom-tab').forEach(btn => btn.classList.remove('active'));
-    document.querySelectorAll('.classroom-panel').forEach(panel => panel.classList.remove('active'));
-    
-    if (tabName === 'online') {
-        const tabEl = document.querySelector('.classroom-tab:nth-child(1)');
-        if (tabEl) tabEl.classList.add('active');
-        const panelEl = document.getElementById('onlineClassesList');
-        if (panelEl) panelEl.classList.add('active');
-    } else {
-        const tabEl = document.querySelector('.classroom-tab:nth-child(2)');
-        if (tabEl) tabEl.classList.add('active');
-        const panelEl = document.getElementById('recordedClassesList');
-        if (panelEl) panelEl.classList.add('active');
-    }
-}
-
-export function toggleResultBreakdown(cardEl) {
-    const details = cardEl.querySelector('.term-result-details');
-    const hint = cardEl.querySelector('.term-result-toggle-hint');
-    if (!details) return;
-
-    if (details.style.display === 'none') {
-        details.style.display = 'block';
-        if (hint) hint.innerText = 'Tap to hide details';
-    } else {
-        details.style.display = 'none';
-        if (hint) hint.innerText = 'Tap to show subject details';
-    }
-}
-
-export function copyToClipboard(phoneNum) {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(phoneNum).then(() => {
-            window.showToast('Number copied!');
-        }).catch(err => {
-            console.error('Clipboard copy failed:', err);
-            fallbackCopy(phoneNum);
-        });
-    } else {
-        fallbackCopy(phoneNum);
-    }
-}
-
-function fallbackCopy(text) {
-    const textArea = document.createElement("textarea");
-    textArea.value = text;
-    textArea.style.position = "fixed";  // Avoid scrolling to bottom
-    document.body.appendChild(textArea);
-    textArea.focus();
-    textArea.select();
-    try {
-        document.execCommand('copy');
-        window.showToast('Number copied!');
-    } catch (err) {
-        console.error('Fallback copy failed:', err);
-        window.showToast('Failed to copy');
-    }
-    document.body.removeChild(textArea);
-}
-
-// Dummy data structures for Teacher features
-export let markEntryState = {
+// --- TEACHER FEATURE DATA STATES ---
+let markEntryState = {
     step: 1, // 1: Category, 2: Term, 3: Test List, 4: Class, 5: Section, 6: Subject, 7: Edit Mode
     category: '',
     term: '',
@@ -358,14 +39,14 @@ export let markEntryState = {
     subject: ''
 };
 
-export let markEntryTests = [
+let markEntryTests = [
     { id: 'ct1', name: 'Class Test 1', category: 'Class Test', term: '1st Term' },
     { id: 'ct2', name: 'Class Test 2', category: 'Class Test', term: '1st Term' },
     { id: 'mt1', name: 'Model Test 1', category: 'Model Test', term: '1st Term' },
     { id: 'term1', name: 'Term Exam', category: 'Term Exam', term: '1st Term' }
 ];
 
-export let markEntryStudents = [
+let markEntryStudents = [
     { roll: 1, name: 'Anisur Rahman', marks: 85, remarks: 'Excellent performance' },
     { roll: 2, name: 'Fatema Khatun', marks: 78, remarks: 'Good progress' },
     { roll: 3, name: 'Jamil Mahmud', marks: 92, remarks: 'Very attentive' },
@@ -373,7 +54,7 @@ export let markEntryStudents = [
     { roll: 5, name: 'Sadia Sultana', marks: 88, remarks: 'Consistently good' }
 ];
 
-export let attendanceStudents = [
+let attendanceStudents = [
     { roll: 1, name: 'Anisur Rahman', status: 'present', remarks: '' },
     { roll: 2, name: 'Fatema Khatun', status: 'present', remarks: '' },
     { roll: 3, name: 'Jamil Mahmud', status: 'present', remarks: '' },
@@ -381,7 +62,7 @@ export let attendanceStudents = [
     { roll: 5, name: 'Sadia Sultana', status: 'present', remarks: '' }
 ];
 
-export let studentDirectoryList = [
+let studentDirectoryList = [
     { id: '2026-EDU-1001', name: 'Tahmid Hasan', roll: 1, phone: '01712-112233', avatar: 'Tahmid' },
     { id: '2026-EDU-1002', name: 'Nusrat Jahan', roll: 2, phone: '01712-445566', avatar: 'Nusrat' },
     { id: '2026-EDU-1003', name: 'Jamil Mahmud', roll: 3, phone: '01712-345678', avatar: 'Jamil' },
@@ -389,32 +70,479 @@ export let studentDirectoryList = [
     { id: '2026-EDU-1005', name: 'Ayesha Akter', roll: 5, phone: '01911-556677', avatar: 'Ayesha' }
 ];
 
-// --- TEACHER ROUTINE SCHEDULE ---
-export function selectTeacherRoutineDay(dayName) {
-    const routineData = dummyViewData.teacher.teacherRoutine;
-    
-    // Highlight day pill
-    document.querySelectorAll('#teacherRoutineView .routine-day-btn').forEach(btn => {
-        if (btn.innerText.trim().toLowerCase() === dayName.substring(0, 3).toLowerCase()) {
-            btn.classList.add('active');
-        } else {
-            btn.classList.remove('active');
-        }
-    });
+// --- HELPER FUNCTION FOR LIST RENDERING ---
+function buildBkashList(items) {
+    return items.map(item => `
+        <div class="bkash-list-item" onclick="showToast('${item.title} Details')">
+            <div class="bkash-list-icon" style="background: ${item.iconBg}; color: ${item.iconColor}; font-weight: bold; font-size: ${item.icon.length <= 2 ? '18px' : '24px'};">
+                ${item.icon.startsWith('ph-') ? `<i class="ph ${item.icon}"></i>` : item.icon}
+            </div>
+            <div class="bkash-list-content">
+                <div class="bkash-list-title">${item.title}</div>
+                <div class="bkash-list-subtitle">${item.subtitle}</div>
+            </div>
+            <div class="bkash-list-right">
+                <div class="bkash-list-value">${item.value}</div>
+                <div class="bkash-list-subvalue ${item.subStatus}">${item.subvalue}</div>
+            </div>
+        </div>
+    `).join('');
+}
 
-    const container = document.getElementById('teacherRoutineContainer');
-    if (!container) return;
+// --- SHARED UI ACTIONS ---
+let balanceRevealed = false;
+let balanceTimeout;
+let toastTimeout;
 
-    const items = routineData ? routineData[dayName] : null;
-    if (!items || items.length === 0) {
-        container.innerHTML = `<div class="empty-state-routine">No classes scheduled for ${dayName}</div>`;
-    } else {
-        container.innerHTML = buildBkashList(items);
+function showToast(message) {
+    const toastEl = document.getElementById('toastMsg');
+    if (!toastEl) return;
+
+    toastEl.innerText = message;
+    toastEl.classList.add('show');
+
+    clearTimeout(toastTimeout);
+    toastTimeout = setTimeout(() => {
+        toastEl.classList.remove('show');
+    }, 2000);
+
+    const sideMenu = document.getElementById('sideMenu');
+    if (sideMenu && sideMenu.classList.contains('open') && message !== 'Options' && !message.includes('Details')) {
+        toggleMenu();
     }
 }
 
-// --- ONLINE CLASS SCHEDULING ---
-export function renderScheduledClasses() {
+function toggleMenu() {
+    const sideMenu = document.getElementById('sideMenu');
+    const menuOverlay = document.getElementById('menuOverlay');
+    if (!sideMenu || !menuOverlay) return;
+
+    const isOpen = sideMenu.classList.contains('open');
+    if (isOpen) {
+        sideMenu.classList.remove('open');
+        menuOverlay.classList.remove('active');
+    } else {
+        sideMenu.classList.add('open');
+        menuOverlay.classList.add('active');
+    }
+}
+
+function toggleBalance() {
+    if (balanceRevealed) return;
+
+    const balanceBtn = document.getElementById('balanceBtn');
+    const balanceText = document.getElementById('balanceText');
+    const roleBadge = document.getElementById('currentRoleBadge');
+    if (!balanceBtn || !balanceText) return;
+
+    // Infer current role
+    const currentRole = (roleBadge && roleBadge.innerText.toLowerCase() === 'teacher') ? 'teacher' : 'student';
+
+    balanceRevealed = true;
+    balanceText.style.opacity = '0';
+
+    setTimeout(() => {
+        balanceText.innerText = rolesData[currentRole].balanceAmount;
+        balanceText.style.opacity = '1';
+        balanceBtn.style.paddingLeft = '12px';
+    }, 150);
+
+    clearTimeout(balanceTimeout);
+    balanceTimeout = setTimeout(() => {
+        balanceText.style.opacity = '0';
+        setTimeout(() => {
+            balanceText.innerText = 'Tap for Balance';
+            balanceText.style.opacity = '1';
+            balanceBtn.style.paddingLeft = '6px';
+            balanceRevealed = false;
+        }, 150);
+    }, 3000);
+}
+
+function enableNativeMode() {
+    document.body.classList.add('native-mode');
+    console.log("Native mode enabled by Flutter. Web UI adapted.");
+}
+
+// --- CLASSROOM TAB TOGGLE ---
+function switchClassroomTab(tab) {
+    document.querySelectorAll('.classroom-tab').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.classroom-panel').forEach(p => p.classList.remove('active'));
+    
+    if (tab === 'online') {
+        document.getElementById('tab-online')?.classList.add('active');
+        document.getElementById('onlineClassesList')?.classList.add('active');
+    } else {
+        document.getElementById('tab-recorded')?.classList.add('active');
+        document.getElementById('recordedClassesList')?.classList.add('active');
+    }
+}
+
+// --- STUDENT ROUTINE NAVIGATION ---
+function selectRoutineDay(day) {
+    document.querySelectorAll('.routine-day-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.day-routine-panel').forEach(p => p.style.display = 'none');
+    
+    document.getElementById('btn-' + day)?.classList.add('active');
+    const panel = document.getElementById('routine-' + day);
+    if (panel) {
+        panel.style.display = 'block';
+    }
+}
+
+// --- TEACHER ROUTINE NAVIGATION ---
+function selectTeacherRoutineDay(day) {
+    document.querySelectorAll('#teacherRoutineView .routine-day-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.teacher-routine-panel').forEach(p => p.style.display = 'none');
+    
+    document.getElementById('tbtn-' + day)?.classList.add('active');
+    const panel = document.getElementById('troutine-' + day);
+    if (panel) {
+        panel.style.display = 'block';
+    }
+}
+
+// --- ATTENDANCE CALENDAR RENDER ---
+let attViewDate = new Date();
+const attDataCache = {};
+
+function getAttendanceData(role, year, month) {
+    const key = `${role}-${year}-${month}`;
+    if (attDataCache[key]) return attDataCache[key];
+
+    const records = {};
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    let presentCount = 0, absentCount = 0, leaveCount = 0;
+
+    const today = new Date();
+    const isCurrentMonth = today.getFullYear() === year && today.getMonth() === month;
+    const maxDay = isCurrentMonth ? today.getDate() : daysInMonth;
+
+    for (let i = 1; i <= daysInMonth; i++) {
+        const date = new Date(year, month, i);
+        const dayOfWeek = date.getDay();
+
+        if (dayOfWeek !== 5 && dayOfWeek !== 6 && i <= maxDay) {
+            const rand = Math.sin(year + month + i + (role === 'student' ? 1 : 2)) * 10000;
+            const normalized = rand - Math.floor(rand);
+
+            let status = 'present';
+            if (role === 'student') {
+                if (normalized < 0.1) status = 'absent';
+                else if (normalized < 0.15) status = 'leave';
+            } else {
+                if (normalized < 0.05) status = 'leave';
+            }
+
+            records[i] = status;
+            if(status === 'present') presentCount++;
+            else if(status === 'absent') absentCount++;
+            else if(status === 'leave') leaveCount++;
+        }
+    }
+
+    attDataCache[key] = {
+        records,
+        stats: { total: presentCount + absentCount + leaveCount, present: presentCount, absent: absentCount, leave: leaveCount }
+    };
+    return attDataCache[key];
+}
+
+function renderAttendance() {
+    const calMonthDisplay = document.getElementById('calMonthDisplay');
+    if (!calMonthDisplay) return;
+    
+    const year = attViewDate.getFullYear();
+    const month = attViewDate.getMonth();
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+    calMonthDisplay.innerText = `${monthNames[month]} ${year}`;
+
+    const dataObj = getAttendanceData('student', year, month);
+    if (!dataObj) return;
+
+    const records = dataObj.records;
+    const stats = dataObj.stats;
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    let gridHTML = `
+        <div class="bkash-cal-header">Su</div><div class="bkash-cal-header">Mo</div>
+        <div class="bkash-cal-header">Tu</div><div class="bkash-cal-header">We</div>
+        <div class="bkash-cal-header">Th</div><div class="bkash-cal-header">Fr</div>
+        <div class="bkash-cal-header">Sa</div>
+    `;
+
+    for (let i = 0; i < firstDay; i++) {
+        gridHTML += `<div class="bkash-cal-date empty"></div>`;
+    }
+
+    for (let i = 1; i <= daysInMonth; i++) {
+        const status = records[i] || 'none';
+        let classList = "bkash-cal-date " + status;
+        let onclick = status !== 'none' ? `onclick="window.showToast('Date: ${i} ${monthNames[month]} - ${status.charAt(0).toUpperCase() + status.slice(1)}');"` : '';
+
+        gridHTML += `<div class="${classList}" ${onclick}><span>${i}</span></div>`;
+    }
+    
+    const calGridContainer = document.getElementById('calGridContainer');
+    if (calGridContainer) calGridContainer.innerHTML = gridHTML;
+
+    const attTotal = document.getElementById('attTotal');
+    if (attTotal) attTotal.innerText = stats.total;
+
+    const attPresent = document.getElementById('attPresent');
+    if (attPresent) attPresent.innerText = stats.present;
+
+    const attAbsent = document.getElementById('attAbsent');
+    if (attAbsent) attAbsent.innerText = stats.absent;
+
+    const listItems = [];
+    for (let i = daysInMonth; i >= 1; i--) {
+        if(records[i]) {
+            const status = records[i];
+            let icon = 'ph-check-circle', iconBg = 'rgba(46, 204, 113, 0.1)', iconColor = '#2ecc71', subStatus = 'paid';
+
+            if (status === 'absent') { icon = 'ph-x-circle'; iconBg = 'rgba(231, 76, 60, 0.1)'; iconColor = '#e74c3c'; subStatus = 'due'; }
+            else if (status === 'leave') { icon = 'ph-minus-circle'; iconBg = 'rgba(243, 156, 18, 0.1)'; iconColor = '#f39c12'; subStatus = 'neutral'; }
+
+            listItems.push({
+                title: `${i} ${monthNames[month]} ${year}`,
+                subtitle: 'Daily Attendance',
+                icon: icon, iconBg: iconBg, iconColor: iconColor,
+                value: status.charAt(0).toUpperCase() + status.slice(1),
+                subvalue: status === 'present' ? 'Recorded' : 'Noted',
+                subStatus: subStatus
+            });
+
+            if(listItems.length >= 5) break;
+        }
+    }
+
+    const attListContainer = document.getElementById('attListContainer');
+    if (attListContainer) {
+        attListContainer.innerHTML = listItems.length > 0
+            ? buildBkashList(listItems)
+            : `<div style="text-align:center; padding: 20px; color: var(--text-light); font-size: 13px;">No records for this month</div>`;
+    }
+}
+
+function changeAttMonth(delta) {
+    attViewDate.setMonth(attViewDate.getMonth() + delta);
+    renderAttendance();
+}
+
+// --- ACADEMIC CALENDAR RENDER ---
+let acadViewDate = new Date();
+
+function renderAcademicCalendar() {
+    const acadCalMonthDisplay = document.getElementById('acadCalMonthDisplay');
+    if (!acadCalMonthDisplay) return;
+
+    const year = acadViewDate.getFullYear();
+    const month = acadViewDate.getMonth();
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+    acadCalMonthDisplay.innerText = `${monthNames[month]} ${year}`;
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    const holidays = {
+        '1-21': { name: 'Shaheed Day & Mother Language Day', type: 'holiday' },
+        '2-26': { name: 'Independence Day', type: 'holiday' },
+        '3-14': { name: 'Pohela Boishakh (Bangla New Year)', type: 'holiday' },
+        '4-1': { name: 'May Day', type: 'holiday' },
+        '11-16': { name: 'Victory Day', type: 'holiday' },
+        '11-25': { name: 'Christmas Day', type: 'holiday' }
+    };
+
+    const getEventForDate = (y, m, d) => {
+        const key = `${m}-${d}`;
+        if (holidays[key]) return holidays[key];
+        
+        const date = new Date(y, m, d);
+        const dayOfWeek = date.getDay();
+        
+        if (dayOfWeek === 5) {
+            return { name: 'Weekly Holy Weekend (Friday)', type: 'holiday' };
+        }
+
+        if (m === 10 && d >= 10 && d <= 15) {
+            return { name: 'Mid Term Examination', type: 'exam-day' };
+        }
+
+        if (m === 11 && d >= 5 && d <= 12) {
+            return { name: 'Final Examination', type: 'exam-day' };
+        }
+
+        if (m === 3 && d >= 5 && d <= 10) {
+            return { name: '1st Term Examination', type: 'exam-day' };
+        }
+
+        return { name: 'Regular Class Day', type: 'class-day' };
+    };
+
+    let gridHTML = `
+        <div class="bkash-cal-header">Su</div><div class="bkash-cal-header">Mo</div>
+        <div class="bkash-cal-header">Tu</div><div class="bkash-cal-header">We</div>
+        <div class="bkash-cal-header">Th</div><div class="bkash-cal-header">Fr</div>
+        <div class="bkash-cal-header">Sa</div>
+    `;
+
+    for (let i = 0; i < firstDay; i++) {
+        gridHTML += `<div class="bkash-cal-date empty"></div>`;
+    }
+
+    const eventList = [];
+
+    for (let i = 1; i <= daysInMonth; i++) {
+        const ev = getEventForDate(year, month, i);
+        let classList = "bkash-cal-date " + ev.type;
+        let onclick = `onclick="window.showToast('Date: ${i} ${monthNames[month]} - ${ev.name}');"`;
+
+        gridHTML += `<div class="${classList}" ${onclick}><span>${i}</span></div>`;
+
+        if (ev.type === 'holiday' || ev.type === 'exam-day') {
+            eventList.push({
+                title: `${i} ${monthNames[month]} ${year}`,
+                subtitle: ev.name,
+                icon: ev.type === 'holiday' ? 'ph-sparkles' : 'ph-exam',
+                iconBg: ev.type === 'holiday' ? 'rgba(243, 156, 18, 0.1)' : 'rgba(231, 76, 60, 0.1)',
+                iconColor: ev.type === 'holiday' ? '#f39c12' : '#e74c3c',
+                value: ev.type === 'holiday' ? 'Holiday' : 'Exam',
+                subvalue: ev.type === 'holiday' ? 'Closed' : 'Schedule',
+                subStatus: ev.type === 'holiday' ? 'neutral' : 'due'
+            });
+        }
+    }
+
+    const acadCalGridContainer = document.getElementById('acadCalGridContainer');
+    if (acadCalGridContainer) acadCalGridContainer.innerHTML = gridHTML;
+
+    const acadEventsList = document.getElementById('acadEventsList');
+    if (acadEventsList) {
+        acadEventsList.innerHTML = eventList.length > 0
+            ? buildBkashList(eventList)
+            : `<div style="text-align:center; padding: 20px; color: var(--text-light); font-size: 13px;">No exams or holidays scheduled for this month</div>`;
+    }
+}
+
+function changeAcadMonth(delta) {
+    acadViewDate.setMonth(acadViewDate.getMonth() + delta);
+    renderAcademicCalendar();
+}
+
+// --- TEACHER PERSONAL ATTENDANCE RENDER ---
+let teacherAttViewDate = new Date();
+
+function renderTeacherPersonalAttendance() {
+    const calMonthDisplay = document.getElementById('teacherPersonalCalMonthDisplay');
+    if (!calMonthDisplay) return;
+
+    const year = teacherAttViewDate.getFullYear();
+    const month = teacherAttViewDate.getMonth();
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+    calMonthDisplay.innerText = `${monthNames[month]} ${year}`;
+
+    const dataObj = getAttendanceData('teacher', year, month);
+    if (!dataObj) return;
+
+    const records = dataObj.records;
+    const stats = dataObj.stats;
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    let gridHTML = `
+        <div class="bkash-cal-header">Su</div><div class="bkash-cal-header">Mo</div>
+        <div class="bkash-cal-header">Tu</div><div class="bkash-cal-header">We</div>
+        <div class="bkash-cal-header">Th</div><div class="bkash-cal-header">Fr</div>
+        <div class="bkash-cal-header">Sa</div>
+    `;
+
+    for (let i = 0; i < firstDay; i++) {
+        gridHTML += `<div class="bkash-cal-date empty"></div>`;
+    }
+
+    for (let i = 1; i <= daysInMonth; i++) {
+        const status = records[i] || 'none';
+        let classList = "bkash-cal-date " + status;
+        let onclick = status !== 'none' ? `onclick="window.showToast('Date: ${i} ${monthNames[month]} - ${status.charAt(0).toUpperCase() + status.slice(1)}');"` : '';
+
+        gridHTML += `<div class="${classList}" ${onclick}><span>${i}</span></div>`;
+    }
+    
+    const calGridContainer = document.getElementById('teacherPersonalCalGridContainer');
+    if (calGridContainer) calGridContainer.innerHTML = gridHTML;
+
+    const attTotal = document.getElementById('teacherPersonalAttTotal');
+    if (attTotal) attTotal.innerText = stats.total;
+
+    const attPresent = document.getElementById('teacherPersonalAttPresent');
+    if (attPresent) attPresent.innerText = stats.present;
+
+    const attAbsent = document.getElementById('teacherPersonalAttAbsent');
+    if (attAbsent) attAbsent.innerText = stats.absent;
+
+    const listItems = [];
+    for (let i = daysInMonth; i >= 1; i--) {
+        if(records[i]) {
+            const status = records[i];
+            let icon = 'ph-check-circle', iconBg = 'rgba(46, 204, 113, 0.1)', iconColor = '#2ecc71', subStatus = 'paid';
+
+            if (status === 'absent') { icon = 'ph-x-circle'; iconBg = 'rgba(231, 76, 60, 0.1)'; iconColor = '#e74c3c'; subStatus = 'due'; }
+            else if (status === 'leave') { icon = 'ph-minus-circle'; iconBg = 'rgba(243, 156, 18, 0.1)'; iconColor = '#f39c12'; subStatus = 'neutral'; }
+
+            listItems.push({
+                title: `${i} ${monthNames[month]} ${year}`,
+                subtitle: 'Personal Attendance Record',
+                icon: icon, iconBg: iconBg, iconColor: iconColor,
+                value: status.charAt(0).toUpperCase() + status.slice(1),
+                subvalue: status === 'present' ? 'Recorded' : 'Noted',
+                subStatus: subStatus
+            });
+
+            if(listItems.length >= 5) break;
+        }
+    }
+
+    const attListContainer = document.getElementById('teacherPersonalAttListContainer');
+    if (attListContainer) {
+        attListContainer.innerHTML = listItems.length > 0
+            ? buildBkashList(listItems)
+            : `<div style="text-align:center; padding: 20px; color: var(--text-light); font-size: 13px;">No records for this month</div>`;
+    }
+}
+
+function changeTeacherPersonalAttMonth(delta) {
+    teacherAttViewDate.setMonth(teacherAttViewDate.getMonth() + delta);
+    renderTeacherPersonalAttendance();
+}
+
+// --- COPY CONTACT TO CLIPBOARD ---
+function copyToClipboard(phoneNum) {
+    navigator.clipboard.writeText(phoneNum).then(() => {
+        showToast("Phone number copied: " + phoneNum);
+    }).catch(err => {
+        const textArea = document.createElement('textarea');
+        textArea.value = phoneNum;
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+            document.execCommand('copy');
+            showToast("Phone number copied: " + phoneNum);
+        } catch (e) {
+            showToast('Failed to copy contact');
+        }
+        document.body.removeChild(textArea);
+    });
+}
+
+// --- ONLINE CLASS SCHEDULING (TEACHER) ---
+function renderScheduledClasses() {
     const listContainer = document.getElementById('teacherOnlineClassList');
     if (!listContainer) return;
 
@@ -425,7 +553,7 @@ export function renderScheduledClasses() {
     }
 
     listContainer.innerHTML = classes.map((c, index) => `
-        <div class="teacher-card" style="padding: 16px; flex-direction: column; align-items: stretch; gap: 10px; background: white;">
+        <div class="teacher-card" style="padding: 16px; flex-direction: column; align-items: stretch; gap: 10px; background: white; border: 1px solid var(--border-color); border-radius: 14px; margin-bottom: 12px;">
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <div style="font-weight: bold; color: var(--text-main); font-size: 15px;">${c.title}</div>
                 <div style="font-size: 11px; background: rgba(142,124,195,0.1); color: var(--brand-color); padding: 4px 8px; border-radius: 20px; font-weight: bold;">Live</div>
@@ -446,7 +574,7 @@ export function renderScheduledClasses() {
     `).join('');
 }
 
-export function scheduleOnlineClass() {
+function scheduleOnlineClass() {
     const title = prompt("Enter Class Title (e.g. Class 8 Bangla 2nd Paper):", "Class 8 Bangla");
     if (!title) return;
     const date = prompt("Enter Date and Time (e.g. Today, 11:30 AM):", "Today, 11:30 AM");
@@ -468,19 +596,19 @@ export function scheduleOnlineClass() {
     });
 
     renderScheduledClasses();
-    window.showToast("Class Scheduled Successfully");
+    showToast("Class Scheduled Successfully");
 }
 
-export function deleteScheduledClass(index) {
+function deleteScheduledClass(index) {
     if (confirm("Are you sure you want to delete this scheduled class?")) {
         dummyViewData.teacher.classroom.online.splice(index, 1);
         renderScheduledClasses();
-        window.showToast("Class Deleted");
+        showToast("Class Deleted");
     }
 }
 
-// --- MARK ENTRY HIERARCHY ---
-export function renderMarkEntry() {
+// --- MARK ENTRY HIERARCHY FLOW (TEACHER) ---
+function renderMarkEntry() {
     const container = document.getElementById('markEntryPanel');
     if (!container) return;
 
@@ -596,7 +724,7 @@ export function renderMarkEntry() {
 
             <div style="display: flex; flex-direction: column; gap: 14px;">
                 ${markEntryStudents.map(s => `
-                    <div class="teacher-card" style="padding: 14px; flex-direction: column; align-items: stretch; gap: 10px; background: white; border: 1px solid var(--border-color); border-radius: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
+                    <div class="teacher-card" style="padding: 14px; flex-direction: column; align-items: stretch; gap: 10px; background: white; border: 1px solid var(--border-color); border-radius: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex;">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <div style="font-weight: bold; color: var(--text-main); font-size: 14px;">
                                 Roll: ${s.roll} | ${s.name}
@@ -625,32 +753,32 @@ export function renderMarkEntry() {
     }
 }
 
-export function goBackMarkEntryStep() {
+function goBackMarkEntryStep() {
     if (markEntryState.step > 1) {
         markEntryState.step--;
         renderMarkEntry();
     }
 }
 
-export function selectMarkCategory(cat) {
+function selectMarkCategory(cat) {
     markEntryState.category = cat;
     markEntryState.step = 2;
     renderMarkEntry();
 }
 
-export function selectMarkTerm(term) {
+function selectMarkTerm(term) {
     markEntryState.term = term;
     markEntryState.step = 3;
     renderMarkEntry();
 }
 
-export function selectMarkTest(test) {
+function selectMarkTest(test) {
     markEntryState.test = test;
     markEntryState.step = 4;
     renderMarkEntry();
 }
 
-export function addMarkNewTest() {
+function addMarkNewTest() {
     const name = prompt("Enter Test Name:", "Class Test 3");
     if (!name) return;
     markEntryTests.push({
@@ -660,28 +788,28 @@ export function addMarkNewTest() {
         term: markEntryState.term
     });
     renderMarkEntry();
-    window.showToast("New test added!");
+    showToast("New test added!");
 }
 
-export function selectMarkClass(cls) {
+function selectMarkClass(cls) {
     markEntryState.class = cls;
     markEntryState.step = 5;
     renderMarkEntry();
 }
 
-export function selectMarkSection(sec) {
+function selectMarkSection(sec) {
     markEntryState.section = sec;
     markEntryState.step = 6;
     renderMarkEntry();
 }
 
-export function selectMarkSubject(sub) {
+function selectMarkSubject(sub) {
     markEntryState.subject = sub;
     markEntryState.step = 7;
     renderMarkEntry();
 }
 
-export function stepMark(roll, delta) {
+function stepMark(roll, delta) {
     const student = markEntryStudents.find(s => s.roll === roll);
     if (student) {
         student.marks = Math.max(0, Math.min(100, student.marks + delta));
@@ -691,7 +819,7 @@ export function stepMark(roll, delta) {
     }
 }
 
-export function updateMarkVal(roll, val) {
+function updateMarkVal(roll, val) {
     const student = markEntryStudents.find(s => s.roll === roll);
     if (student) {
         const parsed = parseInt(val, 10);
@@ -701,7 +829,7 @@ export function updateMarkVal(roll, val) {
 }
 
 let saveTimeout;
-export function triggerAutoSave(roll, type, value) {
+function triggerAutoSave(roll, type, value) {
     const student = markEntryStudents.find(s => s.roll === roll);
     if (student) {
         if (type === 'remarks') {
@@ -722,14 +850,14 @@ export function triggerAutoSave(roll, type, value) {
     }, 600);
 }
 
-export function saveAllMarks() {
-    window.showToast("Marks submitted & locked successfully!");
+function saveAllMarks() {
+    showToast("Marks submitted & locked successfully!");
     markEntryState.step = 1;
     renderMarkEntry();
 }
 
-// --- STUDENT ATTENDANCE TAKING ---
-export function revealTakeAttendanceList() {
+// --- STUDENT ATTENDANCE TAKING (TEACHER) ---
+function revealTakeAttendanceList() {
     const listSection = document.getElementById('takeAttendanceListSection');
     if (listSection) {
         listSection.style.display = 'block';
@@ -737,19 +865,18 @@ export function revealTakeAttendanceList() {
     
     const dateInput = document.getElementById('takeAttDate');
     if (dateInput && !dateInput.value) {
-        const todayStr = new Date().toISOString().substring(0, 10);
-        dateInput.value = todayStr;
+        dateInput.value = new Date().toISOString().substring(0, 10);
     }
     
     renderTakeAttendanceList();
 }
 
-export function renderTakeAttendanceList() {
+function renderTakeAttendanceList() {
     const container = document.getElementById('takeAttendanceListContainer');
     if (!container) return;
 
     container.innerHTML = attendanceStudents.map(s => `
-        <div class="teacher-card" style="padding: 14px; flex-direction: column; align-items: stretch; gap: 10px; border: 1px solid var(--border-color); background: white; border-radius: 14px;">
+        <div class="teacher-card" style="padding: 14px; flex-direction: column; align-items: stretch; gap: 10px; border: 1px solid var(--border-color); background: white; border-radius: 14px; display: flex;">
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <div style="font-weight: bold; color: var(--text-main); font-size: 14px;">
                     Roll: ${s.roll} | ${s.name}
@@ -778,15 +905,15 @@ export function renderTakeAttendanceList() {
     `).join('');
 }
 
-export function toggleAllAttendance(status) {
+function toggleAllAttendance(status) {
     attendanceStudents.forEach(s => {
         s.status = status;
     });
     renderTakeAttendanceList();
-    window.showToast(`Marked all as ${status.charAt(0).toUpperCase() + status.slice(1)}`);
+    showToast(`Marked all as ${status.charAt(0).toUpperCase() + status.slice(1)}`);
 }
 
-export function setStudentStatus(roll, status) {
+function setStudentStatus(roll, status) {
     const student = attendanceStudents.find(s => s.roll === roll);
     if (student) {
         student.status = status;
@@ -794,19 +921,19 @@ export function setStudentStatus(roll, status) {
     }
 }
 
-export function updateAttendanceRemarks(roll, val) {
+function updateAttendanceRemarks(roll, val) {
     const student = attendanceStudents.find(s => s.roll === roll);
     if (student) {
         student.remarks = val;
     }
 }
 
-export function saveAttendanceRecord() {
+function saveAttendanceRecord() {
     const dateInput = document.getElementById('takeAttDate')?.value || new Date().toISOString().substring(0, 10);
     const cls = document.getElementById('takeAttClass')?.value || 'Class 8';
     const sec = document.getElementById('takeAttSection')?.value || 'Padma';
     
-    window.showToast(`Saved attendance for ${cls} - ${sec} on ${dateInput}`);
+    showToast(`Saved attendance for ${cls} - ${sec} on ${dateInput}`);
     
     const listSection = document.getElementById('takeAttendanceListSection');
     if (listSection) {
@@ -814,8 +941,8 @@ export function saveAttendanceRecord() {
     }
 }
 
-// --- STUDENT DIRECTORY ---
-export function revealStudentDirectoryList() {
+// --- STUDENT DIRECTORY (TEACHER) ---
+function revealStudentDirectoryList() {
     const listSection = document.getElementById('studentDirectoryListSection');
     if (listSection) {
         listSection.style.display = 'block';
@@ -823,18 +950,18 @@ export function revealStudentDirectoryList() {
     renderStudentDirectoryList();
 }
 
-export function renderStudentDirectoryList() {
+function renderStudentDirectoryList() {
     const container = document.getElementById('studentDirectoryListContainer');
     if (!container) return;
 
     container.innerHTML = studentDirectoryList.map(s => `
-        <div class="teacher-card" style="padding: 12px; align-items: center; border: 1px solid var(--border-color); background: white; border-radius: 14px; margin-bottom: 10px;">
-            <div class="teacher-avatar" style="margin-right: 12px;">
-                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=${s.avatar}&backgroundColor=E6E0F8" alt="${s.name}">
+        <div class="teacher-card" style="padding: 12px; align-items: center; border: 1px solid var(--border-color); background: white; border-radius: 14px; margin-bottom: 10px; display: flex; gap: 12px;">
+            <div class="teacher-avatar" style="width: 44px; height: 44px; border-radius: 50%; overflow: hidden; background: #e6e0f8; display: flex; align-items: center; justify-content: center;">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=${s.avatar}&backgroundColor=E6E0F8" alt="${s.name}" style="width: 100%; height: 100%; object-fit: cover;">
             </div>
             <div class="teacher-info" style="flex: 1;">
-                <div class="teacher-name" style="font-size: 14px; font-weight: bold;">${s.name}</div>
-                <div class="teacher-designation" style="font-size: 11px;">ID: ${s.id} | Roll: ${s.roll}</div>
+                <div class="teacher-name" style="font-size: 14px; font-weight: bold; color: var(--text-main);">${s.name}</div>
+                <div class="teacher-designation" style="font-size: 11px; color: var(--text-light);">ID: ${s.id} | Roll: ${s.roll}</div>
                 <div style="font-size: 11px; color: var(--text-light); margin-top: 2px;"><i class="ph ph-phone"></i> ${s.phone}</div>
             </div>
             <button class="routine-day-btn" onclick="editStudentInfo('${s.id}')" style="margin: 0; padding: 6px 12px; font-size: 11px; background: rgba(142,124,195,0.1); color: var(--brand-color); border: 1px solid var(--brand-color); border-radius: 8px; font-weight: 500;">
@@ -844,7 +971,7 @@ export function renderStudentDirectoryList() {
     `).join('');
 }
 
-export function editStudentInfo(id) {
+function editStudentInfo(id) {
     const s = studentDirectoryList.find(item => item.id === id);
     if (!s) return;
 
@@ -856,21 +983,44 @@ export function editStudentInfo(id) {
     s.name = newName;
     s.phone = newPhone;
     renderStudentDirectoryList();
-    window.showToast("Student profile updated!");
+    showToast("Student profile updated!");
 }
 
-// Assign to window for global inline event handlers
-window.selectRoutineDay = selectRoutineDay;
-window.switchClassroomTab = switchClassroomTab;
-window.toggleResultBreakdown = toggleResultBreakdown;
-window.copyToClipboard = copyToClipboard;
+// --- RESULT CARD EXPANSION ---
+function toggleResultBreakdown(cardEl) {
+    const details = cardEl.querySelector('.term-result-details');
+    const hint = cardEl.querySelector('.term-result-toggle-hint');
+    if (!details) return;
 
-// Teacher actions bindings
+    if (details.style.display === 'none') {
+        details.style.display = 'block';
+        if (hint) hint.innerText = 'Tap to hide details';
+    } else {
+        details.style.display = 'none';
+        if (hint) hint.innerText = 'Tap to show subject details';
+    }
+}
+
+// --- FLUTTER BRIDGE CONFIGURATION & SYNC ---
+if (window.FlutterBridge) {
+    console.log("FlutterBridge detected. Native integration active.");
+}
+
+// Expose functions to the global window scope
+window.showToast = showToast;
+window.toggleMenu = toggleMenu;
+window.toggleBalance = toggleBalance;
+window.enableNativeMode = enableNativeMode;
+window.switchClassroomTab = switchClassroomTab;
+window.selectRoutineDay = selectRoutineDay;
 window.selectTeacherRoutineDay = selectTeacherRoutineDay;
+window.changeAttMonth = changeAttMonth;
+window.changeAcadMonth = changeAcadMonth;
+window.changeTeacherPersonalAttMonth = changeTeacherPersonalAttMonth;
+window.copyToClipboard = copyToClipboard;
 window.scheduleOnlineClass = scheduleOnlineClass;
 window.deleteScheduledClass = deleteScheduledClass;
 window.renderScheduledClasses = renderScheduledClasses;
-
 window.renderMarkEntry = renderMarkEntry;
 window.goBackMarkEntryStep = goBackMarkEntryStep;
 window.selectMarkCategory = selectMarkCategory;
@@ -884,14 +1034,18 @@ window.stepMark = stepMark;
 window.updateMarkVal = updateMarkVal;
 window.triggerAutoSave = triggerAutoSave;
 window.saveAllMarks = saveAllMarks;
-
 window.revealTakeAttendanceList = revealTakeAttendanceList;
 window.renderTakeAttendanceList = renderTakeAttendanceList;
 window.toggleAllAttendance = toggleAllAttendance;
 window.setStudentStatus = setStudentStatus;
 window.updateAttendanceRemarks = updateAttendanceRemarks;
 window.saveAttendanceRecord = saveAttendanceRecord;
-
 window.revealStudentDirectoryList = revealStudentDirectoryList;
 window.renderStudentDirectoryList = renderStudentDirectoryList;
 window.editStudentInfo = editStudentInfo;
+window.toggleResultBreakdown = toggleResultBreakdown;
+window.renderAttendance = renderAttendance;
+window.renderAcademicCalendar = renderAcademicCalendar;
+window.renderTeacherPersonalAttendance = renderTeacherPersonalAttendance;
+
+console.log("EduManage scripts initialized.");
