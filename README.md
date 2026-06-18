@@ -103,8 +103,19 @@ Developers joining the team must follow this folder hierarchy. Do not create ad-
 ```
 school_management_app/
 │
-├── index.php                      # Application Front Controller & Routers
+├── index.php                      # Application Front Controller & Router
 ├── README.md                      # Developer onboarding documentation
+├── FLUTTER_INTEGRATION.md         # Flutter WebView & Push Notification Integration Guide
+├── Dockerfile                     # Docker configuration for cloud hosting (e.g., Render)
+├── composer.json                  # PHP project descriptor for automated host detection
+├── vercel.json                    # Vercel Serverless deployment configuration
+├── AGENTS.md                      # AI instructions and core project rule configurations
+│
+├── mobile_app/                    # Pre-configured Flutter Mobile Client Code
+│   ├── lib/
+│   │   └── main.dart              # WebView, JS Bridge & Notification handler implementation
+│   ├── pubspec.yaml               # Flutter package configuration dependencies
+│   └── android/                   # Native Android manifest and configurations
 │
 ├── assets/                        # Public assets
 │   ├── css/
@@ -210,6 +221,9 @@ JavaScript events communicate with the host Flutter app through a message-passin
     ```
 > [!WARNING]
 > **Do not remove or alter** the `window.FlutterBridge` detection script blocks in [assets/js/main.js](file:///E:/Leotech/school_management_app/assets/js/main.js) or the `<body class="native-mode">` overrides in layout files. Doing so will break layout styling and command relays on physical mobile devices.
+
+> [!NOTE]
+> For a full step-by-step setup guide and detailed Flutter Dart receiver code samples, refer to the [FLUTTER_INTEGRATION.md](file:///E:/Leotech/school_management_app/FLUTTER_INTEGRATION.md) documentation.
 
 ---
 
