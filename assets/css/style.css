@@ -217,16 +217,8 @@ body {
 }
 
 /* --- NATIVE FLUTTER OVERRIDES --- */
-body.native-mode #web-nav {
-  display: none !important;
-}
-
-body.native-mode .main-content {
-  padding-bottom: 0px !important;
-}
-
 body.native-mode .toast {
-  bottom: 20px !important;
+  bottom: 85px !important;
 }
 
 /* --- MAIN CONTENT SCROLL --- */
