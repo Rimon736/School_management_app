@@ -29,6 +29,10 @@
   font-family: 'Roboto', sans-serif;
 }
 
+html, body {
+  height: 100%;
+}
+
 body {
   background-color: #d1d5db;
   display: flex;
@@ -217,6 +221,18 @@ body {
 }
 
 /* --- NATIVE FLUTTER OVERRIDES --- */
+body.native-mode {
+  min-height: 100% !important;
+  height: 100% !important;
+}
+
+body.native-mode .app-container {
+  height: 100% !important;
+  max-height: 100% !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
 body.native-mode .toast {
   bottom: 85px !important;
 }
