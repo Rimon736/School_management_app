@@ -62,6 +62,13 @@ class TeacherController extends Controller {
         $this->render('teacher/academic_calendar');
     }
 
+    public function notices() {
+        $data = [
+            'notices' => NoticeModel::getRecentNotices()
+        ];
+        $this->render('teacher/notices', $data);
+    }
+
     public function qr() {
         $this->render('teacher/qr');
     }

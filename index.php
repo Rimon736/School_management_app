@@ -5,6 +5,7 @@ session_start();
 require_once 'core/Controller.php';
 require_once 'models/StudentModel.php';
 require_once 'models/TeacherModel.php';
+require_once 'models/NoticeModel.php';
 require_once 'controllers/AuthController.php';
 require_once 'controllers/StudentController.php';
 require_once 'controllers/TeacherController.php';

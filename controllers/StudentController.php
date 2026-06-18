@@ -62,6 +62,13 @@ class StudentController extends Controller {
         $this->render('student/teachers_list', $data);
     }
 
+    public function notices() {
+        $data = [
+            'notices' => NoticeModel::getRecentNotices()
+        ];
+        $this->render('student/notices', $data);
+    }
+
     public function qr() {
         $this->render('student/qr');
     }

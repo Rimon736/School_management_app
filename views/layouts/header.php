@@ -43,10 +43,12 @@ if ($innerMode) {
                     <div class="user-info">
                         <div class="user-name" id="userName"><?php echo $_SESSION['role'] === 'student' ? 'Jamil Mahmud' : 'Prof. Anisul Islam'; ?></div>
                         <div class="user-role" id="userRole"><?php echo $_SESSION['role'] === 'student' ? 'Student' : 'Teacher'; ?></div>
+                        <?php if ($_SESSION['role'] !== 'student'): ?>
                         <div class="balance-pill" id="balanceBtn" onclick="toggleBalance()">
-                            <i class="ph-fill <?php echo $_SESSION['role'] === 'student' ? 'ph-student' : 'ph-wallet'; ?>" id="balanceIcon"></i>
+                            <i class="ph-fill ph-wallet" id="balanceIcon"></i>
                             <span id="balanceText">Tap for Balance</span>
                         </div>
+                        <?php endif; ?>
                     </div>
                 </div>
                 <div class="header-right">

@@ -41,6 +41,9 @@ $roleLabel = $role === 'teacher' ? 'Teacher' : 'Student';
             <li class="sm-item" onclick="window.location.href='index.php?controller=student&action=teachers_list'">
                 <i class="ph ph-users-three"></i> Teachers
             </li>
+            <li class="sm-item" onclick="window.location.href='index.php?controller=student&action=notices'">
+                <i class="ph ph-megaphone"></i> Notices
+            </li>
         <?php elseif ($role === 'teacher'): ?>
             <li class="sm-item" onclick="window.location.href='index.php?controller=teacher&action=profile'">
                 <i class="ph ph-user"></i> Profile
@@ -65,6 +68,9 @@ $roleLabel = $role === 'teacher' ? 'Teacher' : 'Student';
             </li>
             <li class="sm-item" onclick="window.location.href='index.php?controller=teacher&action=academic_calendar'">
                 <i class="ph ph-calendar"></i> Academic Calendar
+            </li>
+            <li class="sm-item" onclick="window.location.href='index.php?controller=teacher&action=notices'">
+                <i class="ph ph-megaphone"></i> Notices
             </li>
         <?php endif; ?>
         

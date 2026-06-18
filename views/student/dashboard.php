@@ -32,6 +32,10 @@
             <div class="grid-icon ic-blue"><i class="ph ph-users-three"></i></div>
             <div class="grid-label">Teachers</div>
         </div>
+        <div class="grid-item" onclick="window.location.href='?controller=student&action=notices'">
+            <div class="grid-icon ic-red"><i class="ph ph-megaphone"></i></div>
+            <div class="grid-label">Notices</div>
+        </div>
     </div>
     
     <div class="banner-container">

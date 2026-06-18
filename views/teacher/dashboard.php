@@ -32,6 +32,10 @@
             <div class="grid-icon ic-orange"><i class="ph ph-calendar"></i></div>
             <div class="grid-label">Academic Cal</div>
         </div>
+        <div class="grid-item" onclick="window.location.href='?controller=teacher&action=notices'">
+            <div class="grid-icon ic-red"><i class="ph ph-megaphone"></i></div>
+            <div class="grid-label">Notices</div>
+        </div>
     </div>
 
     <div class="dashboard-container" style="padding: 16px;">

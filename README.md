@@ -20,6 +20,7 @@ EduManage simplifies school administration, scheduling, academic monitoring, and
 *   **Fees & Transactions:** Current due amount indicator with a "PAY NOW" trigger and complete transaction logs.
 *   **Faculty Directory:** Directory of class teachers with a click-to-copy phone number functionality and toast confirmation.
 *   **Student Profile:** Display of personal identifiers, parent/guardian info, roll number, class level, address, and NID.
+*   **Notice Board:** View, search, and download PDF notices (exam guidelines, weather alerts, holiday news) published by the school administration in the past month.
 
 ### Teacher Panel Features
 *   **Teacher Profile:** Banner view indicating department, section, contact info, blood group, NID, and employment details.
@@ -33,6 +34,7 @@ EduManage simplifies school administration, scheduling, academic monitoring, and
 *   **Teacher Routine:** 7-day routine tracker (Saturday to Friday) containing classes, staff meetings, and exam invigilation schedules.
 *   **Personal Attendance Tracker:** Monthly calendar visualization showing the teacher's own attendance.
 *   **Academic Calendar:** Shared calendar module indicating holidays and school exam schedules.
+*   **Notice Board:** View, search, and download PDF notices, with a dedicated PDF upload portal for teachers.
 
 ---
 
@@ -132,7 +134,7 @@ school_management_app/
     │   ├── header.php             # Core HTML header, stylesheets, and native detection
     │   ├── sidebar.php            # Left/side drawer navigation
     │   └── footer.php             # Core HTML script attachments and footers
-    ├── student/                   # Student view files (8 features)
+    ├── student/                   # Student view files (9 features)
     │   ├── classroom.php          # Online/Recorded class lists
     │   ├── routine.php            # Sat-Thu routine navigator
     │   ├── attendance.php         # Interactive attendance calendar
@@ -140,8 +142,9 @@ school_management_app/
     │   ├── profile.php            # Personal student records
     │   ├── fees.php               # Dues and history overview
     │   ├── calendar.php           # School academic events
-    │   └── teachers.php           # Faculty list
-    └── teacher/                   # Teacher view files (8 features)
+    │   ├── teachers.php           # Faculty list
+    │   └── notices.php            # Recent PDF notices list
+    └── teacher/                   # Teacher view files (9 features)
         ├── profile.php            # Teacher bio and information
         ├── classroom.php          # Live class schedule panel
         ├── mark_entry.php         # Grade book and stepper interfaces
@@ -149,7 +152,8 @@ school_management_app/
         ├── student_list.php       # Class list viewer and editor
         ├── routine.php            # Sat-Fri schedule tracker
         ├── personal_attendance.php# Personal check-in history
-        └── calendar.php           # School academic events
+        ├── calendar.php           # School academic events
+        └── notices.php            # Recent PDF notices and uploader panel
 ```
 
 ---
