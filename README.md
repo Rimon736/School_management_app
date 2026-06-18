@@ -103,8 +103,7 @@ Developers joining the team must follow this folder hierarchy. Do not create ad-
 ```
 school_management_app/
 │
-├── index.php                      # Application Front Controller & Router
-├── AGENTS.md                      # AI instructions and core project rule configurations
+├── index.php                      # Application Front Controller & Routers
 ├── README.md                      # Developer onboarding documentation
 │
 ├── assets/                        # Public assets
