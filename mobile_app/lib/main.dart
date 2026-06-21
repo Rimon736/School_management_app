@@ -39,6 +39,73 @@ class _WebPortalScreenState extends State<WebPortalScreen> {
   // Live Render deployment server URL
   final String _pcServerUrl = "https://edu-manage-awuv.onrender.com"; 
 
+  String? _currentRole;
+  bool _showBottomNavBar = false;
+  int _currentIndex = 0;
+
+  void _updateNavigationState(String url) {
+    try {
+      final uri = Uri.parse(url);
+      final controller = uri.queryParameters['controller'];
+      final action = uri.queryParameters['action'];
+
+      setState(() {
+        if (controller == 'student' || controller == 'teacher') {
+          _currentRole = controller;
+          if (action == 'logout' || action == 'login' || action == 'switch') {
+            _showBottomNavBar = false;
+          } else {
+            _showBottomNavBar = true;
+          }
+        } else {
+          _showBottomNavBar = false;
+        }
+
+        if (action != null) {
+          if (action == 'dashboard') {
+            _currentIndex = 0;
+          } else if (action == 'classroom' || action == 'online_class') {
+            _currentIndex = 1;
+          } else if (action == 'qr') {
+            _currentIndex = 2;
+          } else if (action == 'inbox') {
+            _currentIndex = 3;
+          }
+        } else {
+          if (_showBottomNavBar) {
+            _currentIndex = 0;
+          }
+        }
+      });
+    } catch (e) {
+      print("Error parsing URL in _updateNavigationState: $e");
+    }
+  }
+
+  void _onBottomNavTapped(int index) {
+    if (_currentRole == null) return;
+    
+    String action;
+    if (index == 0) {
+      action = 'dashboard';
+    } else if (index == 1) {
+      action = _currentRole == 'teacher' ? 'online_class' : 'classroom';
+    } else if (index == 2) {
+      action = 'qr';
+    } else if (index == 3) {
+      action = 'inbox';
+    } else {
+      return;
+    }
+
+    final targetUrl = "$_pcServerUrl/index.php?controller=$_currentRole&action=$action";
+    _controller.loadRequest(Uri.parse(targetUrl));
+    
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -111,6 +178,12 @@ class _WebPortalScreenState extends State<WebPortalScreen> {
           onPageFinished: (String url) {
             // Enable native mode overrides inside CSS when load completes
             _controller.runJavaScript("enableNativeMode();");
+            _updateNavigationState(url);
+          },
+          onUrlChange: (UrlChange change) {
+            if (change.url != null) {
+              _updateNavigationState(change.url!);
+            }
           },
         ),
       )
@@ -147,6 +220,38 @@ class _WebPortalScreenState extends State<WebPortalScreen> {
       body: SafeArea(
         child: WebViewWidget(controller: _controller),
       ),
+      bottomNavigationBar: _showBottomNavBar
+          ? BottomNavigationBar(
+              currentIndex: _currentIndex,
+              onTap: _onBottomNavTapped,
+              type: BottomNavigationBarType.fixed,
+              backgroundColor: const Color(0xFF8E7CC3), // Brand lavender color
+              selectedItemColor: Colors.white,
+              unselectedItemColor: Colors.white.withAlpha(153),
+              items: const [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home_outlined),
+                  activeIcon: Icon(Icons.home),
+                  label: 'Home',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.school_outlined),
+                  activeIcon: Icon(Icons.school),
+                  label: 'My Class',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.qr_code_scanner),
+                  activeIcon: Icon(Icons.qr_code_scanner_sharp),
+                  label: 'Scan QR',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.mail_outline),
+                  activeIcon: Icon(Icons.mail),
+                  label: 'Inbox',
+                ),
+              ],
+            )
+          : null,
     );
   }
 }

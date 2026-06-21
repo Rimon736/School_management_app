@@ -242,7 +242,7 @@ body.native-mode .toast {
   flex: 1;
   overflow-y: auto;
   background-color: var(--white);
-  padding-bottom: 80px;
+  padding-bottom: 24px;
 }
 
 .main-content::-webkit-scrollbar {
@@ -251,6 +251,7 @@ body.native-mode .toast {
 
 /* --- BOTTOM NAVIGATION --- */
 .bottom-nav {
+  display: none !important;
   position: absolute;
   bottom: 0;
   left: 0;
