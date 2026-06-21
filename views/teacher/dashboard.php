@@ -39,13 +39,7 @@
             <div class="grid-icon ic-red"><i class="ph ph-megaphone"></i></div>
             <div class="grid-label">Notices</div>
         </div>
-        <div class="grid-item" onclick="window.location.href='?controller=teacher&action=inbox'">
-            <div class="grid-icon ic-purple" style="position: relative;">
-                <i class="ph ph-envelope-simple"></i>
-                <span class="badge-count">2</span>
-            </div>
-            <div class="grid-label">Inbox</div>
-        </div>
+
     </div>
 
     <div class="dashboard-container" style="padding: 16px;">

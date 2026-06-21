@@ -18,6 +18,7 @@ if ($innerMode) {
     if ($action === 'student_attendance') $title = 'Student Attendance';
     if ($action === 'student_list') $title = 'Student List';
     if ($action === 'personal_attendance') $title = 'My Attendance';
+    if ($action === 'exam_routine') $title = 'Exam Routine';
 }
 ?>
 <!DOCTYPE html>
@@ -26,7 +27,7 @@ if ($innerMode) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>EduManage - Raw PHP MVC</title>
-    <link rel="stylesheet" href="assets/css/style.css?v=1.0.3">
+    <link rel="stylesheet" href="assets/css/style.css?v=1.0.4">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="assets/js/main.js" defer></script>

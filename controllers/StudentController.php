@@ -17,10 +17,16 @@ class StudentController extends Controller {
 
     public function routine() {
         $data = [
-            'routine' => StudentModel::getRoutine(),
-            'examRoutine' => StudentModel::getExamRoutine()
+            'routine' => StudentModel::getRoutine()
         ];
         $this->render('student/routine', $data);
+    }
+
+    public function exam_routine() {
+        $data = [
+            'examRoutine' => StudentModel::getExamRoutine()
+        ];
+        $this->render('student/exam_routine', $data);
     }
 
     public function attendance() {

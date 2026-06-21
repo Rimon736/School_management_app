@@ -39,12 +39,9 @@
             <div class="grid-icon ic-red"><i class="ph ph-megaphone"></i></div>
             <div class="grid-label">Notices</div>
         </div>
-        <div class="grid-item" onclick="window.location.href='?controller=student&action=inbox'">
-            <div class="grid-icon ic-purple" style="position: relative;">
-                <i class="ph ph-envelope-simple"></i>
-                <span class="badge-count">2</span>
-            </div>
-            <div class="grid-label">Inbox</div>
+        <div class="grid-item" onclick="window.location.href='?controller=student&action=exam_routine'">
+            <div class="grid-icon ic-red"><i class="ph ph-clipboard-text"></i></div>
+            <div class="grid-label">Exam Routine</div>
         </div>
     </div>
     

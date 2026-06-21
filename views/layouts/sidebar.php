@@ -24,6 +24,9 @@ $roleLabel = $role === 'teacher' ? 'Teacher' : 'Student';
             <li class="sm-item" onclick="window.location.href='index.php?controller=student&action=routine'">
                 <i class="ph ph-clock"></i> Routine
             </li>
+            <li class="sm-item" onclick="window.location.href='index.php?controller=student&action=exam_routine'">
+                <i class="ph ph-clipboard-text"></i> Exam Routine
+            </li>
             <li class="sm-item" onclick="window.location.href='index.php?controller=student&action=attendance'">
                 <i class="ph ph-calendar-check"></i> Attendance
             </li>
