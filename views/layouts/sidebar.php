@@ -19,6 +19,7 @@ $roleLabel = $role === 'teacher' ? 'Teacher' : 'Student';
         <?php if ($role === 'student'): ?>
             <li class="sm-item" onclick="window.location.href='index.php?controller=student&action=classroom'">
                 <i class="ph ph-chalkboard-teacher"></i> Classroom
+                <span class="sidebar-badge">2</span>
             </li>
             <li class="sm-item" onclick="window.location.href='index.php?controller=student&action=routine'">
                 <i class="ph ph-clock"></i> Routine
@@ -44,12 +45,17 @@ $roleLabel = $role === 'teacher' ? 'Teacher' : 'Student';
             <li class="sm-item" onclick="window.location.href='index.php?controller=student&action=notices'">
                 <i class="ph ph-megaphone"></i> Notices
             </li>
+            <li class="sm-item" onclick="window.location.href='index.php?controller=student&action=inbox'">
+                <i class="ph ph-envelope-simple"></i> Inbox
+                <span class="sidebar-badge alert">2</span>
+            </li>
         <?php elseif ($role === 'teacher'): ?>
             <li class="sm-item" onclick="window.location.href='index.php?controller=teacher&action=profile'">
                 <i class="ph ph-user"></i> Profile
             </li>
             <li class="sm-item" onclick="window.location.href='index.php?controller=teacher&action=online_class'">
                 <i class="ph ph-video-camera"></i> Online Class
+                <span class="sidebar-badge">1</span>
             </li>
             <li class="sm-item" onclick="window.location.href='index.php?controller=teacher&action=mark_entry'">
                 <i class="ph ph-clipboard-text"></i> Mark Entry
@@ -71,6 +77,10 @@ $roleLabel = $role === 'teacher' ? 'Teacher' : 'Student';
             </li>
             <li class="sm-item" onclick="window.location.href='index.php?controller=teacher&action=notices'">
                 <i class="ph ph-megaphone"></i> Notices
+            </li>
+            <li class="sm-item" onclick="window.location.href='index.php?controller=teacher&action=inbox'">
+                <i class="ph ph-envelope-simple"></i> Inbox
+                <span class="sidebar-badge alert">2</span>
             </li>
         <?php endif; ?>
         

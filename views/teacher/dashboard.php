@@ -5,7 +5,10 @@
             <div class="grid-label">Profile</div>
         </div>
         <div class="grid-item" onclick="window.location.href='?controller=teacher&action=online_class'">
-            <div class="grid-icon ic-purple"><i class="ph ph-video-camera"></i></div>
+            <div class="grid-icon ic-purple" style="position: relative;">
+                <i class="ph ph-video-camera"></i>
+                <span class="badge-count" style="background-color: var(--brand-color);">1</span>
+            </div>
             <div class="grid-label">Online Class</div>
         </div>
         <div class="grid-item" onclick="window.location.href='?controller=teacher&action=mark_entry'">
@@ -35,6 +38,13 @@
         <div class="grid-item" onclick="window.location.href='?controller=teacher&action=notices'">
             <div class="grid-icon ic-red"><i class="ph ph-megaphone"></i></div>
             <div class="grid-label">Notices</div>
+        </div>
+        <div class="grid-item" onclick="window.location.href='?controller=teacher&action=inbox'">
+            <div class="grid-icon ic-purple" style="position: relative;">
+                <i class="ph ph-envelope-simple"></i>
+                <span class="badge-count">2</span>
+            </div>
+            <div class="grid-label">Inbox</div>
         </div>
     </div>
 

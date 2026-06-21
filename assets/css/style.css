@@ -1982,3 +1982,38 @@ button:active {
   pointer-events: none;
   user-select: none;
 }
+
+/* --- COUNT BADGES --- */
+.badge-count {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background-color: var(--error); /* #e74c3c */
+  color: white !important;
+  font-size: 9px;
+  font-weight: bold;
+  border-radius: 10px;
+  padding: 2px 5px;
+  line-height: 1;
+  min-width: 14px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  z-index: 10;
+}
+
+.sidebar-badge {
+  margin-left: auto;
+  background-color: var(--brand-color);
+  color: white !important;
+  font-size: 9px;
+  font-weight: bold;
+  border-radius: 10px;
+  padding: 2px 6px;
+  line-height: 1;
+  min-width: 14px;
+  text-align: center;
+}
+
+.sidebar-badge.alert {
+  background-color: var(--error); /* #e74c3c */
+}

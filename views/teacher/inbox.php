@@ -158,6 +158,42 @@ function readMessage(element, msgId) {
     const dot = element.querySelector('.unread-dot');
     if (dot) dot.style.backgroundColor = 'transparent';
 
+    // Update badge counts dynamically
+    const unreadCount = document.querySelectorAll('.message-card.unread').length;
+    
+    const sideInboxBadge = document.querySelector('.sm-item[onclick*="action=inbox"] .sidebar-badge');
+    if (sideInboxBadge) {
+        if (unreadCount > 0) {
+            sideInboxBadge.textContent = unreadCount;
+            sideInboxBadge.style.display = 'block';
+        } else {
+            sideInboxBadge.style.display = 'none';
+        }
+    }
+    
+    const dashInboxBadge = document.querySelector('.grid-item[onclick*="action=inbox"] .badge-count');
+    if (dashInboxBadge) {
+        if (unreadCount > 0) {
+            dashInboxBadge.textContent = unreadCount;
+            dashInboxBadge.style.display = 'block';
+        } else {
+            dashInboxBadge.style.display = 'none';
+        }
+    }
+
+    const hamburgerBadge = document.querySelector('.three-dots-btn .badge-count');
+    if (hamburgerBadge) {
+        if (unreadCount > 0) {
+            hamburgerBadge.style.display = 'block';
+        } else {
+            hamburgerBadge.style.display = 'none';
+        }
+    }
+    
+    if (typeof updateFlutterBadges === 'function') {
+        updateFlutterBadges();
+    }
+
     // Populate modal
     document.getElementById('msgDetailAvatar').innerText = msg.senderInitials;
     document.getElementById('msgDetailSender').innerText = msg.sender;

@@ -1,7 +1,10 @@
 <div id="dashboardView" class="view active">
     <div class="grid-menu">
         <div class="grid-item" onclick="window.location.href='?controller=student&action=classroom'">
-            <div class="grid-icon ic-purple"><i class="ph ph-chalkboard-teacher"></i></div>
+            <div class="grid-icon ic-purple" style="position: relative;">
+                <i class="ph ph-chalkboard-teacher"></i>
+                <span class="badge-count" style="background-color: var(--brand-color);">2</span>
+            </div>
             <div class="grid-label">Classroom</div>
         </div>
         <div class="grid-item" onclick="window.location.href='?controller=student&action=routine'">
@@ -35,6 +38,13 @@
         <div class="grid-item" onclick="window.location.href='?controller=student&action=notices'">
             <div class="grid-icon ic-red"><i class="ph ph-megaphone"></i></div>
             <div class="grid-label">Notices</div>
+        </div>
+        <div class="grid-item" onclick="window.location.href='?controller=student&action=inbox'">
+            <div class="grid-icon ic-purple" style="position: relative;">
+                <i class="ph ph-envelope-simple"></i>
+                <span class="badge-count">2</span>
+            </div>
+            <div class="grid-label">Inbox</div>
         </div>
     </div>
     

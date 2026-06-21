@@ -26,7 +26,7 @@ if ($innerMode) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>EduManage - Raw PHP MVC</title>
-    <link rel="stylesheet" href="assets/css/style.css?v=1.0.2">
+    <link rel="stylesheet" href="assets/css/style.css?v=1.0.3">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="assets/js/main.js" defer></script>
@@ -55,8 +55,9 @@ if ($innerMode) {
                     <div class="header-icon" onclick="showToast('Search module clicked')">
                         <i class="ph ph-magnifying-glass"></i>
                     </div>
-                    <div class="three-dots-btn" onclick="toggleMenu()">
+                    <div class="three-dots-btn" onclick="toggleMenu()" style="position: relative;">
                         <i class="ph ph-list"></i>
+                        <span class="badge-count" style="width: 8px; height: 8px; min-width: 8px; padding: 0; top: 0; right: 0; border-radius: 50%;"></span>
                     </div>
                 </div>
             </div>

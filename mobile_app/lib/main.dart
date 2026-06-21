@@ -42,6 +42,8 @@ class _WebPortalScreenState extends State<WebPortalScreen> {
   String? _currentRole;
   bool _showBottomNavBar = false;
   int _currentIndex = 0;
+  int _classCount = 0;
+  int _inboxCount = 0;
 
   void _updateNavigationState(String url) {
     try {
@@ -167,6 +169,11 @@ class _WebPortalScreenState extends State<WebPortalScreen> {
             } else if (data['action'] == 'copy_contact') {
               // Optionally handle contact copy action natively
               print("Bridge Request: Copying Contact - ${data['phone']}");
+            } else if (data['action'] == 'update_badges') {
+              setState(() {
+                _classCount = data['classCount'] ?? 0;
+                _inboxCount = data['inboxCount'] ?? 0;
+              });
             }
           } catch (e) {
             print("Bridge Parsing Error: $e");
@@ -228,25 +235,41 @@ class _WebPortalScreenState extends State<WebPortalScreen> {
               backgroundColor: const Color(0xFF8E7CC3), // Brand lavender color
               selectedItemColor: Colors.white,
               unselectedItemColor: Colors.white.withAlpha(153),
-              items: const [
-                BottomNavigationBarItem(
+              items: [
+                const BottomNavigationBarItem(
                   icon: Icon(Icons.home_outlined),
                   activeIcon: Icon(Icons.home),
                   label: 'Home',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.school_outlined),
-                  activeIcon: Icon(Icons.school),
+                  icon: Badge(
+                    label: Text('$_classCount'),
+                    isLabelVisible: _classCount > 0,
+                    child: const Icon(Icons.school_outlined),
+                  ),
+                  activeIcon: Badge(
+                    label: Text('$_classCount'),
+                    isLabelVisible: _classCount > 0,
+                    child: const Icon(Icons.school),
+                  ),
                   label: 'My Class',
                 ),
-                BottomNavigationBarItem(
+                const BottomNavigationBarItem(
                   icon: Icon(Icons.qr_code_scanner),
                   activeIcon: Icon(Icons.qr_code_scanner_sharp),
                   label: 'Scan QR',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.mail_outline),
-                  activeIcon: Icon(Icons.mail),
+                  icon: Badge(
+                    label: Text('$_inboxCount'),
+                    isLabelVisible: _inboxCount > 0,
+                    child: const Icon(Icons.mail_outline),
+                  ),
+                  activeIcon: Badge(
+                    label: Text('$_inboxCount'),
+                    isLabelVisible: _inboxCount > 0,
+                    child: const Icon(Icons.mail),
+                  ),
                   label: 'Inbox',
                 ),
               ],

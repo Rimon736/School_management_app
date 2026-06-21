@@ -159,9 +159,26 @@ function toggleBalance() {
     }, 3000);
 }
 
+function updateFlutterBadges() {
+    if (!window.FlutterBridge) return;
+    
+    const classroomBadge = document.querySelector('.sm-item[onclick*="action=classroom"] .sidebar-badge, .sm-item[onclick*="action=online_class"] .sidebar-badge');
+    const inboxBadge = document.querySelector('.sm-item[onclick*="action=inbox"] .sidebar-badge.alert');
+    
+    const classCount = classroomBadge ? parseInt(classroomBadge.textContent.trim()) || 0 : 0;
+    const inboxCount = inboxBadge ? parseInt(inboxBadge.textContent.trim()) || 0 : 0;
+    
+    window.FlutterBridge.postMessage(JSON.stringify({
+        action: 'update_badges',
+        classCount: classCount,
+        inboxCount: inboxCount
+    }));
+}
+
 function enableNativeMode() {
     document.body.classList.add('native-mode');
     console.log("Native mode enabled by Flutter. Web UI adapted.");
+    updateFlutterBadges();
 }
 
 // --- CLASSROOM TAB TOGGLE ---
