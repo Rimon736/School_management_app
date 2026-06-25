@@ -29,6 +29,16 @@
   font-family: 'Roboto', sans-serif;
 }
 
+a {
+  color: var(--brand-color);
+  text-decoration: none;
+  word-wrap: break-word;
+  word-break: break-all;
+  overflow-wrap: break-word;
+  max-width: 100%;
+  display: inline-block;
+}
+
 html, body {
   height: 100%;
 }

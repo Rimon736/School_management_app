@@ -4,6 +4,7 @@ session_start();
 // Autoload core and controller/model files
 require_once 'core/Controller.php';
 require_once 'core/Database.php';
+require_once 'core/Model.php';
 require_once 'models/StudentModel.php';
 require_once 'models/TeacherModel.php';
 require_once 'models/NoticeModel.php';
@@ -21,7 +22,7 @@ $isLoggedIn = isset($_SESSION['role']) && !empty($_SESSION['role']);
 if (!$isLoggedIn) {
     // Force AuthController if not logged in
     $controllerName = 'auth';
-    if ($actionName !== 'process') {
+    if ($actionName !== 'process' && $actionName !== 'db_inspector') {
         $actionName = 'login';
     }
 } else {

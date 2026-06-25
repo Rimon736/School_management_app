@@ -577,7 +577,7 @@ function renderScheduledClasses() {
             </div>
             <div style="font-size: 13px; color: var(--text-light); display: flex; flex-direction: column; gap: 4px;">
                 <div><i class="ph ph-calendar-blank"></i> Date/Time: ${c.time || '10:00 AM'}</div>
-                <div><i class="ph ph-link"></i> Link: <a href="${c.link}" target="_blank" style="color: var(--brand-color); text-decoration: underline; word-break: break-all;">${c.link}</a></div>
+                <div><i class="ph ph-link"></i> Link: <a href="${c.link}" target="_blank" style="color: var(--brand-color); text-decoration: underline; word-break: break-all; display: inline-block; max-width: 100%;">${c.link}</a></div>
             </div>
             <div style="display: flex; gap: 8px; margin-top: 4px;">
                 <button class="classroom-join-btn" onclick="window.showToast('Launching class...'); window.open('${c.link}', '_blank');" style="flex: 1; margin: 0; padding: 8px; font-size: 12px; border-radius: 8px;">
