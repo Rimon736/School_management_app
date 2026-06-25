@@ -48,7 +48,8 @@ To ensure optimal performance and eliminate runtime dependencies, EduManage is b
 *   **Frontend Logic:** Vanilla JavaScript (No React, Vue, jQuery, or HTMX)
 *   **Icons:** [Phosphor Icons](https://phosphoricons.com/) (using `.ph` for outline and `.ph-fill` for active states)
 *   **Charts:** Chart.js (for student grade distributions and attendance reports)
-*   **Database/Auth:** [Supabase](https://supabase.com/) (Vanilla JavaScript SDK loaded in assets, currently mocked for UI development but prepared for direct integration)
+*   **Database:** Relational SQLite Database (connected securely using PHP PDO driver)
+*   **Authentication & State Management:** PHP Native Sessions (`$_SESSION`) validated dynamically against the user database.
 
 ---
 
@@ -106,6 +107,7 @@ school_management_app/
 ├── index.php                      # Application Front Controller & Router
 ├── README.md                      # Developer onboarding documentation
 ├── FLUTTER_INTEGRATION.md         # Flutter WebView & Push Notification Integration Guide
+├── database.sqlite                # Local relational SQLite database store
 ├── Dockerfile                     # Docker configuration for cloud hosting (e.g., Render)
 ├── composer.json                  # PHP project descriptor for automated host detection
 ├── vercel.json                    # Vercel Serverless deployment configuration
@@ -125,7 +127,8 @@ school_management_app/
 │   └── images/                    # Application images and media assets
 │
 ├── core/                          # Framework foundation files
-│   └── Controller.php             # Base controller handling rendering and layouts
+│   ├── Controller.php             # Base controller handling rendering and layouts
+│   └── Model.php                  # Base database model exposing SQL prepared helper wrappers
 │
 ├── controllers/                   # Application controllers (Request & business flow)
 │   ├── AuthController.php         # Authentication and session switches
@@ -139,7 +142,8 @@ school_management_app/
 │
 └── views/                         # Presentation layer (Pure HTML/UI templates)
     ├── auth/
-    │   └── login.php              # Mock role-based login gateway
+    │   ├── login.php              # Secure login gateway matching DB credentials
+    │   └── db_inspector.php       # Built-in browser-based SQLite database tables inspector
     ├── layouts/                   # Global page wrappers
     │   ├── header.php             # Core HTML header, stylesheets, and native detection
     │   ├── sidebar.php            # Left/side drawer navigation
@@ -187,6 +191,17 @@ This is the fastest method, requiring only a local PHP installation:
     php -S localhost:8000
     ```
 4.  Open your browser and navigate to: [http://localhost:8000](http://localhost:8000)
+
+### SQLite Database Configuration
+Because the application runs on a local SQLite database, you must ensure the PHP CLI/Web server has the SQLite PDO extension enabled:
+1. Open your `php.ini` file (e.g. `C:\php\php.ini`).
+2. Add or uncomment the following directives:
+   ```ini
+   extension_dir = "ext"
+   extension=pdo_sqlite
+   extension=sqlite3
+   ```
+3. Restart your PHP development server. The database automatically initializes (`database.sqlite`) and seeds standard school profile records on its first execution.
 
 ### Method 2: Using XAMPP / WampServer (Apache)
 1.  Download and install [XAMPP](https://www.apachefriends.org/).
@@ -259,3 +274,16 @@ All placeholder models, seed files, and dummy data must respect the context of B
 *   **Academic Workweek:** Saturday to Thursday workweek. **Friday is the weekend** and must be styled as a calendar holiday.
 *   **Grading System:** Align results/transcripts with JSC/SSC standards (GPA scale out of `5.00`).
 *   **Terms:** Use Bangladeshi academic term structures: `1st Term`, `Mid Term`, and `Final Term`.
+
+---
+
+## 8. Database Schema & Inspector
+
+EduManage implements a normalized SQLite database containing 14 relational tables to track schools, user logins, student profiles, teacher rosters, classes, attendance records, exam results, and fee bills.
+
+### The Built-in DB Inspector
+To browse database records, analyze table columns, and view relational indices inside the browser without installing external software, access the diagnostic inspector tool:
+```
+http://localhost:8000/index.php?controller=auth&action=db_inspector
+```
+*Alternatively, you can open `database.sqlite` in any standard GUI viewer like **DB Browser for SQLite**.*
